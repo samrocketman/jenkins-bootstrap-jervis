@@ -17,4 +17,4 @@ chmod 755 provision_jenkins.sh
 #restart jenkins
 ./provision_jenkins.sh restart
 ./provision_jenkins.sh cli create-job _jervis_generator < jervis_config.xml
-echo 'Visit http://localhost:8080/'
+echo 'Jenkins is ready.  Visit http://localhost:8080/'
