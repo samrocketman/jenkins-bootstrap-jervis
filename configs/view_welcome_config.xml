@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.9.4">
+  <name>Welcome</name>
+  <filterExecutors>false</filterExecutors>
+  <filterQueue>false</filterQueue>
+  <properties class="hudson.model.View$PropertyList"/>
+  <jobNames>
+    <comparator class="hudson.util.CaseInsensitiveComparator"/>
+  </jobNames>
+  <jobFilters/>
+  <columns>
+    <hudson.views.JobColumn/>
+    <hudson.views.BuildButtonColumn/>
+  </columns>
+  <includeRegex>^_.*</includeRegex>
+  <recurse>false</recurse>
+  <useCssStyle>false</useCssStyle>
+  <includeStdJobList>true</includeStdJobList>
+  <leftPortletWidth>50%</leftPortletWidth>
+  <rightPortletWidth>50%</rightPortletWidth>
+  <leftPortlets/>
+  <rightPortlets/>
+  <topPortlets>
+    <org.korosoft.jenkins.plugin.rtp.StaticTextPortlet plugin="rich-text-publisher-plugin@1.3">
+      <id>dashboard_portlet_5828</id>
+      <name>&amp;nbsp;</name>
+      <text>&lt;style&gt;
+a {
+    color: #4183c4;
+    text-decoration: none;
+}
+p, blockquote, ul, ol, dl, table, pre {
+    margin: 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    cursor: text;
+    font-weight: bold;
+    line-height: 1.7;
+    margin: 1em 0 15px;
+    padding: 0;
+    position: relative;
+    text-rendering: optimizelegibility;
+}
+h1 {
+    border-bottom: 1px solid #ddd;
+    font-size: 2.5em;
+}
+h2 {
+    border-bottom: 1px solid #eee;
+    font-size: 2em;
+}
+h3 {
+    font-size: 1.5em;
+}
+h4 {
+    font-size: 1.2em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+    color: #777;
+    font-size: 1em;
+}
+tt, code, pre {
+    font-family: Consolas,&quot;Liberation Mono&quot;,Courier,monospace;
+    font-size: 12px;
+}
+code, tt {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: inline-block;
+    line-height: 1.3;
+    margin: 0;
+    max-width: 100%;
+    overflow: auto;
+    padding: 0;
+    vertical-align: middle;
+}
+code {
+    white-space: nowrap;
+}
+
+p, blockquote, ul, ol, dl, table, pre {
+    margin: 15px 0;
+}
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+pre &gt; code {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+}
+pre code, pre tt {
+    background-color: rgba(0, 0, 0, 0);
+    border: medium none;
+    display: inline;
+    line-height: inherit;
+    margin: 0;
+    max-width: initial;
+    overflow: initial;
+    padding: 0;
+    word-wrap: normal;
+}
+code:before, code:after, tt:before, tt:after {
+    content: &quot; &quot;;
+}
+pre code:before, pre code:after, pre tt:before, pre tt:after {
+    content: normal;
+}
+code:before, code:after, tt:before, tt:after {
+    content: &quot; &quot;;
+}
+pre code:before, pre code:after, pre tt:before, pre tt:after {
+    content: normal;
+}
+table {
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px #eee;
+}
+.TableHeadingColor th, .TableSubHeadingColor th, .TableRowColor td {
+    border: 1px solid #ddd;
+    padding: 6px 13px;
+}
+&lt;/style&gt;
+
+&lt;h1&gt;Bootstrapped Jenkins for Jervis&lt;/h1&gt;
+
+&lt;p&gt;Welcome to the experimental build system, &lt;a href=&quot;https://github.com/samrocketman/jenkins-bootstrap-jervis&quot;&gt;Bootstrapped Jenkins using Jervis&lt;/a&gt;.  &lt;a href=&quot;https://github.com/samrocketman/jervis&quot;&gt;Jervis&lt;/a&gt; is meant to be a proof of concept for a next generation build system which allows developers to keep their build configuration with their source code.&lt;/p&gt;
+
+&lt;p&gt;What is Jervis in a nutshell?  Jervis is &lt;em&gt;not&lt;/em&gt; a Jenkins plugin.  Jervis is a library.  What generates the jobs are &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Job+DSL+Plugin&quot;&gt;Job DSL Plugin&lt;/a&gt; groovy scripts.  Specifically, these &lt;a href=&quot;https://github.com/samrocketman/jervis/tree/master/jobs&quot;&gt;Job DSL groovy scripts&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Environment Setup First Steps&lt;/h3&gt;
+
+&lt;p&gt;Before you start generating jobs through the GitHub API you should first set up a &lt;a href=&quot;https://github.com/blog/1509-personal-api-tokens&quot;&gt;Personal API token&lt;/a&gt;.  If you don&apos;t use a Personal API token then you will quickly hit request limits set by the GitHub API and your job generation will fail.  Set the Personal API token in the environment variable &lt;tt&gt;GITHUB_TOKEN&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you&apos;re using GitHub Enterprise then you can set the environment variable &lt;tt&gt;GITHUB_URL&lt;/tt&gt;.  If you don&apos;t set it then by default &lt;tt&gt;GITHUB_URL=&quot;https://github.com&quot;&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;p&gt;To summarize you should basically do the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;tt&gt;#not a real GITHUB_TOKEN
+export GITHUB_TOKEN=&quot;abca2bf1000cd67f7d805612b43195ce9c10a123&quot;
+export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
+./provision_jenkins.sh restart
+&lt;/tt&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Generate Jobs First Steps&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.&lt;/li&gt;
+&lt;li&gt;You&apos;ll be prompted to enter a &lt;tt&gt;project&lt;/tt&gt;.  You should enter the project in the format of &lt;tt&gt;GitHub organization/project&lt;/tt&gt;; for example &lt;tt&gt;samrocketman/jervis&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Visit the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view tab at the top of this page to see the generated jobs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view, each folder is an organization or a username at GitHub.  Inside of each folder are projects which were generated by Jervis Job DSL scripts.  Each project was generated in the form of &lt;tt&gt;project-branchName&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Documentation&lt;/h3&gt;
+
+&lt;p&gt;Jervis has comprehensive documentation.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;GitHub project wiki&lt;/a&gt; (&lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Build-overview&quot;&gt;Build Overview&lt;/a&gt;, &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Supported-Languages&quot;&gt;Supported Languages&lt;/a&gt;, &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Supported-Tools&quot;&gt;Supported Tools&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://samrocketman.github.io/jervis/&quot;&gt;Jervis library API documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</text>
+      <richText>&lt;style&gt;
+a {
+    color: #4183c4;
+    text-decoration: none;
+}
+p, blockquote, ul, ol, dl, table, pre {
+    margin: 15px 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    cursor: text;
+    font-weight: bold;
+    line-height: 1.7;
+    margin: 1em 0 15px;
+    padding: 0;
+    position: relative;
+    text-rendering: optimizelegibility;
+}
+h1 {
+    border-bottom: 1px solid #ddd;
+    font-size: 2.5em;
+}
+h2 {
+    border-bottom: 1px solid #eee;
+    font-size: 2em;
+}
+h3 {
+    font-size: 1.5em;
+}
+h4 {
+    font-size: 1.2em;
+}
+h5 {
+    font-size: 1em;
+}
+h6 {
+    color: #777;
+    font-size: 1em;
+}
+tt, code, pre {
+    font-family: Consolas,&quot;Liberation Mono&quot;,Courier,monospace;
+    font-size: 12px;
+}
+code, tt {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    display: inline-block;
+    line-height: 1.3;
+    margin: 0;
+    max-width: 100%;
+    overflow: auto;
+    padding: 0;
+    vertical-align: middle;
+}
+code {
+    white-space: nowrap;
+}
+
+p, blockquote, ul, ol, dl, table, pre {
+    margin: 15px 0;
+}
+pre {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 13px;
+    line-height: 19px;
+    overflow: auto;
+    padding: 6px 10px;
+}
+pre &gt; code {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: medium none;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+}
+pre code, pre tt {
+    background-color: rgba(0, 0, 0, 0);
+    border: medium none;
+    display: inline;
+    line-height: inherit;
+    margin: 0;
+    max-width: initial;
+    overflow: initial;
+    padding: 0;
+    word-wrap: normal;
+}
+code:before, code:after, tt:before, tt:after {
+    content: &quot; &quot;;
+}
+pre code:before, pre code:after, pre tt:before, pre tt:after {
+    content: normal;
+}
+code:before, code:after, tt:before, tt:after {
+    content: &quot; &quot;;
+}
+pre code:before, pre code:after, pre tt:before, pre tt:after {
+    content: normal;
+}
+table {
+    border-radius: 3px;
+    box-shadow: 5px 5px 5px #eee;
+}
+.TableHeadingColor th, .TableSubHeadingColor th, .TableRowColor td {
+    border: 1px solid #ddd;
+    padding: 6px 13px;
+}
+&lt;/style&gt;
+
+&lt;h1&gt;Bootstrapped Jenkins for Jervis&lt;/h1&gt;
+
+&lt;p&gt;Welcome to the experimental build system, &lt;a href=&quot;https://github.com/samrocketman/jenkins-bootstrap-jervis&quot;&gt;Bootstrapped Jenkins using Jervis&lt;/a&gt;.  &lt;a href=&quot;https://github.com/samrocketman/jervis&quot;&gt;Jervis&lt;/a&gt; is meant to be a proof of concept for a next generation build system which allows developers to keep their build configuration with their source code.&lt;/p&gt;
+
+&lt;p&gt;What is Jervis in a nutshell?  Jervis is &lt;em&gt;not&lt;/em&gt; a Jenkins plugin.  Jervis is a library.  What generates the jobs are &lt;a href=&quot;https://wiki.jenkins-ci.org/display/JENKINS/Job+DSL+Plugin&quot;&gt;Job DSL Plugin&lt;/a&gt; groovy scripts.  Specifically, these &lt;a href=&quot;https://github.com/samrocketman/jervis/tree/master/jobs&quot;&gt;Job DSL groovy scripts&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Environment Setup First Steps&lt;/h3&gt;
+
+&lt;p&gt;Before you start generating jobs through the GitHub API you should first set up a &lt;a href=&quot;https://github.com/blog/1509-personal-api-tokens&quot;&gt;Personal API token&lt;/a&gt;.  If you don&apos;t use a Personal API token then you will quickly hit request limits set by the GitHub API and your job generation will fail.  Set the Personal API token in the environment variable &lt;tt&gt;GITHUB_TOKEN&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you&apos;re using GitHub Enterprise then you can set the environment variable &lt;tt&gt;GITHUB_URL&lt;/tt&gt;.  If you don&apos;t set it then by default &lt;tt&gt;GITHUB_URL=&quot;https://github.com&quot;&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;p&gt;To summarize you should basically do the following:&lt;/p&gt;
+
+&lt;pre&gt;&lt;tt&gt;#not a real GITHUB_TOKEN
+export GITHUB_TOKEN=&quot;abca2bf1000cd67f7d805612b43195ce9c10a123&quot;
+export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
+./provision_jenkins.sh restart
+&lt;/tt&gt;&lt;/pre&gt;
+
+&lt;h3&gt;Generate Jobs First Steps&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.&lt;/li&gt;
+&lt;li&gt;You&apos;ll be prompted to enter a &lt;tt&gt;project&lt;/tt&gt;.  You should enter the project in the format of &lt;tt&gt;GitHub organization/project&lt;/tt&gt;; for example &lt;tt&gt;samrocketman/jervis&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Visit the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view tab at the top of this page to see the generated jobs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view, each folder is an organization or a username at GitHub.  Inside of each folder are projects which were generated by Jervis Job DSL scripts.  Each project was generated in the form of &lt;tt&gt;project-branchName&lt;/tt&gt;.&lt;/p&gt;
+
+&lt;h3&gt;Documentation&lt;/h3&gt;
+
+&lt;p&gt;Jervis has comprehensive documentation.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;GitHub project wiki&lt;/a&gt; (&lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Build-overview&quot;&gt;Build Overview&lt;/a&gt;, &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Supported-Languages&quot;&gt;Supported Languages&lt;/a&gt;, &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/Supported-Tools&quot;&gt;Supported Tools&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://samrocketman.github.io/jervis/&quot;&gt;Jervis library API documentation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</richText>
+      <parserName>HTML</parserName>
+    </org.korosoft.jenkins.plugin.rtp.StaticTextPortlet>
+  </topPortlets>
+  <bottomPortlets/>
+</hudson.plugins.view.dashboard.Dashboard>
