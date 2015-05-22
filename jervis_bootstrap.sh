@@ -8,6 +8,8 @@
 
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
+export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
+
 #grab the latest copy of the provision_jenkins.sh script
 curl -sLo provision_jenkins.sh 'https://raw.githubusercontent.com/samrocketman/home/master/bin/provision_jenkins.sh'
 chmod 755 provision_jenkins.sh
@@ -22,4 +24,14 @@ chmod 755 provision_jenkins.sh
 ./provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 ./provision_jenkins.sh cli create-job _jervis_generator < ./configs/job_jervis_config.xml
+#generate Welcome view
+./provision_jenkins.sh cli create-view < ./configs/view_welcome_config.xml
+#generate GitHub Organizations view
+./provision_jenkins.sh cli create-view < ./configs/view_github_organizations_config.xml
+#setting default view to Welcome
+sed -i -e 's#\(<primaryView>\)All\(</primaryView>\)#\1Welcome\2#' "${JENKINS_HOME}/config.xml"
+#reload configuration since we modified config.xml on disk
+./provision_jenkins.sh cli reload-configuration
+#delete old default All view
+./provision_jenkins.sh cli delete-view All
 echo 'Jenkins is ready.  Visit http://localhost:8080/'
