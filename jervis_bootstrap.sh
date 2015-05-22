@@ -14,7 +14,7 @@ export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 curl -sLo provision_jenkins.sh 'https://raw.githubusercontent.com/samrocketman/home/master/bin/provision_jenkins.sh'
 chmod 755 provision_jenkins.sh
 #download jenkins, start it up, and update the plugins
-./provision_jenkins.sh bootstrap
+./provision_jenkins.sh bootstrap | grep -v 'Jenkins is ready'
 #install Jervis required plugins
 ./provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
 #additional plugins
