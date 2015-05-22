@@ -19,7 +19,7 @@ variable.
     export GITHUB_TOKEN="abca2bf1000cd67f7d805612b43195ce9c10a123"
     ./jervis_bootstrap.sh
 
-Visit http://localhost:8080/ to see Jenkins running with Jervis.  Build the
+Visit `http://localhost:8080/` to see Jenkins running with Jervis.  Build the
 `_jervis_generator` which will interact with the GitHub API to create Jenkins
 jobs based on Travis YAML.
 
