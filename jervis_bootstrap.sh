@@ -18,8 +18,7 @@ chmod 755 provision_jenkins.sh
 #install Jervis required plugins
 ./provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
 #additional plugins
-./provision_jenkins.sh install-plugins embeddable-build-status groovy
-./provision_jenkins.sh install-plugins dashboard-view rich-text-publisher-plugin console-column-plugin
+./provision_jenkins.sh install-plugins embeddable-build-status groovy dashboard-view rich-text-publisher-plugin console-column-plugin
 #restart jenkins
 ./provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
