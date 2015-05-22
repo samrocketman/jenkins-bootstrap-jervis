@@ -13,10 +13,13 @@ curl -sLo provision_jenkins.sh 'https://raw.githubusercontent.com/samrocketman/h
 chmod 755 provision_jenkins.sh
 #download jenkins, start it up, and update the plugins
 ./provision_jenkins.sh bootstrap
-#install plugins we want
-./provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters embeddable-build-status
+#install Jervis required plugins
+./provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
+#additional plugins
+./provision_jenkins.sh install-plugins embeddable-build-status groovy
+./provision_jenkins.sh install-plugins dashboard-view rich-text-publisher-plugin console-column-plugin
 #restart jenkins
 ./provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-./provision_jenkins.sh cli create-job _jervis_generator < jervis_config.xml
+./provision_jenkins.sh cli create-job _jervis_generator < ./configs/job_jervis_config.xml
 echo 'Jenkins is ready.  Visit http://localhost:8080/'
