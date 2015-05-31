@@ -81,7 +81,7 @@ function start_or_restart_jenkins() {
     echo -n 'Jenkins might be running so attempting to stop it.'
     kill $(cat jenkins.pid)
     #wait for jenkins to stop
-    while ps aux | grep -v 'grep' | grep "$(cat jenkins.pid)" &> /dev/null; do
+    while ps aux | grep -v 'grep' | grep 'jenkins\.war' | grep "$(cat jenkins.pid)" &> /dev/null; do
       echo -n '.'
       sleep 1
     done
