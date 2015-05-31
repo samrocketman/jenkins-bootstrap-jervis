@@ -3,4 +3,3 @@ jenkins-cli.jar
 jenkins.pid
 jenkins.war
 my_jenkins_home
-provision_jenkins.sh
