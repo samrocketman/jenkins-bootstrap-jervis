@@ -22,7 +22,7 @@
   <rightPortlets/>
   <topPortlets>
     <org.korosoft.jenkins.plugin.rtp.StaticTextPortlet plugin="rich-text-publisher-plugin@1.3">
-      <id>dashboard_portlet_5828</id>
+      <id>dashboard_portlet_3411</id>
       <name>&amp;nbsp;</name>
       <text>&lt;style&gt;
 a {
@@ -157,7 +157,7 @@ export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
 &lt;h3&gt;Generate Jobs First Steps&lt;/h3&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.&lt;/li&gt;
+&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.jervis.yml&lt;/tt&gt; or &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.  &lt;tt&gt;.jervis.yml&lt;/tt&gt; takes precedence when both are found.&lt;/li&gt;
 &lt;li&gt;You&apos;ll be prompted to enter a &lt;tt&gt;project&lt;/tt&gt;.  You should enter the project in the format of &lt;tt&gt;GitHub organization/project&lt;/tt&gt;; for example &lt;tt&gt;samrocketman/jervis&lt;/tt&gt;.&lt;/li&gt;
 &lt;li&gt;Visit the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view tab at the top of this page to see the generated jobs.&lt;/li&gt;
 &lt;/ol&gt;
@@ -305,7 +305,7 @@ export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
 &lt;h3&gt;Generate Jobs First Steps&lt;/h3&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.&lt;/li&gt;
+&lt;li&gt;Click the build button above: &lt;img title=&quot;Generate Jenkins Jobs from YAML&quot; alt=&quot;Image of schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt;.  This will generate Jenkins jobs by reading &lt;tt&gt;.jervis.yml&lt;/tt&gt; or &lt;tt&gt;.travis.yml&lt;/tt&gt; files from GitHub projects.  &lt;tt&gt;.jervis.yml&lt;/tt&gt; takes precedence when both are found.&lt;/li&gt;
 &lt;li&gt;You&apos;ll be prompted to enter a &lt;tt&gt;project&lt;/tt&gt;.  You should enter the project in the format of &lt;tt&gt;GitHub organization/project&lt;/tt&gt;; for example &lt;tt&gt;samrocketman/jervis&lt;/tt&gt;.&lt;/li&gt;
 &lt;li&gt;Visit the &lt;tt&gt;GitHub Organizations&lt;/tt&gt; view tab at the top of this page to see the generated jobs.&lt;/li&gt;
 &lt;/ol&gt;
