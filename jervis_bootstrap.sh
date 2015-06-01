@@ -11,7 +11,7 @@
 export JENKINS_HOME="my_jenkins_home"
 
 #download jenkins, start it up, and update the plugins
-./scripts/provision_jenkins.sh bootstrap | grep -v 'Jenkins is ready'
+./scripts/provision_jenkins.sh bootstrap --skip-restart | grep -v 'Jenkins is ready'
 #install Jervis required plugins
 ./scripts/provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
 #additional plugins

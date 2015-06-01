@@ -142,6 +142,20 @@ function force-stop() {
 
 case "$1" in
   bootstrap)
+    shift
+    skip_restart='false'
+    while [ "$#" -gt '0' ]; do
+      case $1 in
+        --skip-restart)
+          skip_restart='true'
+          shift
+          ;;
+        *)
+          echo "Error invalid arument provided to bootstrap command: $1"
+          exit 1
+          ;;
+      esac
+    done
     #provision Jenkins by default
     #download jenkins.war
     download_file ${jenkins_url}
@@ -154,13 +168,15 @@ case "$1" in
 
     #disable automatic submission of usage statistics to Jenkins for privacy
     download_file 'http://localhost:8080/jnlpJars/jenkins-cli.jar'
-    curl -d "script=Jenkins.instance.setNoUsageStatistics(true)" http://localhost:8080/scriptText
+    curl -d 'script=Jenkins.instance.setNoUsageStatistics(true)' http://localhost:8080/scriptText
 
     update_jenkins_plugins
 
     install_jenkins_plugins git github github-oauth
 
-    start_or_restart_jenkins
+    if ! ${skip_restart}; then
+      start_or_restart_jenkins
+    fi
 
     echo 'Jenkins is ready.  Visit http://localhost:8080/'
     ;;
