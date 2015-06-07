@@ -44,7 +44,7 @@ docker_settings.addAll([
     [
         name: 'docker-local',
         serverUrl: 'http://127.0.0.1:4243',
-        containerCapStr: '50',
+        containerCapStr: '10',
         connectionTimeout: 5,
         readTimeout: 15,
         credentialsId: '',
@@ -63,7 +63,7 @@ docker_settings.addAll([
                 cpuShares: 0,
                 prefixStartSlaveCmd: '',
                 suffixStartSlaveCmd: '',
-                instanceCapStr: '50',
+                instanceCapStr: '10',
                 dnsString: '',
                 dockerCommand: '/sbin/my_init',
                 volumesString: '',
