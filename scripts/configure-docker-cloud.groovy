@@ -18,7 +18,6 @@ system_creds.getCredentials().each{
     }
 }
 if(!foundId) {
-    println 'Adding docker cloud credentials.'
     Map<Domain, List<Credentials>> domainCredentialsMap = system_creds.getDomainCredentialsMap()
     UsernamePasswordCredentialsImpl creds =
         new UsernamePasswordCredentialsImpl(CredentialsScope.SYSTEM,
@@ -28,6 +27,7 @@ if(!foundId) {
                                             'jenkins')
     domainCredentialsMap[Domain.global()].add(creds)
     system_creds.save()
+    println 'Added docker cloud credentials.'
 }
 
 /*
@@ -40,40 +40,42 @@ import net.sf.json.JSONArray
 import net.sf.json.JSONObject
 import org.kohsuke.stapler.StaplerRequest
 
-JSONObject docker_settings = new JSONObject()
-docker_settings.putAll([
-    name: 'docker-local',
-    serverUrl: 'http://127.0.0.1:4243',
-    containerCapStr: '50',
-    connectionTimeout: 5,
-    readTimeout: 15,
-    credentialsId: '',
-    version: '',
-    templates: [
-        [
-            image: 'jervis-docker-jvm:latest',
-            labelString: 'docker ubuntu1404 language-groovy language-java language-ruby gemfile env rvm jdk',
-            remoteFs: '',
-            credentialsId: 'jenkins-docker-cloud-credentials',
-            idleTerminationMinutes: '5',
-            sshLaunchTimeoutMinutes: '1',
-            jvmOptions: '',
-            javaPath: '',
-            memoryLimit: 0,
-            cpuShares: 0,
-            prefixStartSlaveCmd: '',
-            suffixStartSlaveCmd: '',
-            instanceCapStr: '50',
-            dnsString: '',
-            dockerCommand: '/sbin/my_init',
-            volumesString: '',
-            volumesFromString: '',
-            hostname: '',
-            bindPorts: '',
-            bindAllPorts: false,
-            privileged: false,
-            tty: false,
-            macAddress: ''
+JSONArray<JSONObject> docker_settings = new JSONArray<JSONObject>()
+docker_settings.addAll([
+    [
+        name: 'docker-local',
+        serverUrl: 'http://127.0.0.1:4243',
+        containerCapStr: '50',
+        connectionTimeout: 5,
+        readTimeout: 15,
+        credentialsId: '',
+        version: '',
+        templates: [
+            [
+                image: 'jervis-docker-jvm:latest',
+                labelString: 'docker ubuntu1404 language-groovy language-java language-ruby gemfile env rvm jdk',
+                remoteFs: '',
+                credentialsId: 'jenkins-docker-cloud-credentials',
+                idleTerminationMinutes: '5',
+                sshLaunchTimeoutMinutes: '1',
+                jvmOptions: '',
+                javaPath: '',
+                memoryLimit: 0,
+                cpuShares: 0,
+                prefixStartSlaveCmd: '',
+                suffixStartSlaveCmd: '',
+                instanceCapStr: '50',
+                dnsString: '',
+                dockerCommand: '/sbin/my_init',
+                volumesString: '',
+                volumesFromString: '',
+                hostname: '',
+                bindPorts: '',
+                bindAllPorts: false,
+                privileged: false,
+                tty: false,
+                macAddress: ''
+            ]
         ]
     ]
 ])
@@ -172,7 +174,7 @@ def bindJSONToList( Class type, Object src) {
             JSONArray json_array = (JSONArray) src;
             for (Object o : json_array) {
                 if (o instanceof JSONObject) {
-                    JSONObject temp = (JSONObject) src;
+                    JSONObject temp = (JSONObject) o;
                     r.add(
                         new DockerCloud(temp.optString('name'),
                                         bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
@@ -198,7 +200,6 @@ def req = [
 ] as org.kohsuke.stapler.StaplerRequest
 
 if(!Jenkins.instance.clouds.getByName('docker-local')) {
-  println 'Configure docker cloud.'
   Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
+  println 'Configured docker cloud.'
 }
-null
