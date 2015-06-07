@@ -1,5 +1,5 @@
 /*
-   Created by Sam Gleske
+   Created by Sam Gleske (https://github.com/samrocketman/)
    Configure Credentials for docker cloud stack in Jenkins.
    Automatically configure the docker cloud stack in Jenkins.
  */
