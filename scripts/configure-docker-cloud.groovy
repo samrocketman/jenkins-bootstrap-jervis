@@ -5,11 +5,11 @@
  */
 
 //configure credentials
+import com.cloudbees.plugins.credentials.Credentials
 import com.cloudbees.plugins.credentials.CredentialsScope
+import com.cloudbees.plugins.credentials.domains.Domain
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 import com.cloudbees.plugins.credentials.SystemCredentialsProvider
-import com.cloudbees.plugins.credentials.domains.Domain
-import com.cloudbees.plugins.credentials.Credentials
 
 
 SystemCredentialsProvider system_creds = SystemCredentialsProvider.getInstance()
