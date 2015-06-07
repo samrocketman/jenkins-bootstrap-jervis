@@ -1,8 +1,10 @@
 /*
    Created by Sam Gleske
    Configure Credentials for docker cloud stack in Jenkins.
+   Automatically configure the docker cloud stack in Jenkins.
  */
 
+//configure credentials
 import com.cloudbees.plugins.credentials.CredentialsScope
 import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
 import com.cloudbees.plugins.credentials.SystemCredentialsProvider
@@ -30,10 +32,7 @@ if(!foundId) {
     println 'Added docker cloud credentials.'
 }
 
-/*
-   Automatically configure the docker cloud stack in Jenkins.
- */
-
+//configure cloud stack
 import com.nirima.jenkins.plugins.docker.DockerCloud
 import com.nirima.jenkins.plugins.docker.DockerTemplate
 import net.sf.json.JSONArray
@@ -101,7 +100,7 @@ def bindJSONToList( Class type, Object src) {
                                        temp.optString('suffixStartSlaveCmd'),
                                        temp.optString('instanceCapStr'),
                                        temp.optString('dnsString'),
-                                       temp.optString('dockerCommand'),
+                                       temp.optString('dockerCommand', '/sbin/my_init'),
                                        temp.optString('volumesString'),
                                        temp.optString('volumesFromString'),
                                        temp.optString('environmentsString'),
@@ -158,34 +157,38 @@ def bindJSONToList( Class type, Object src) {
         ArrayList<DockerCloud> r = new ArrayList<DockerCloud>();
         if (src instanceof JSONObject) {
             JSONObject temp = (JSONObject) src;
-            r.add(
-                new DockerCloud(temp.optString('name'),
-                                bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
-                                temp.optString('serverUrl'),
-                                temp.optString('containerCapStr'),
-                                temp.optInt('connectTimeout', 5),
-                                temp.optInt('readTimeout', 15),
-                                temp.optString('credentialsId'),
-                                temp.optString('version')
-                )
-            );
+            if(!Jenkins.instance.clouds.getByName(temp.optString('name'))) {
+                r.add(
+                    new DockerCloud(temp.optString('name'),
+                                    bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
+                                    temp.optString('serverUrl'),
+                                    temp.optString('containerCapStr'),
+                                    temp.optInt('connectTimeout', 5),
+                                    temp.optInt('readTimeout', 15),
+                                    temp.optString('credentialsId'),
+                                    temp.optString('version')
+                    )
+                );
+            }
         }
         if (src instanceof JSONArray) {
             JSONArray json_array = (JSONArray) src;
             for (Object o : json_array) {
                 if (o instanceof JSONObject) {
                     JSONObject temp = (JSONObject) o;
-                    r.add(
-                        new DockerCloud(temp.optString('name'),
-                                        bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
-                                        temp.optString('serverUrl'),
-                                        temp.optString('containerCapStr'),
-                                        temp.optInt('connectTimeout', 5),
-                                        temp.optInt('readTimeout', 15),
-                                        temp.optString('credentialsId'),
-                                        temp.optString('version')
-                        )
-                    );
+                    if(!Jenkins.instance.clouds.getByName(temp.optString('name'))) {
+                        r.add(
+                            new DockerCloud(temp.optString('name'),
+                                            bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
+                                            temp.optString('serverUrl'),
+                                            temp.optString('containerCapStr'),
+                                            temp.optInt('connectTimeout', 5),
+                                            temp.optInt('readTimeout', 15),
+                                            temp.optString('credentialsId'),
+                                            temp.optString('version')
+                            )
+                        );
+                    }
                 }
             }
         }
@@ -199,7 +202,9 @@ def req = [
     }
 ] as org.kohsuke.stapler.StaplerRequest
 
-if(!Jenkins.instance.clouds.getByName('docker-local')) {
-  Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
-  println 'Configured docker cloud.'
+ArrayList<DockerCloud> clouds = new ArrayList<DockerCloud>();
+clouds = req.bindJSONToList(DockerCloud.class, docker_settings)
+if(clouds.size() > 0) {
+    Jenkins.instance.clouds.addAll(clouds)
+    println 'Configured docker cloud.'
 }
