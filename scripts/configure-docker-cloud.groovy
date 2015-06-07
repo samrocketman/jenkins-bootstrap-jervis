@@ -12,16 +12,16 @@ import com.cloudbees.plugins.credentials.Credentials
 
 SystemCredentialsProvider system_creds = SystemCredentialsProvider.getInstance()
 Boolean foundId=false
-system_creds.getCredentials().each{ 
+system_creds.getCredentials().each{
     if('jenkins-docker-cloud-credentials'.equals(it.getId())) {
         foundId=true
     }
 }
 if(!foundId) {
-    println 'Adding Jenkins docker cloud credentials'
+    println 'Adding docker cloud credentials.'
     Map<Domain, List<Credentials>> domainCredentialsMap = system_creds.getDomainCredentialsMap()
-    UsernamePasswordCredentialsImpl creds = 
-        new UsernamePasswordCredentialsImpl(CredentialsScope.SYSTEM, 
+    UsernamePasswordCredentialsImpl creds =
+        new UsernamePasswordCredentialsImpl(CredentialsScope.SYSTEM,
                                             'jenkins-docker-cloud-credentials',
                                             'Jenkins slave docker container credentials.',
                                             'jenkins',
