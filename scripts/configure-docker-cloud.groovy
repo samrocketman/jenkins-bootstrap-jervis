@@ -1,5 +1,35 @@
 /*
    Created by Sam Gleske
+   Configure Credentials for docker cloud stack in Jenkins.
+ */
+
+import com.cloudbees.plugins.credentials.CredentialsScope
+import com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl
+import com.cloudbees.plugins.credentials.SystemCredentialsProvider
+import com.cloudbees.plugins.credentials.domains.Domain
+import com.cloudbees.plugins.credentials.Credentials
+
+
+SystemCredentialsProvider system_creds = SystemCredentialsProvider.getInstance()
+Boolean foundId=false
+system_creds.getCredentials().each{ 
+    if('jenkins-docker-cloud-credentials'.equals(it.getId())) {
+        foundId=true
+    }
+}
+if(!foundId) {
+    println 'Adding Jenkins docker cloud credentials'
+    Map<Domain, List<Credentials>> domainCredentialsMap = system_creds.getDomainCredentialsMap()
+    UsernamePasswordCredentialsImpl creds = 
+        new UsernamePasswordCredentialsImpl(CredentialsScope.SYSTEM, 
+                                            'jenkins-docker-cloud-credentials',
+                                            'Jenkins slave docker container credentials.',
+                                            'jenkins',
+                                            'jenkins')
+    domainCredentialsMap[Domain.global()].add(creds)
+}
+
+/*
    Automatically configure the docker cloud stack in Jenkins.
  */
 
@@ -23,7 +53,7 @@ docker_settings.putAll([
             image: 'jervis-docker-jvm:latest',
             labelString: 'docker ubuntu1404 groovy java ruby gemfile env rvm jdk',
             remoteFs: '',
-            credentialsId: '',
+            credentialsId: 'jenkins-docker-cloud-credentials',
             idleTerminationMinutes: '5',
             sshLaunchTimeoutMinutes: '1',
             jvmOptions: '',
