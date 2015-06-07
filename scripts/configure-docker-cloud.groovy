@@ -1,9 +1,13 @@
-import org.kohsuke.stapler.StaplerRequest
+/*
+   Created by Sam Gleske
+   Automatically configure the docker cloud stack in Jenkins.
+ */
+
 import com.nirima.jenkins.plugins.docker.DockerCloud
 import com.nirima.jenkins.plugins.docker.DockerTemplate
-import net.sf.json.JSONObject
 import net.sf.json.JSONArray
-import jenkins.model.Jenkins.CloudList
+import net.sf.json.JSONObject
+import org.kohsuke.stapler.StaplerRequest
 
 JSONObject docker_settings = new JSONObject()
 docker_settings.putAll([
@@ -17,7 +21,7 @@ docker_settings.putAll([
     templates: [
         [
             image: 'jervis-docker-jvm:latest',
-            labelString: 'jervis-docker',
+            labelString: 'docker ubuntu1404 groovy java env jdk',
             remoteFs: '',
             credentialsId: '',
             idleTerminationMinutes: '5',
@@ -45,7 +49,7 @@ docker_settings.putAll([
 
 def bindJSONToList( Class type, Object src) {
     if(type == DockerTemplate){
-        ArrayList r = new ArrayList();
+        ArrayList<DockerTemplate> r = new ArrayList<DockerTemplate>();
         if (src instanceof JSONObject) {
             JSONObject temp = (JSONObject) src;
             r.add(
@@ -162,4 +166,7 @@ def req = [
     }
 ] as org.kohsuke.stapler.StaplerRequest
 
-Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
+if(!Jenkins.instance.clouds.getByName('docker-local')) {
+  println 'Adding docker cloud'
+  Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
+}
