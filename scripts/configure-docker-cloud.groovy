@@ -79,8 +79,8 @@ def bindJSONToList( Class type, Object src) {
             );
         }
         if (src instanceof JSONArray) {
-            JSONArray creds_array = (JSONArray) src;
-            for (Object o : creds_array) {
+            JSONArray json_array = (JSONArray) src;
+            for (Object o : json_array) {
                 if (o instanceof JSONObject) {
                     JSONObject temp = (JSONObject) o;
                     r.add(
@@ -134,8 +134,8 @@ def bindJSONToList( Class type, Object src) {
             );
         }
         if (src instanceof JSONArray) {
-            JSONArray creds_array = (JSONArray) src;
-            for (Object o : creds_array) {
+            JSONArray json_array = (JSONArray) src;
+            for (Object o : json_array) {
                 if (o instanceof JSONObject) {
                     JSONObject temp = (JSONObject) src;
                     r.add(
@@ -162,4 +162,4 @@ def req = [
     }
 ] as org.kohsuke.stapler.StaplerRequest
 
-Jenkins.instance.clouds.add(req.bindJSONToList(DockerCloud.class, docker_settings))
+Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
