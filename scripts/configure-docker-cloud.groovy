@@ -118,7 +118,7 @@ def bindJSONToList( Class type, Object src) {
         return r;
     }
     if(type == DockerCloud){
-        CloudList r = new CloudList();
+        ArrayList<DockerCloud> r = new ArrayList<DockerCloud>();
         if (src instanceof JSONObject) {
             JSONObject temp = (JSONObject) src;
             r.add(

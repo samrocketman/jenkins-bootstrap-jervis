@@ -15,7 +15,7 @@ export JENKINS_HOME="my_jenkins_home"
 #install Jervis required plugins
 ./scripts/provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
 #additional plugins
-./scripts/provision_jenkins.sh install-plugins embeddable-build-status groovy dashboard-view rich-text-publisher-plugin console-column-plugin
+./scripts/provision_jenkins.sh install-plugins embeddable-build-status groovy dashboard-view rich-text-publisher-plugin console-column-plugin docker-plugin
 #restart jenkins
 ./scripts/provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
