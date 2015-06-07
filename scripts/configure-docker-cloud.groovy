@@ -27,6 +27,7 @@ if(!foundId) {
                                             'jenkins',
                                             'jenkins')
     domainCredentialsMap[Domain.global()].add(creds)
+    system_creds.save()
 }
 
 /*
@@ -83,32 +84,32 @@ def bindJSONToList( Class type, Object src) {
         if (src instanceof JSONObject) {
             JSONObject temp = (JSONObject) src;
             r.add(
-                    new DockerTemplate(temp.optString("image"),
-                                       temp.optString("labelString"),
-                                       temp.optString("remoteFs"),
-                                       temp.optString("remoteFsMapping"),
-                                       temp.optString("credentialsId"),
-                                       temp.optString("idleTerminationMinutes"),
-                                       temp.optString("sshLaunchTimeoutMinutes"),
-                                       temp.optString("jvmOptions"),
-                                       temp.optString("javaPath"),
-                                       temp.optInt("memoryLimit"),
-                                       temp.optInt("cpuShares"),
-                                       temp.optString("prefixStartSlaveCmd"),
-                                       temp.optString("suffixStartSlaveCmd"),
-                                       temp.optString("instanceCapStr"),
-                                       temp.optString("dnsString"),
-                                       temp.optString("dockerCommand"),
-                                       temp.optString("volumesString"),
-                                       temp.optString("volumesFromString"),
-                                       temp.optString("environmentsString"),
-                                       temp.optString("lxcConfString"),
-                                       temp.optString("hostname"),
-                                       temp.optString("bindPorts"),
-                                       temp.optBoolean("bindAllPorts"),
-                                       temp.optBoolean("privileged"),
-                                       temp.optBoolean("tty"),
-                                       temp.optString("macAddress")
+                    new DockerTemplate(temp.optString('image'),
+                                       temp.optString('labelString'),
+                                       temp.optString('remoteFs'),
+                                       temp.optString('remoteFsMapping'),
+                                       temp.optString('credentialsId'),
+                                       temp.optString('idleTerminationMinutes'),
+                                       temp.optString('sshLaunchTimeoutMinutes'),
+                                       temp.optString('jvmOptions'),
+                                       temp.optString('javaPath'),
+                                       temp.optInt('memoryLimit'),
+                                       temp.optInt('cpuShares'),
+                                       temp.optString('prefixStartSlaveCmd'),
+                                       temp.optString('suffixStartSlaveCmd'),
+                                       temp.optString('instanceCapStr'),
+                                       temp.optString('dnsString'),
+                                       temp.optString('dockerCommand'),
+                                       temp.optString('volumesString'),
+                                       temp.optString('volumesFromString'),
+                                       temp.optString('environmentsString'),
+                                       temp.optString('lxcConfString'),
+                                       temp.optString('hostname'),
+                                       temp.optString('bindPorts'),
+                                       temp.optBoolean('bindAllPorts'),
+                                       temp.optBoolean('privileged'),
+                                       temp.optBoolean('tty'),
+                                       temp.optString('macAddress')
                 )
             );
         }
@@ -118,32 +119,32 @@ def bindJSONToList( Class type, Object src) {
                 if (o instanceof JSONObject) {
                     JSONObject temp = (JSONObject) o;
                     r.add(
-                            new DockerTemplate(temp.optString("image"),
-                                               temp.optString("labelString"),
-                                               temp.optString("remoteFs"),
-                                               temp.optString("remoteFsMapping"),
-                                               temp.optString("credentialsId"),
-                                               temp.optString("idleTerminationMinutes"),
-                                               temp.optString("sshLaunchTimeoutMinutes"),
-                                               temp.optString("jvmOptions"),
-                                               temp.optString("javaPath"),
-                                               temp.optInt("memoryLimit"),
-                                               temp.optInt("cpuShares"),
-                                               temp.optString("prefixStartSlaveCmd"),
-                                               temp.optString("suffixStartSlaveCmd"),
-                                               temp.optString("instanceCapStr"),
-                                               temp.optString("dnsString"),
-                                               temp.optString("dockerCommand"),
-                                               temp.optString("volumesString"),
-                                               temp.optString("volumesFromString"),
-                                               temp.optString("environmentsString"),
-                                               temp.optString("lxcConfString"),
-                                               temp.optString("hostname"),
-                                               temp.optString("bindPorts"),
-                                               temp.optBoolean("bindAllPorts"),
-                                               temp.optBoolean("privileged"),
-                                               temp.optBoolean("tty"),
-                                               temp.optString("macAddress")
+                            new DockerTemplate(temp.optString('image'),
+                                               temp.optString('labelString'),
+                                               temp.optString('remoteFs'),
+                                               temp.optString('remoteFsMapping'),
+                                               temp.optString('credentialsId'),
+                                               temp.optString('idleTerminationMinutes'),
+                                               temp.optString('sshLaunchTimeoutMinutes'),
+                                               temp.optString('jvmOptions'),
+                                               temp.optString('javaPath'),
+                                               temp.optInt('memoryLimit'),
+                                               temp.optInt('cpuShares'),
+                                               temp.optString('prefixStartSlaveCmd'),
+                                               temp.optString('suffixStartSlaveCmd'),
+                                               temp.optString('instanceCapStr'),
+                                               temp.optString('dnsString'),
+                                               temp.optString('dockerCommand'),
+                                               temp.optString('volumesString'),
+                                               temp.optString('volumesFromString'),
+                                               temp.optString('environmentsString'),
+                                               temp.optString('lxcConfString'),
+                                               temp.optString('hostname'),
+                                               temp.optString('bindPorts'),
+                                               temp.optBoolean('bindAllPorts'),
+                                               temp.optBoolean('privileged'),
+                                               temp.optBoolean('tty'),
+                                               temp.optString('macAddress')
                         )
                     );
                 }
@@ -156,14 +157,14 @@ def bindJSONToList( Class type, Object src) {
         if (src instanceof JSONObject) {
             JSONObject temp = (JSONObject) src;
             r.add(
-                new DockerCloud(temp.optString("name"),
-                                bindJSONToList(DockerTemplate.class, temp.optJSONArray("templates")),
-                                temp.optString("serverUrl"),
-                                temp.optString("containerCapStr"),
-                                temp.optInt("connectTimeout", 5),
-                                temp.optInt("readTimeout", 15),
-                                temp.optString("credentialsId"),
-                                temp.optString("version")
+                new DockerCloud(temp.optString('name'),
+                                bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
+                                temp.optString('serverUrl'),
+                                temp.optString('containerCapStr'),
+                                temp.optInt('connectTimeout', 5),
+                                temp.optInt('readTimeout', 15),
+                                temp.optString('credentialsId'),
+                                temp.optString('version')
                 )
             );
         }
@@ -173,14 +174,14 @@ def bindJSONToList( Class type, Object src) {
                 if (o instanceof JSONObject) {
                     JSONObject temp = (JSONObject) src;
                     r.add(
-                        new DockerCloud(temp.optString("name"),
-                                        bindJSONToList(DockerTemplate.class, temp.optJSONArray("templates")),
-                                        temp.optString("serverUrl"),
-                                        temp.optString("containerCapStr"),
-                                        temp.optInt("connectTimeout", 5),
-                                        temp.optInt("readTimeout", 15),
-                                        temp.optString("credentialsId"),
-                                        temp.optString("version")
+                        new DockerCloud(temp.optString('name'),
+                                        bindJSONToList(DockerTemplate.class, temp.optJSONArray('templates')),
+                                        temp.optString('serverUrl'),
+                                        temp.optString('containerCapStr'),
+                                        temp.optInt('connectTimeout', 5),
+                                        temp.optInt('readTimeout', 15),
+                                        temp.optString('credentialsId'),
+                                        temp.optString('version')
                         )
                     );
                 }
@@ -197,6 +198,7 @@ def req = [
 ] as org.kohsuke.stapler.StaplerRequest
 
 if(!Jenkins.instance.clouds.getByName('docker-local')) {
-  println 'Configure docker cloud'
+  println 'Configure docker cloud.'
   Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
 }
+null
