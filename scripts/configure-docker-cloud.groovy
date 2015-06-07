@@ -21,7 +21,7 @@ docker_settings.putAll([
     templates: [
         [
             image: 'jervis-docker-jvm:latest',
-            labelString: 'docker ubuntu1404 groovy java env jdk',
+            labelString: 'docker ubuntu1404 groovy java ruby gemfile env rvm jdk',
             remoteFs: '',
             credentialsId: '',
             idleTerminationMinutes: '5',
@@ -167,6 +167,6 @@ def req = [
 ] as org.kohsuke.stapler.StaplerRequest
 
 if(!Jenkins.instance.clouds.getByName('docker-local')) {
-  println 'Adding docker cloud'
+  println 'Configure docker cloud'
   Jenkins.instance.clouds.addAll(req.bindJSONToList(DockerCloud.class, docker_settings))
 }
