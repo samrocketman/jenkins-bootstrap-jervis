@@ -52,7 +52,7 @@ docker_settings.addAll([
         templates: [
             [
                 image: 'jervis-docker-jvm:latest',
-                labelString: 'docker ubuntu1404 language-groovy language-java language-ruby gemfile env rvm jdk',
+                labelString: 'unstable docker ubuntu1404 language-groovy language-java language-ruby gemfile env rvm jdk',
                 remoteFs: '',
                 credentialsId: 'jenkins-docker-cloud-credentials',
                 idleTerminationMinutes: '5',
