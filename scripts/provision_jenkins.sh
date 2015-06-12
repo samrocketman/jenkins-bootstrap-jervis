@@ -45,6 +45,7 @@ jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 #jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war}"
 JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 JENKINS_CLI="${JENKINS_CLI:-java -jar ./jenkins-cli.jar -s http://localhost:8080/ -noKeyAuth}"
+JENKINS_START="${JENKINS_START:-java -jar jenkins.war}"
 
 #Get JAVA_HOME for java 1.7 on Mac OS X
 #will only run if OS X is detected
@@ -89,7 +90,7 @@ function start_or_restart_jenkins() {
     echo 'stopped.'
   fi
   echo 'Starting Jenkins.'
-  java -jar jenkins.war >> console.log 2>&1 &
+  ${JENKINS_START} >> console.log 2>&1 &
   echo "$!" > jenkins.pid
 }
 

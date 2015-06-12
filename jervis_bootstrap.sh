@@ -8,7 +8,7 @@
 
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
-export JENKINS_HOME="my_jenkins_home"
+export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 
 #download jenkins, start it up, and update the plugins
 ./scripts/provision_jenkins.sh bootstrap --skip-restart | grep -v 'Jenkins is ready'
