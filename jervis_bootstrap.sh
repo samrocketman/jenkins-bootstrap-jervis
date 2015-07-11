@@ -28,5 +28,5 @@ export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 curl -d "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
 #delete old default All view
 ./scripts/provision_jenkins.sh cli delete-view All
-curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
+#curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
 echo 'Jenkins is ready.  Visit http://localhost:8080/'
