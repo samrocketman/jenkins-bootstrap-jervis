@@ -14,8 +14,49 @@
    limitations under the License.
    */
 /*
-    Created by Sam Gleske (https://github.com/samrocketman/)
     Sets the primary view of Jenkins.
  */
-Jenkins.instance.setPrimaryView(Jenkins.instance.getView('Welcome'))
-println 'Set primary view to Welcome.'
+import hudson.model.View
+import jenkins.model.Jenkins
+
+List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
+//get a list of installed plugins
+Set<String> installed_plugins = []
+plugins.each {
+    installed_plugins << it.getShortName()
+}
+
+Set<String> required_plugins = ['dashboard-view', 'view-job-filters']
+
+Boolean hasConfigBeenUpdated = false
+
+//only execute of all required plugins are installed
+if((required_plugins-installed_plugins).size() == 0) {
+    Jenkins instance = Jenkins.getInstance()
+    View welcome_view = instance.getView('Welcome')
+    View all_view = instance.getView('All')
+    View primary_view = instance.getPrimaryView()
+    if(welcome_view != null) {
+        if(!primary_view.name.equals(welcome_view.name)) {
+            println 'Set primary view to "Welcome".'
+            instance.setPrimaryView(welcome_view)
+            hasConfigBeenUpdated = true
+        } else {
+            println 'Primary view already set to "Welcome".  Nothing changed.'
+        }
+        if(all_view != null) {
+            println 'Deleting "All" view.'
+            instance.deleteView(all_view)
+            hasConfigBeenUpdated = true
+        }
+        //save configuration to disk
+        if(hasConfigBeenUpdated) {
+            instance.save()
+        }
+    } else {
+        println '"Welcome" view not found.  Nothing changed.'
+    }
+} else {
+    println 'Unable to configure primary view.'
+    println "Missing required plugins: ${required_plugins-installed_plugins}"
+}

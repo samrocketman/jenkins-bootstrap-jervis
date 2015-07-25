@@ -20,7 +20,7 @@ echo "Waiting for Jenkins to become available to continue."
 #update and install plugins
 echo "Bootstrap Jenkins via script console (may take a while without output)"
 echo "NOTE: you could open a new terminal and tail -f console.log"
-curl -d "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
 #restart jenkins
 ./scripts/provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
@@ -30,8 +30,7 @@ curl -d "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
 ./scripts/provision_jenkins.sh cli create-view < ./configs/view_github_organizations_config.xml
 #setting default view to Welcome
-curl -d "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
-#delete old default All view
-./scripts/provision_jenkins.sh cli delete-view All
+curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
+#configure docker slaves
 #curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
 echo 'Jenkins is ready.  Visit http://localhost:8080/'
