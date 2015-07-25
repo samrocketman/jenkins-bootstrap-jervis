@@ -15,7 +15,6 @@ export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenk
 ./scripts/provision_jenkins.sh download-file "${jenkins_url}"
 ./scripts/provision_jenkins.sh start
 #wait for jenkins to become available
-echo "Waiting for Jenkins to become available to continue."
 ./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #update and install plugins
 echo "Bootstrap Jenkins via script console (may take a while without output)"
@@ -23,12 +22,14 @@ echo "NOTE: you could open a new terminal and tail -f console.log"
 curl --data-urlencode "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
 #restart jenkins
 ./scripts/provision_jenkins.sh restart
+#wait for jenkins to become available
+./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 ./scripts/provision_jenkins.sh cli create-job _jervis_generator < ./configs/job_jervis_config.xml
 #generate Welcome view
-./scripts/provision_jenkins.sh cli create-view < ./configs/view_welcome_config.xml
+curl --data-urlencode "script=String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
-./scripts/provision_jenkins.sh cli create-view < ./configs/view_github_organizations_config.xml
+curl --data-urlencode "script=String xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #setting default view to Welcome
 curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
 #configure docker slaves
