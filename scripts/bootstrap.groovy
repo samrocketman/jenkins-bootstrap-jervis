@@ -59,10 +59,21 @@ def install(Collection c, Boolean dynamicLoad, UpdateSite updateSite) {
 
 //some useful vars to set
 Boolean hasConfigBeenUpdated = false
-UpdateSite updateSite = Jenkins.getInstance().getUpdateCenter().getById("default")
+
+//check to see if using Jenkins Enterprise and if so then use its update site
+Set<String> update_sites = []
+Jenkins.getInstance().getUpdateCenter().getSiteList().each {
+    update_sites << it.id
+}
+UpdateSite updateSite
+if("jenkins-enterprise" in update_sites) {
+    updateSite = Jenkins.getInstance().getUpdateCenter().getById("jenkins-enterprise")
+} else {
+    updateSite = Jenkins.getInstance().getUpdateCenter().getById("default")
+}
 List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
 
-//check the update site for latest plugins
+//check the update site(s) for latest plugins
 Jenkins.instance.pluginManager.doCheckUpdatesServer()
 
 //disable submitting usage statistics for privacy
