@@ -9,13 +9,18 @@
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
+export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 
 #download jenkins, start it up, and update the plugins
-./scripts/provision_jenkins.sh bootstrap --skip-restart | grep -v 'Jenkins is ready'
-#install Jervis required plugins
-./scripts/provision_jenkins.sh install-plugins cloudbees-folder job-dsl view-job-filters
-#additional plugins
-./scripts/provision_jenkins.sh install-plugins embeddable-build-status groovy dashboard-view rich-text-publisher-plugin console-column-plugin docker-plugin
+./scripts/provision_jenkins.sh download-file "${jenkins_url}"
+./scripts/provision_jenkins.sh start
+#wait for jenkins to become available
+echo "Waiting for Jenkins to become available to continue."
+./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+#update and install plugins
+echo "Bootstrap Jenkins via script console (may take a while without output)"
+echo "NOTE: you could open a new terminal and tail -f console.log"
+curl -d "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
 #restart jenkins
 ./scripts/provision_jenkins.sh restart
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.

@@ -66,14 +66,17 @@ Jenkins.getInstance().getUpdateCenter().getSiteList().each {
     update_sites << it.id
 }
 UpdateSite updateSite
-if("jenkins-enterprise" in update_sites) {
-    updateSite = Jenkins.getInstance().getUpdateCenter().getById("jenkins-enterprise")
+if('jenkins-enterprise' in update_sites) {
+    updateSite = Jenkins.getInstance().getUpdateCenter().getById('jenkins-enterprise')
 } else {
-    updateSite = Jenkins.getInstance().getUpdateCenter().getById("default")
+    updateSite = Jenkins.getInstance().getUpdateCenter().getById('default')
 }
+println "Using update site ${updateSite.id}."
+
 List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
 
 //check the update site(s) for latest plugins
+println 'Checking plugin updates via Plugin Manager.'
 Jenkins.instance.pluginManager.doCheckUpdatesServer()
 
 //disable submitting usage statistics for privacy

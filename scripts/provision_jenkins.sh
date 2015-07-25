@@ -181,6 +181,10 @@ case "$1" in
 
     echo 'Jenkins is ready.  Visit http://localhost:8080/'
     ;;
+  download-file)
+    shift
+    download_file "$1"
+    ;;
   clean)
     force-stop
     rm -f console.log jenkins.pid
@@ -237,6 +241,10 @@ COMMANDS
                              the jenkins.pid file, and removes the console.log.
                              Use this when you want start from scratch but don't
                              want to download the latest Jenkins.
+
+  download-file URL          Wait for a file to become available and then
+                             download it.  This command is useful for
+                             automation.
 
   install-plugins [args]     This command takes additional arguments.  The
                              additional arguments are one or more Jenkins plugin
