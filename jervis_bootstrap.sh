@@ -25,7 +25,7 @@ curl --data-urlencode "script=$(<./scripts/bootstrap.groovy)" http://localhost:8
 #wait for jenkins to become available
 ./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-./scripts/provision_jenkins.sh cli create-job _jervis_generator < ./configs/job_jervis_config.xml
+curl --data-urlencode "script=String jobName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
 #generate Welcome view
 curl --data-urlencode "script=String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
