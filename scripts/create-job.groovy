@@ -22,7 +22,6 @@
 
 import hudson.model.FreeStyleProject
 import hudson.model.Item
-import hudson.util.XStream2
 import jenkins.model.Jenkins
 import jenkins.model.ModifiableTopLevelItemGroup
 
@@ -34,7 +33,6 @@ try {
     xmlData == null
     isPropertiesSet = true
 } catch(MissingPropertyException e) {
-    isPropertiesSet = false
     println 'ERROR Can\'t create job.'
     println 'ERROR Missing properties: jobName, xmlData'
 }
@@ -51,7 +49,6 @@ Set<String> required_plugins = ['groovy', 'job-dsl']
 if((required_plugins-installed_plugins).size() == 0) {
     if(isPropertiesSet) {
         Jenkins instance = Jenkins.getInstance()
-        XStream2 xs = new XStream2()
         ModifiableTopLevelItemGroup itemgroup = instance
         int i = jobName.lastIndexOf('/')
         if(i > 0) {

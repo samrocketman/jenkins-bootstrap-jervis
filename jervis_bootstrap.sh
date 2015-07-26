@@ -33,9 +33,9 @@ fi
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 curl --data-urlencode "script=String jobName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
 #generate Welcome view
-curl --data-urlencode "script=String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=String viewName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
-curl --data-urlencode "script=String xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=String viewName='GitHub Organizations';xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #setting default view to Welcome
 curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
 #configure docker slaves

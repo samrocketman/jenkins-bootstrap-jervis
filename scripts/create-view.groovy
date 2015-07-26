@@ -17,23 +17,23 @@
 /*
    Create views using the script console
    Script should be prepended with the following properties.
+     - String viewName
      - String xmlData
  */
 
 import hudson.model.View
-import hudson.util.XStream2
 import jenkins.model.Jenkins
 
 boolean isPropertiesSet = false
 
 try {
     //just by trying to access properties should throw an exception
+    viewName == null
     xmlData == null
     isPropertiesSet = true
 } catch(MissingPropertyException e) {
-    isPropertiesSet = false
     println 'ERROR Can\'t create view.'
-    println 'ERROR Missing properties: xmlData'
+    println 'ERROR Missing properties: viewName, xmlData'
 }
 
 List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
@@ -48,9 +48,7 @@ Set<String> required_plugins = ['dashboard-view', 'view-job-filters']
 if((required_plugins-installed_plugins).size() == 0) {
     if(isPropertiesSet) {
         Jenkins instance = Jenkins.getInstance()
-        XStream2 xs = new XStream2()
-        View newView = (View) xs.fromXML(xmlData)
-        String viewName = newView.getViewName()
+        View newView = View.createViewFromXML(viewName, new ByteArrayInputStream(xmlData.getBytes()))
         Jenkins.checkGoodName(viewName)
         if(instance.getView(viewName) == null) {
             println "Created view \"${viewName}\"."
