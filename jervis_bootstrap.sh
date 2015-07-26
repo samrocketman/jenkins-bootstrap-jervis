@@ -14,6 +14,7 @@ source scripts/common.sh
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 export CURL="${CURL:-curl}"
+#curl could be overridden with more advanced options e.g. add authentication
 
 #download jenkins, start it up, and update the plugins
 if [ ! -e "jenkins.war" ]; then
@@ -37,9 +38,9 @@ fi
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
 #generate Welcome view
-curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+create_view --view-name "Welcome" --xml-data "./configs/view_welcome_config.xml"
 #generate GitHub Organizations view
-curl --data-urlencode "script=String itemName='GitHub Organizations';xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github_organizations_config.xml"
 #setting default view to Welcome
 jenkins_console --script "./scripts/configure-primary-view.groovy"
 #configure docker slaves

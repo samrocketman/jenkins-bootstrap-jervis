@@ -99,3 +99,35 @@ function create_job() (
     --xml-data "${xml_data}" \
     --script "./scripts/create-job.groovy"
 )
+
+function create_view() (
+  set -euo pipefail
+  #parse options
+  jenkins='http://localhost:8080/scriptText'
+  while [ ! -z "${1:-}" ]; do
+    case $1 in
+      -j|--jenkins)
+          shift
+          jenkins="$1"
+          shift
+        ;;
+      -x|--xml-data)
+          shift
+          xml_data="$1"
+          shift
+        ;;
+      -n|--view-name)
+          shift
+          view_name="$1"
+          shift
+        ;;
+    esac
+  done
+  if [ -z "${xml_data:-}" -o -z "${view_name}" ]; then
+    echo 'ERROR Missing an option for create_job() function.'
+    exit 1
+  fi
+  curl_item_script --item-name "${view_name}" \
+    --xml-data "${xml_data}" \
+    --script "./scripts/create-view.groovy"
+)
