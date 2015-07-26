@@ -8,6 +8,8 @@
 
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
+source scripts/common.sh
+
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 
@@ -31,11 +33,11 @@ fi
 #wait for jenkins to become available
 ./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-curl --data-urlencode "script=String jobName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=String itemName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
 #generate Welcome view
-curl --data-urlencode "script=String viewName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
-curl --data-urlencode "script=String viewName='GitHub Organizations';xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
+curl --data-urlencode "script=String itemName='GitHub Organizations';xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #setting default view to Welcome
 curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
 #configure docker slaves

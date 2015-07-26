@@ -16,7 +16,7 @@
 /*
    Create Jobs using the script console
    Script should be prepended with the following properties.
-     - String jobName
+     - String itemName
      - String xmlData
  */
 
@@ -29,12 +29,12 @@ boolean isPropertiesSet = false
 
 try {
     //just by trying to access properties should throw an exception
-    jobName == null
+    itemName == null
     xmlData == null
     isPropertiesSet = true
 } catch(MissingPropertyException e) {
     println 'ERROR Can\'t create job.'
-    println 'ERROR Missing properties: jobName, xmlData'
+    println 'ERROR Missing properties: itemName, xmlData'
 }
 
 List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
@@ -50,22 +50,22 @@ if((required_plugins-installed_plugins).size() == 0) {
     if(isPropertiesSet) {
         Jenkins instance = Jenkins.getInstance()
         ModifiableTopLevelItemGroup itemgroup = instance
-        int i = jobName.lastIndexOf('/')
+        int i = itemName.lastIndexOf('/')
         if(i > 0) {
-            String group = jobName.substring(0, i)
+            String group = itemName.substring(0, i)
             Item item = instance.getItemByFullName(group)
             if (item instanceof ModifiableTopLevelItemGroup) {
                 itemgroup = (ModifiableTopLevelItemGroup) item
             }
-            jobName = jobName.substring(i + 1)
+            itemName = itemName.substring(i + 1)
         }
-        Jenkins.checkGoodName(jobName)
-        if(itemgroup.getJob(jobName) == null) {
-            println "Created job \"${jobName}\"."
-            itemgroup.createProjectFromXML(jobName, new ByteArrayInputStream(xmlData.getBytes()))
+        Jenkins.checkGoodName(itemName)
+        if(itemgroup.getJob(itemName) == null) {
+            println "Created job \"${itemName}\"."
+            itemgroup.createProjectFromXML(itemName, new ByteArrayInputStream(xmlData.getBytes()))
             instance.save()
         } else {
-            println "Job \"${jobName}\" already exists.  Nothing changed."
+            println "Job \"${itemName}\" already exists.  Nothing changed."
         }
     }
 } else {

@@ -17,7 +17,7 @@
 /*
    Create views using the script console
    Script should be prepended with the following properties.
-     - String viewName
+     - String itemName
      - String xmlData
  */
 
@@ -28,12 +28,12 @@ boolean isPropertiesSet = false
 
 try {
     //just by trying to access properties should throw an exception
-    viewName == null
+    itemName == null
     xmlData == null
     isPropertiesSet = true
 } catch(MissingPropertyException e) {
     println 'ERROR Can\'t create view.'
-    println 'ERROR Missing properties: viewName, xmlData'
+    println 'ERROR Missing properties: itemName, xmlData'
 }
 
 List<PluginWrapper> plugins = Jenkins.instance.pluginManager.getPlugins()
@@ -48,14 +48,14 @@ Set<String> required_plugins = ['dashboard-view', 'view-job-filters']
 if((required_plugins-installed_plugins).size() == 0) {
     if(isPropertiesSet) {
         Jenkins instance = Jenkins.getInstance()
-        View newView = View.createViewFromXML(viewName, new ByteArrayInputStream(xmlData.getBytes()))
-        Jenkins.checkGoodName(viewName)
-        if(instance.getView(viewName) == null) {
-            println "Created view \"${viewName}\"."
+        View newView = View.createViewFromXML(itemName, new ByteArrayInputStream(xmlData.getBytes()))
+        Jenkins.checkGoodName(itemName)
+        if(instance.getView(itemName) == null) {
+            println "Created view \"${itemName}\"."
             instance.addView(newView)
             instance.save()
         } else {
-            println "View \"${viewName}\" already exists.  Nothing changed."
+            println "View \"${itemName}\" already exists.  Nothing changed."
         }
     }
 }
