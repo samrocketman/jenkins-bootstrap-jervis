@@ -111,7 +111,7 @@ export CURL="curl --user samrocketman:myGitHubPersonalAccessToken"
 export JENKINS_WEB="https://jenkins.acme.com"
 export SCRIPT_LIBRARY_PATH="/path/to/scripts"
 source "${SCRIPT_LIBRARY_PATH}/common.sh"
-jenkins_console --script "path/to/script.groovy" --jenkins "${JENKINS_WEB}/scriptText"
+jenkins_console --script "path/to/script.groovy"
 ```
 
 [gh-token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
