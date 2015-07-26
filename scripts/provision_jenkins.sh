@@ -73,7 +73,11 @@ function url_ready() {
 function download_file() {
   #see bash man page and search for Parameter Expansion
   url="$1"
-  file="${1##*/}"
+  if [ -z "$2" ]; then
+    file="${1##*/}"
+  else
+    file="$2"
+  fi
   url_ready "${url}"
   if [ ! -e "${file}" ]; then
     curl -SLo "${file}" "${url}"
@@ -198,7 +202,7 @@ case "$1" in
     ;;
   download-file)
     shift
-    download_file "$1"
+    download_file $@
     ;;
   clean)
     force-stop

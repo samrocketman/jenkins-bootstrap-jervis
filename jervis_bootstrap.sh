@@ -8,42 +8,50 @@
 
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
-source scripts/common.sh
-
 #sane defaults
+export CURL="${CURL:-curl}"
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
-export CURL="${CURL:-curl}"
-#curl could be overridden with more advanced options e.g. add authentication
+export JENKINS_WAR="${JENKINS_WAR:-jenkins.war}"
+export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
+export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-./scripts}"
+
+if [ -e "${SCRIPT_LIBRARY_PATH}/common.sh" ]; then
+  source "${SCRIPT_LIBRARY_PATH}/common.sh"
+else
+  echo "ERROR could not find ${SCRIPT_LIBRARY_PATH}/common.sh"
+  echo "Perhaps environment variable SCRIPT_LIBRARY_PATH is not set correctly."
+  exit 1
+fi
 
 #download jenkins, start it up, and update the plugins
-if [ ! -e "jenkins.war" ]; then
-  ./scripts/provision_jenkins.sh download-file "${jenkins_url}"
+if [ ! -e "${JENKINS_WAR}" ]; then
+  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" download-file "${jenkins_url}" "${JENKINS_WAR}"
 fi
 #check for running jenkins or try to start it
-if ! ./scripts/provision_jenkins.sh status; then
-  ./scripts/provision_jenkins.sh start
+if ! "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" status; then
+  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" start
 fi
 #wait for jenkins to become available
-./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+"${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
 #update and install plugins
 echo "Bootstrap Jenkins via script console (may take a while without output)"
 echo "NOTE: you could open a new terminal and tail -f console.log"
-jenkins_console --script "./scripts/bootstrap.groovy"
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/bootstrap.groovy" --jenkins "${JENKINS_WEB}/scriptText"
 #conditional restart jenkins
-if $(CURL="${CURL} -s" jenkins_console --script "./scripts/console-needs-restart.groovy"); then
-  ./scripts/provision_jenkins.sh restart
+if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-needs-restart.groovy" --jenkins "${JENKINS_WEB}/scriptText"); then
+  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart
 fi
 #wait for jenkins to become available
-./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+"${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
+create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml" --jenkins "${JENKINS_WEB}/scriptText"
 #generate Welcome view
-create_view --view-name "Welcome" --xml-data "./configs/view_welcome_config.xml"
+create_view --view-name "Welcome" --xml-data "./configs/view_welcome_config.xml" --jenkins "${JENKINS_WEB}/scriptText"
 #generate GitHub Organizations view
-create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github_organizations_config.xml"
+create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github_organizations_config.xml" --jenkins "${JENKINS_WEB}/scriptText"
 #setting default view to Welcome
-jenkins_console --script "./scripts/configure-primary-view.groovy"
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy" --jenkins "${JENKINS_WEB}/scriptText"
 #configure docker slaves
 #curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
-echo 'Jenkins is ready.  Visit http://localhost:8080/'
+echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"

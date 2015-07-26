@@ -7,11 +7,13 @@
 #curl 7.35.0 (x86_64-pc-linux-gnu) libcurl/7.35.0 OpenSSL/1.0.1f zlib/1.2.8 libidn/1.28 librtmp/2.3
 
 export CURL="${CURL:-curl}"
+export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
+export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-./scripts}"
 
 function curl_item_script() (
   set -euo pipefail
   #parse options
-  jenkins='http://localhost:8080/scriptText'
+  jenkins="${JENKINS_WEB}/scriptText"
   while [ ! -z "${1:-}" ]; do
     case $1 in
       -j|--jenkins)
@@ -46,7 +48,7 @@ function curl_item_script() (
 function jenkins_console() (
   set -euo pipefail
   #parse options
-  jenkins='http://localhost:8080/scriptText'
+  jenkins="${JENKINS_WEB}/scriptText"
   while [ ! -z "${1:-}" ]; do
     case $1 in
       -j|--jenkins)
@@ -71,7 +73,7 @@ function jenkins_console() (
 function create_job() (
   set -euo pipefail
   #parse options
-  jenkins='http://localhost:8080/scriptText'
+  jenkins="${JENKINS_WEB}/scriptText"
   while [ ! -z "${1:-}" ]; do
     case $1 in
       -j|--jenkins)
@@ -97,13 +99,13 @@ function create_job() (
   fi
   curl_item_script --item-name "${job_name}" \
     --xml-data "${xml_data}" \
-    --script "./scripts/create-job.groovy"
+    --script "${SCRIPT_LIBRARY_PATH}/create-job.groovy"
 )
 
 function create_view() (
   set -euo pipefail
   #parse options
-  jenkins='http://localhost:8080/scriptText'
+  jenkins="${JENKINS_WEB}/scriptText"
   while [ ! -z "${1:-}" ]; do
     case $1 in
       -j|--jenkins)
@@ -129,5 +131,5 @@ function create_view() (
   fi
   curl_item_script --item-name "${view_name}" \
     --xml-data "${xml_data}" \
-    --script "./scripts/create-view.groovy"
+    --script "${SCRIPT_LIBRARY_PATH}/create-view.groovy"
 )
