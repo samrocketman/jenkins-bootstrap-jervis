@@ -36,7 +36,7 @@ function curl_item_script() (
         ;;
     esac
   done
-  if [ -z "${item_name:-}" -o -z "${script:-}" -o -z "${xml_data:-}" -o -z "${item_name}" ]; then
+  if [ -z "${script:-}" -o -z "${xml_data:-}" -o -z "${item_name}" ]; then
     echo 'ERROR Missing an option for curl_item_script() function.'
     exit 1
   fi
@@ -66,4 +66,36 @@ function jenkins_console() (
     exit 1
   fi
   ${CURL} --data-urlencode "script=$(<${script})" ${jenkins}
+)
+
+function create_job() (
+  set -euo pipefail
+  #parse options
+  jenkins='http://localhost:8080/scriptText'
+  while [ ! -z "${1:-}" ]; do
+    case $1 in
+      -j|--jenkins)
+          shift
+          jenkins="$1"
+          shift
+        ;;
+      -x|--xml-data)
+          shift
+          xml_data="$1"
+          shift
+        ;;
+      -n|--job-name)
+          shift
+          job_name="$1"
+          shift
+        ;;
+    esac
+  done
+  if [ -z "${xml_data:-}" -o -z "${job_name}" ]; then
+    echo 'ERROR Missing an option for create_job() function.'
+    exit 1
+  fi
+  curl_item_script --item-name "${job_name}" \
+    --xml-data "${xml_data}" \
+    --script "./scripts/create-job.groovy"
 )

@@ -10,6 +10,7 @@
 
 source scripts/common.sh
 
+#sane defaults
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 export CURL="${CURL:-curl}"
@@ -34,10 +35,7 @@ fi
 #wait for jenkins to become available
 ./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-#curl --data-urlencode "script=String itemName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
-curl_item_script --item-name "_jervis_generator" \
-  --xml-data "./configs/job_jervis_config.xml" \
-  --script "./scripts/create-job.groovy"
+create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
 #generate Welcome view
 curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view
