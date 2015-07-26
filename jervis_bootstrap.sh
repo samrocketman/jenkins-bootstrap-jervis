@@ -20,6 +20,7 @@ export CURL="${CURL:-curl}"
 if [ ! -e "jenkins.war" ]; then
   ./scripts/provision_jenkins.sh download-file "${jenkins_url}"
 fi
+#check for running jenkins or try to start it
 if ! ./scripts/provision_jenkins.sh status; then
   ./scripts/provision_jenkins.sh start
 fi
