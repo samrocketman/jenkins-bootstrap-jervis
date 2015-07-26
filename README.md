@@ -24,7 +24,75 @@ the Welcome page for next steps.
 
 ### Screenshot
 
-![jenkins_jervis](https://cloud.githubusercontent.com/assets/875669/7763908/13ffa702-0016-11e5-9e6c-067f59371a6d.png)
+![Screenshot of bootstrapped Jenkins with Jervis][jenkins-jervis-screenshot]
 
-[jervis]: https://github.com/samrocketman/jervis
+# Advanced usage
+
+### Jenkins Script Console Library
+
+This project is doing something unique not done by other Jenkins related
+projects.  It is building a script library similar to [Jenkins CLI][jenkins-cli]
+for the [Jenkins Script Console][jenkins-console].  Except it's a lot faster
+because it uses `curl` instead of Java.  Accessing the Jenkins Script Console is
+more powerful because then Script Console scripts can be written to be
+idempotent.
+
+See the [`scripts/`](scripts) directory for all of the script console scripts.
+They are the `*.groovy` scripts.
+
+To write your own script console scripts I look to Jenkins CLI as a reference.
+Download the [Jenkins source code][jenkins-source] and search through it for
+functions related to Jenkins CLI.  For example, if I want to learn more about
+how Jenkins CLI creates jobs then I would simply do the following.
+
+    grep -irl create * | grep cli
+
+This searches for the case-insensitive word `create` and then only shows you
+files which contain lower-case `cli` in the path.
+
+### Switch versions of Jenkins
+
+Override where `jenkins.war` is obtained.  This is useful for on-site storage of
+the Jenkins software, switching between LTS or Latest, or even using Jenkins
+Enterprise by CloudBees.
+
+Override the `jenkins_url` environment variable.
+
+* Default: `http://mirrors.jenkins-ci.org/war/latest/jenkins.war`
+
+Use LTS instead.
+
+```bash
+export jenkins_url='http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war'
+./jervis_bootstrap.sh
+```
+
+### Customize JENKINS\_HOME
+
+The `JENKINS_HOME` directory can be overriden to be a custom path.  By default,
+`JENKINS_HOME` is set to `my_jenkins_home` based on the current working
+directory.
+
+```bash
+export JENKINS_HOME="/tmp/my_jenkins_home"
+./jervis_bootstrap.sh
+```
+
+### Authenticate against Jenkins
+
+If you need to [authenticate to the Jenkins API][jenkins-auth] then you can
+override the curl command being used to interact with the Jenkins Script
+Console.  Override it via the `CURL` environment variable.
+
+```bash
+export CURL="curl --user 'samrocketman:myGitHubPersonalAccessToken'"
+./jervis_bootstrap.sh
+```
+
 [gh-token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
+[jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
+[jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI
+[jenkins-console]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
+[jenkins-jervis-screenshot]: https://cloud.githubusercontent.com/assets/875669/7763908/13ffa702-0016-11e5-9e6c-067f59371a6d.png
+[jenkins-source]: https://github.com/jenkinsci/jenkins
+[jervis]: https://github.com/samrocketman/jervis
