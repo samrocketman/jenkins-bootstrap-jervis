@@ -12,10 +12,14 @@ export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 
 #download jenkins, start it up, and update the plugins
-./scripts/provision_jenkins.sh download-file "${jenkins_url}"
-./scripts/provision_jenkins.sh start
+if [ ! -e "jenkins.war" ]; then
+  ./scripts/provision_jenkins.sh download-file "${jenkins_url}"
+fi
+if ! ./scripts/provision_jenkins.sh status; then
+  ./scripts/provision_jenkins.sh start
+fi
 #wait for jenkins to become available
-./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #update and install plugins
 echo "Bootstrap Jenkins via script console (may take a while without output)"
 echo "NOTE: you could open a new terminal and tail -f console.log"
@@ -25,7 +29,7 @@ if $(curl -s --data-urlencode "script=$(<scripts/console-needs-restart.groovy)" 
   ./scripts/provision_jenkins.sh restart
 fi
 #wait for jenkins to become available
-./scripts/provision_jenkins.sh download-file "http://localhost:8080/jnlpJars/jenkins-cli.jar"
+./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 curl --data-urlencode "script=String jobName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
 #generate Welcome view
