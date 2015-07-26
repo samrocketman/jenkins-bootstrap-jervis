@@ -28,6 +28,58 @@ the Welcome page for next steps.
 
 # Advanced usage
 
+### Switch versions of Jenkins
+
+Override where `jenkins.war` is obtained.  This is useful for on-site storage of
+the Jenkins software, switching between LTS or Latest, or even using Jenkins
+Enterprise by CloudBees.  Override the `jenkins_url` environment variable to
+customize which version of Jenkins to download.
+
+* Default is Jenkins Latest:
+  `http://mirrors.jenkins-ci.org/war/latest/jenkins.war`
+
+Use Jenkins LTS instead.
+
+```bash
+export jenkins_url='http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war'
+./jervis_bootstrap.sh
+```
+
+Additionally, the location of the downloaded war file can by customized with the
+`JENKINS_WAR` environment variable.  By default it is simply `jenkins.war`.
+
+### Jenkins web endpoint
+
+The Jenkins web endpoint can be customized.  Simply set the `JENKINS_WEB`
+environment variable.  By default it points to `http://localhost:8080`.
+
+```bash
+export JENKINS_WEB="https://jenkins.acme.com"
+./jervis_bootstrap.sh
+```
+
+### Customize JENKINS\_HOME
+
+The `JENKINS_HOME` directory can be overriden to be a custom path.  By default,
+`JENKINS_HOME` is set to `my_jenkins_home` based on the current working
+directory.
+
+```bash
+export JENKINS_HOME="/tmp/my_jenkins_home"
+./jervis_bootstrap.sh
+```
+
+### Authenticate against Jenkins
+
+If you need to [authenticate to the Jenkins API][jenkins-auth] then you can
+override the curl command being used to interact with the Jenkins Script
+Console.  Override it via the `CURL` environment variable.
+
+```bash
+export CURL="curl --user samrocketman:myGitHubPersonalAccessToken"
+./jervis_bootstrap.sh
+```
+
 ### Jenkins Script Console Library
 
 This project is doing something unique not done by other Jenkins related
@@ -50,43 +102,16 @@ how Jenkins CLI creates jobs then I would simply do the following.
 This searches for the case-insensitive word `create` and then only shows you
 files which contain lower-case `cli` in the path.
 
-### Switch versions of Jenkins
-
-Override where `jenkins.war` is obtained.  This is useful for on-site storage of
-the Jenkins software, switching between LTS or Latest, or even using Jenkins
-Enterprise by CloudBees.
-
-Override the `jenkins_url` environment variable.
-
-* Default: `http://mirrors.jenkins-ci.org/war/latest/jenkins.war`
-
-Use LTS instead.
+[`common.sh`](scripts/common.sh) provides helpful wrappers for executing script
+console scripts.  The `SCRIPT_LIBRARY_PATH` can be overridden so that functions
+from `common.sh` can be used in any working directory.
 
 ```bash
-export jenkins_url='http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war'
-./jervis_bootstrap.sh
-```
-
-### Customize JENKINS\_HOME
-
-The `JENKINS_HOME` directory can be overriden to be a custom path.  By default,
-`JENKINS_HOME` is set to `my_jenkins_home` based on the current working
-directory.
-
-```bash
-export JENKINS_HOME="/tmp/my_jenkins_home"
-./jervis_bootstrap.sh
-```
-
-### Authenticate against Jenkins
-
-If you need to [authenticate to the Jenkins API][jenkins-auth] then you can
-override the curl command being used to interact with the Jenkins Script
-Console.  Override it via the `CURL` environment variable.
-
-```bash
-export CURL="curl --user 'samrocketman:myGitHubPersonalAccessToken'"
-./jervis_bootstrap.sh
+export CURL="curl --user samrocketman:myGitHubPersonalAccessToken"
+export JENKINS_WEB="https://jenkins.acme.com"
+export SCRIPT_LIBRARY_PATH="/path/to/scripts"
+source "${SCRIPT_LIBRARY_PATH}/common.sh"
+jenkins_console --script "path/to/script.groovy" --jenkins "${JENKINS_WEB}/scriptText"
 ```
 
 [gh-token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
