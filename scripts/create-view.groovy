@@ -19,6 +19,9 @@
    Script should be prepended with the following properties.
      - String itemName
      - String xmlData
+
+    Example Usage:
+        curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
  */
 
 import hudson.model.View

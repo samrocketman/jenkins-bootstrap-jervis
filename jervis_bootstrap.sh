@@ -1,5 +1,5 @@
 #!/bin/bash
-#Created by Sam Gleske (https://github.com/samrocketman)
+#Created by Sam Gleske (https://github.com/samrocketman) #Copyright 2015 Sam Gleske - https://github.com/samrocketman/jenkins-bootstrap-jervis
 #Wed May 20 23:22:07 EDT 2015
 #Ubuntu 14.04.2 LTS
 #Linux 3.13.0-52-generic x86_64
@@ -33,7 +33,10 @@ fi
 #wait for jenkins to become available
 ./scripts/provision_jenkins.sh url-ready "http://localhost:8080/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-curl --data-urlencode "script=String itemName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
+#curl --data-urlencode "script=String itemName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
+curl_item_script --item-name "_jervis_generator" \
+  --xml-data "./configs/job_jervis_config.xml" \
+  --script "./scripts/create-job.groovy"
 #generate Welcome view
 curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./configs/view_welcome_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #generate GitHub Organizations view

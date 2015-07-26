@@ -23,6 +23,9 @@ import hudson.PluginWrapper
      * Checks for outdate plugins and upgrades them.
      * Checks for desired plugins and if missing installs them.
      * If any configuration has changed then save the configuration to disk.
+
+    Examle Usage:
+        curl --data-urlencode "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
  */
 
 /*

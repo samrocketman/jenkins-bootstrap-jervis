@@ -15,6 +15,9 @@
    */
 /*
     Sets the primary view of Jenkins.
+
+    Example Usage:
+        curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
  */
 import hudson.model.View
 import jenkins.model.Jenkins

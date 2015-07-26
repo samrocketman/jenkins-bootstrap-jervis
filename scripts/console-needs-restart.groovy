@@ -16,6 +16,9 @@
 
 /*
    Checks if Jenkins needs a restart after plugins were installed.
+
+   Example Usage:
+        curl -s --data-urlencode "script=$(<scripts/console-needs-restart.groovy)" http://localhost:8080/scriptText
  */
 
 //what plugins should be installed (by plugin ID)

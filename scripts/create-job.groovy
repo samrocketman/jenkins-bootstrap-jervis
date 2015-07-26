@@ -18,6 +18,9 @@
    Script should be prepended with the following properties.
      - String itemName
      - String xmlData
+
+    Example Usage:
+        curl --data-urlencode "script=String itemName='_jervis_generator';String xmlData='''$(<./configs/job_jervis_config.xml)''';$(<./scripts/create-job.groovy)" http://localhost:8080/scriptText
  */
 
 import hudson.model.FreeStyleProject
