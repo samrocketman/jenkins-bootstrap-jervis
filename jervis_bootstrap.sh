@@ -12,6 +12,7 @@ source scripts/common.sh
 
 export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
+export CURL="${CURL:-curl}"
 
 #download jenkins, start it up, and update the plugins
 if [ ! -e "jenkins.war" ]; then
@@ -25,9 +26,9 @@ fi
 #update and install plugins
 echo "Bootstrap Jenkins via script console (may take a while without output)"
 echo "NOTE: you could open a new terminal and tail -f console.log"
-curl --data-urlencode "script=$(<./scripts/bootstrap.groovy)" http://localhost:8080/scriptText
+jenkins_console --script "./scripts/bootstrap.groovy"
 #conditional restart jenkins
-if $(curl -s --data-urlencode "script=$(<scripts/console-needs-restart.groovy)" http://localhost:8080/scriptText); then
+if $(CURL="${CURL} -s" jenkins_console --script "./scripts/console-needs-restart.groovy"); then
   ./scripts/provision_jenkins.sh restart
 fi
 #wait for jenkins to become available
@@ -42,7 +43,7 @@ curl --data-urlencode "script=String itemName='Welcome';String xmlData='''$(<./c
 #generate GitHub Organizations view
 curl --data-urlencode "script=String itemName='GitHub Organizations';xmlData='''$(<configs/view_github_organizations_config.xml)''';$(<./scripts/create-view.groovy)" http://localhost:8080/scriptText
 #setting default view to Welcome
-curl --data-urlencode "script=$(<./scripts/configure-primary-view.groovy)" http://localhost:8080/scriptText
+jenkins_console --script "./scripts/configure-primary-view.groovy"
 #configure docker slaves
 #curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
 echo 'Jenkins is ready.  Visit http://localhost:8080/'

@@ -42,3 +42,28 @@ function curl_item_script() (
   fi
   ${CURL} --data-urlencode "script=String itemName='${item_name}';String xmlData='''$(<${xml_data})''';$(<${script})" ${jenkins}
 )
+
+function jenkins_console() (
+  set -euo pipefail
+  #parse options
+  jenkins='http://localhost:8080/scriptText'
+  while [ ! -z "${1:-}" ]; do
+    case $1 in
+      -j|--jenkins)
+          shift
+          jenkins="$1"
+          shift
+        ;;
+      -s|--script)
+          shift
+          script="$1"
+          shift
+        ;;
+    esac
+  done
+  if [ -z "${script:-}" ]; then
+    echo 'ERROR Missing --script SCRIPT for jenkins_console() function.'
+    exit 1
+  fi
+  ${CURL} --data-urlencode "script=$(<${script})" ${jenkins}
+)
