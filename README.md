@@ -30,23 +30,10 @@ the Welcome page for next steps.
 
 ### Switch versions of Jenkins
 
-Override where `jenkins.war` is obtained.  This is useful for on-site storage of
-the Jenkins software, switching between LTS or Latest, or even using Jenkins
-Enterprise by CloudBees.  Override the `jenkins_url` environment variable to
-customize which version of Jenkins to download.
+Versions of Jenkins are pinned in the `build.gradle` file.  To provision a new
+version of Jenkins then update the `build.gradle` file and bootstrap again.
 
-* Default is Jenkins Latest:
-  `http://mirrors.jenkins-ci.org/war/latest/jenkins.war`
-
-Use Jenkins LTS instead.
-
-```bash
-export jenkins_url='http://mirrors.jenkins-ci.org/war-stable/latest/jenkins.war'
-./jervis_bootstrap.sh
-```
-
-Additionally, the location of the downloaded war file can by customized with the
-`JENKINS_WAR` environment variable.  By default it is simply `jenkins.war`.
+Plugins are also pinned in the `build.gradle` file.
 
 ### Jenkins web endpoint
 
@@ -54,7 +41,7 @@ The Jenkins web endpoint can be customized.  Simply set the `JENKINS_WEB`
 environment variable.  By default it points to `http://localhost:8080`.
 
 ```bash
-export JENKINS_WEB="https://jenkins.acme.com"
+export JENKINS_WEB="https://jenkins.example.com"
 ./jervis_bootstrap.sh
 ```
 
@@ -108,7 +95,7 @@ from `common.sh` can be used in any working directory.
 
 ```bash
 export CURL="curl --user samrocketman:myGitHubPersonalAccessToken"
-export JENKINS_WEB="https://jenkins.acme.com"
+export JENKINS_WEB="https://jenkins.example.com"
 export SCRIPT_LIBRARY_PATH="/path/to/scripts"
 source "${SCRIPT_LIBRARY_PATH}/common.sh"
 jenkins_console --script "path/to/script.groovy"

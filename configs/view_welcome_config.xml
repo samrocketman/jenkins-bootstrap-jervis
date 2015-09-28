@@ -150,7 +150,7 @@ table {
 
 &lt;pre&gt;&lt;tt&gt;#not a real GITHUB_TOKEN
 export GITHUB_TOKEN=&quot;abca2bf1000cd67f7d805612b43195ce9c10a123&quot;
-export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
+export GITHUB_URL=&quot;https://ghe.example.com/&quot;
 ./provision_jenkins.sh restart
 &lt;/tt&gt;&lt;/pre&gt;
 
@@ -298,7 +298,7 @@ table {
 
 &lt;pre&gt;&lt;tt&gt;#not a real GITHUB_TOKEN
 export GITHUB_TOKEN=&quot;abca2bf1000cd67f7d805612b43195ce9c10a123&quot;
-export GITHUB_URL=&quot;https://ghe.acme.com/&quot;
+export GITHUB_URL=&quot;https://ghe.example.com/&quot;
 ./provision_jenkins.sh restart
 &lt;/tt&gt;&lt;/pre&gt;
 
