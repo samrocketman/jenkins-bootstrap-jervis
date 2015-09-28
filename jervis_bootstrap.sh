@@ -35,6 +35,8 @@ if [ -d "${BOOTSTRAP_HOME}/plugins" ]; then
     if [ ! -e "${JENKINS_HOME}/plugins/${x}" ]; then
       echo "Copying ${x} to JENKINS_HOME"
       cp -r "${BOOTSTRAP_HOME}/plugins/${x}" "${JENKINS_HOME}/plugins/"
+      #pin plugin versions
+      #https://wiki.jenkins-ci.org/display/JENKINS/Pinned+Plugins
       touch "${JENKINS_HOME}/plugins/${x}.pinned"
     fi
   done
