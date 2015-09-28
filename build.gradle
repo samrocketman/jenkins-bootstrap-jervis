@@ -1,0 +1,84 @@
+//gradle plugins
+apply plugin: 'maven'
+
+//default
+defaultTasks 'getjenkins', 'getplugins'
+
+//perhaps use JENKINS_HOME some day
+//avoiding JENKINS_HOME because I only want to copy if file doesn't exist
+//by default the copy function will overwrite plugins in JENKINS_HOME if the hash is different
+//ext.jenkinsHome = System.getenv('JENKINS_HOME')?:'.'
+ext.bootstrapHome = System.getenv('BOOTSTRAP_HOME')?:'.'
+ext.pluginsDest = bootstrapHome
+ext.jenkinsDest = bootstrapHome
+
+configurations {
+    getplugins
+    getjenkins
+}
+repositories {
+    maven {
+        name 'jenkins'
+        delegate.url('http://repo.jenkins-ci.org/public/')
+    }
+}
+dependencies {
+    //get Jenkins
+    getjenkins 'org.jenkins-ci.main:jenkins-war:1.630'
+
+    //get plugins
+    getplugins 'org.jenkins-ci.plugins:ant:1.2'
+    getplugins 'org.jenkins-ci.plugins:antisamy-markup-formatter:1.3'
+    getplugins 'org.jenkins-ci.plugins:cloudbees-folder:4.10'
+    getplugins 'org.jenkins-ci.plugins:console-column-plugin:1.5'
+    getplugins 'org.jenkins-ci.plugins:credentials:1.23'
+    getplugins 'org.jenkins-ci.plugins:cvs:2.12'
+    getplugins 'org.jenkins-ci.plugins:dashboard-view:2.9.6'
+    getplugins 'com.nirima:docker-plugin:0.14.0'
+    getplugins 'org.jenkins-ci.plugins:durable-task:1.6'
+    getplugins 'org.jenkins-ci.plugins:embeddable-build-status:1.8'
+    getplugins 'org.jenkins-ci.plugins:external-monitor-job:1.4'
+    getplugins 'org.jenkins-ci.plugins:git-client:1.19.0'
+    getplugins 'org.jenkins-ci.plugins:git:2.4.0'
+    getplugins 'org.jenkins-ci.plugins:github-api:1.69'
+    getplugins 'org.jenkins-ci.plugins:github-oauth:0.22.2'
+    getplugins 'com.coravy.hudson.plugins.github:github:1.13.3'
+    getplugins 'org.jenkins-ci.plugins:groovy:1.27'
+    getplugins 'org.jenkins-ci.plugins:javadoc:1.3'
+    getplugins 'org.jenkins-ci.plugins:job-dsl:1.38'
+    getplugins 'org.jenkins-ci.plugins:junit:1.9'
+    getplugins 'org.jenkins-ci.plugins:ldap:1.11'
+    getplugins 'org.jenkins-ci.plugins:mailer:1.15'
+    getplugins 'org.jenkins-ci.plugins:mapdb-api:1.0.6.0'
+    getplugins 'org.jenkins-ci.plugins:matrix-auth:1.2'
+    getplugins 'org.jenkins-ci.plugins:matrix-project:1.6'
+    getplugins 'org.jenkins-ci.main:maven-plugin:2.12'
+    getplugins 'org.jenkins-ci.plugins:pam-auth:1.2'
+    getplugins 'org.jenkins-ci.plugins:plain-credentials:1.1'
+    getplugins 'org.jenkins-ci.plugins:rich-text-publisher-plugin:1.3'
+    getplugins 'org.jenkins-ci.plugins:scm-api:0.2'
+    getplugins 'org.jenkins-ci.plugins:script-security:1.15'
+    getplugins 'org.jenkins-ci.plugins:ssh-credentials:1.11'
+    getplugins 'org.jenkins-ci.plugins:ssh-slaves:1.10'
+    getplugins 'org.jenkins-ci.plugins:subversion:2.5.3'
+    getplugins 'org.jenkins-ci.plugins:token-macro:1.10'
+    getplugins 'org.jenkins-ci.plugins:translation:1.12'
+    getplugins 'org.jenkins-ci.plugins:view-job-filters:1.27'
+    getplugins 'org.jenkins-ci.plugins:windows-slaves:1.1'
+}
+
+//download and copy specific versions of plugins
+task getplugins(type: Copy) {
+    into "${pluginsDest}/plugins"
+    from configurations.getplugins
+    include '*.hpi'
+    rename '(.*)-[.0-9]+.hpi$', '$1.jpi'
+}
+
+//download and copy a specific version of Jenkins
+task getjenkins(type: Copy) {
+    into jenkinsDest
+    from configurations.getjenkins
+    include '*.war'
+    rename '.*', 'jenkins.war'
+}

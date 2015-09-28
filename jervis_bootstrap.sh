@@ -14,7 +14,8 @@ export JENKINS_HOME="${JENKINS_HOME:-my_jenkins_home}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 export JENKINS_WAR="${JENKINS_WAR:-jenkins.war}"
 export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
-export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-./scripts}"
+export BOOTSTRAP_HOME="${BOOTSTRAP_HOME:-.}"
+export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-${BOOTSTRAP_HOME}/scripts}"
 
 if [ -e "${SCRIPT_LIBRARY_PATH}/common.sh" ]; then
   source "${SCRIPT_LIBRARY_PATH}/common.sh"
@@ -22,6 +23,21 @@ else
   echo "ERROR could not find ${SCRIPT_LIBRARY_PATH}/common.sh"
   echo "Perhaps environment variable SCRIPT_LIBRARY_PATH is not set correctly."
   exit 1
+fi
+
+#provision jenkins and plugins
+echo 'Downloading specific versions of Jenkins and plugins...'
+gradle getjenkins getplugins
+
+if [ -d "${BOOTSTRAP_HOME}/plugins" ]; then
+  mkdir -p "${JENKINS_HOME}/plugins"
+  ( cd "${BOOTSTRAP_HOME}/plugins/"; ls -1d * ) | while read x; do
+    if [ ! -e "${JENKINS_HOME}/plugins/${x}" ]; then
+      echo "Copying ${x} to JENKINS_HOME"
+      cp -r "${BOOTSTRAP_HOME}/plugins/${x}" "${JENKINS_HOME}/plugins/"
+      touch "${JENKINS_HOME}/plugins/${x}.pinned"
+    fi
+  done
 fi
 
 #download jenkins, start it up, and update the plugins
@@ -35,9 +51,11 @@ fi
 #wait for jenkins to become available
 "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
 #update and install plugins
-echo "Bootstrap Jenkins via script console (may take a while without output)"
-echo "NOTE: you could open a new terminal and tail -f console.log"
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/bootstrap.groovy"
+if [ "$1" = "update" ]; then
+  echo "Bootstrap Jenkins via script console (may take a while without output)"
+  echo "NOTE: you could open a new terminal and tail -f console.log"
+  jenkins_console --script "${SCRIPT_LIBRARY_PATH}/bootstrap.groovy"
+fi
 #conditional restart jenkins
 if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-needs-restart.groovy"); then
   "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart

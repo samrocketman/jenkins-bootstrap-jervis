@@ -1,5 +1,7 @@
+.gradle
 console.log
 jenkins-cli.jar
 jenkins.pid
 jenkins.war
 my_jenkins_home
+plugins
