@@ -13,8 +13,14 @@ ext.pluginsDest = bootstrapHome
 ext.jenkinsDest = bootstrapHome
 
 configurations {
-    getplugins
-    getjenkins
+    getplugins {
+        description = 'Download Jenkins plugins .jpi files.'
+        transitive = false
+    }
+    getjenkins {
+        description = 'Download Jenkins WAR file.'
+        transitive = false
+    }
 }
 repositories {
     maven {
