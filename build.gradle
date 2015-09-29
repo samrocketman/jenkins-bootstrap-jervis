@@ -40,7 +40,7 @@ dependencies {
     getplugins 'org.jenkins-ci.plugins:credentials:1.23'
     getplugins 'org.jenkins-ci.plugins:cvs:2.12'
     getplugins 'org.jenkins-ci.plugins:dashboard-view:2.9.6'
-    getplugins 'com.nirima:docker-plugin:0.14.0'
+    getplugins 'com.nirima:docker-plugin:0.15.0'
     getplugins 'org.jenkins-ci.plugins:durable-task:1.6'
     getplugins 'org.jenkins-ci.plugins:embeddable-build-status:1.8'
     getplugins 'org.jenkins-ci.plugins:external-monitor-job:1.4'
