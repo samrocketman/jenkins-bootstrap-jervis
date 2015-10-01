@@ -47,7 +47,7 @@ plugins.each {
     installed_plugins << it.getShortName()
 }
 
-Set<String> required_plugins = ['groovy', 'job-dsl']
+Set<String> required_plugins = []
 
 if((required_plugins-installed_plugins).size() == 0) {
     if(isPropertiesSet) {

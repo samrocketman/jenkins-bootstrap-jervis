@@ -1,5 +1,5 @@
 #!/bin/bash
-#Created by Sam Gleske (https://github.com/samrocketman) #Copyright 2015 Sam Gleske - https://github.com/samrocketman/jenkins-bootstrap-jervis
+#Created by Sam Gleske (https://github.com/samrocketman)
 #Wed May 20 23:22:07 EDT 2015
 #Ubuntu 14.04.2 LTS
 #Linux 3.13.0-52-generic x86_64
@@ -61,9 +61,9 @@ fi
 #conditional restart jenkins
 if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-needs-restart.groovy"); then
   "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart
+  #wait for jenkins to become available
+  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
 fi
-#wait for jenkins to become available
-"${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
 #generate Welcome view
