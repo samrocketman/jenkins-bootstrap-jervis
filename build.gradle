@@ -22,6 +22,7 @@ task clean(type: Delete, overwrite:true) {
         println stdout.toString()
         println stderr.toString()
     }
+    delete '.gradle'
     delete 'console.log'
     delete 'jenkins-cli.jar'
     delete 'jenkins.pid'
