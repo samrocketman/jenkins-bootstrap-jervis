@@ -17,18 +17,13 @@ task clean(type: Delete, overwrite:true) {
         //stop jenkins just in case it's running
         def stdout = new StringBuilder()
         def stderr = new StringBuilder()
-        def process = ["${bootstrapHome}/scripts/provision_jenkins.sh", 'stop'].execute()
+        def process = ["${bootstrapHome}/scripts/provision_jenkins.sh", 'purge'].execute()
         process.waitForProcessOutput(stdout, stderr)
         println stdout.toString()
         println stderr.toString()
     }
     delete '.gradle'
-    delete 'console.log'
-    delete 'jenkins-cli.jar'
-    delete 'jenkins.pid'
-    delete 'jenkins.war'
     delete 'plugins'
-    delete jenkinsHome
 }
 
 configurations {
