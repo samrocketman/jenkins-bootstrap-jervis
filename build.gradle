@@ -44,7 +44,7 @@ repositories {
 }
 dependencies {
     //get Jenkins
-    getjenkins 'org.jenkins-ci.main:jenkins-war:1.635@war'
+    getjenkins 'org.jenkins-ci.main:jenkins-war:1.636@war'
 
     //get plugins
     getplugins 'com.coravy.hudson.plugins.github:github:1.14.0@hpi'
@@ -80,7 +80,7 @@ dependencies {
     getplugins 'org.jenkins-ci.plugins:script-security:1.15@hpi'
     getplugins 'org.jenkins-ci.plugins:ssh-credentials:1.11@hpi'
     getplugins 'org.jenkins-ci.plugins:ssh-slaves:1.10@hpi'
-    getplugins 'org.jenkins-ci.plugins:subversion:2.5.3@hpi'
+    getplugins 'org.jenkins-ci.plugins:subversion:2.5.4@hpi'
     getplugins 'org.jenkins-ci.plugins:token-macro:1.11@hpi'
     getplugins 'org.jenkins-ci.plugins:translation:1.12@hpi'
     getplugins 'org.jenkins-ci.plugins:view-job-filters:1.27@hpi'
