@@ -11,20 +11,25 @@
   </logRotator>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.11.3">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.14.0">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
           <name>project</name>
-          <description></description>
+          <description>Generate Jenkins jobs for the project.  Format is org/project.</description>
           <defaultValue>samrocketman/jervis</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>branch</name>
+          <description>Branch to generate projects from.  If left blank then jobs for all branches will be generated.</description>
+          <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -33,7 +38,7 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>*/master</name>
+        <name>refs/heads/master</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
@@ -48,12 +53,12 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers/>
-  <concurrentBuild>false</concurrentBuild>
+  <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./gradlew libs</command>
+      <command>./gradlew clean libs</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.34">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.39">
       <targets>jobs/**/*.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <ignoreExisting>false</ignoreExisting>
