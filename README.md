@@ -1,9 +1,7 @@
-# Bootstrap Jenkins using Jervis
+# Bootstrap Jenkins using Jervis [![Build Status][travis-status]][travis]
 
 [Jervis][jervis] generates Jenkins jobs using Travis CI YAML.  This project is
 meant to bootstrap Jenkins from scratch and pre-configure it to use Jervis.
-
-* [![Build Status][travis-status]][travis]
 
 # Instructions
 
