@@ -1,0 +1,9 @@
+language: java
+install: true
+script:
+  - bash -n ./tests/test.sh
+  - test -x ./tests/test.sh
+  - timeout 1200 ./tests/test.sh
+branches:
+  only:
+    - master
