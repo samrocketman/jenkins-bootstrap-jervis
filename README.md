@@ -1,6 +1,9 @@
 # Bootstrap Jenkins using Jervis
 
-[Jervis][jervis] generates Jenkins jobs using Travis CI YAML.
+[Jervis][jervis] generates Jenkins jobs using Travis CI YAML.  This project is
+meant to bootstrap Jenkins from scratch and pre-configure it to use Jervis.
+
+* [![Build Status][travis-status]][travis]
 
 # Instructions
 
@@ -108,3 +111,5 @@ jenkins_console --script "path/to/script.groovy"
 [jenkins-jervis-screenshot]: https://cloud.githubusercontent.com/assets/875669/7763908/13ffa702-0016-11e5-9e6c-067f59371a6d.png
 [jenkins-source]: https://github.com/jenkinsci/jenkins
 [jervis]: https://github.com/samrocketman/jervis
+[travis-status]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis.svg
+[travis]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis
