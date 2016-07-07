@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.9.7">
+<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.9.10">
   <name>Welcome</name>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>

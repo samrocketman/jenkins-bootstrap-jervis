@@ -1,7 +1,6 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<project>
+<?xml version="1.0" encoding="UTF-8"?><project>
   <actions/>
-  <description></description>
+  <description/>
   <displayName>Generate Jenkins Jobs from YAML</displayName>
   <logRotator class="hudson.tasks.LogRotator">
     <daysToKeep>-1</daysToKeep>
@@ -24,7 +23,7 @@
         <hudson.model.StringParameterDefinition>
           <name>branch</name>
           <description>Branch to generate projects from.  If left blank then jobs for all branches will be generated.</description>
-          <defaultValue></defaultValue>
+          <defaultValue/>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
