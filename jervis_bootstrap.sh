@@ -27,7 +27,7 @@ fi
 
 #provision jenkins and plugins
 echo 'Downloading specific versions of Jenkins and plugins...'
-gradle getjenkins getplugins
+./gradlew getjenkins getplugins
 
 if [ -d "${BOOTSTRAP_HOME}/plugins" ]; then
   mkdir -p "${JENKINS_HOME}/plugins"
