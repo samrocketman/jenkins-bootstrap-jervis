@@ -23,7 +23,7 @@
   <rightPortlets/>
   <topPortlets>
     <org.korosoft.jenkins.plugin.rtp.StaticTextPortlet plugin="rich-text-publisher-plugin@1.3">
-      <id>dashboard_portlet_2697</id>
+      <id>dashboard_portlet_2844</id>
       <name>Bootstrapped Jenkins for Jervis</name>
       <text>&lt;style&gt;
 /* hide distracting elements in the UI */
@@ -64,7 +64,7 @@ table#projectstatus tbody tr td {
 table#projectstatus tbody tr td:first-child {
     text-align: right;
 }
-div#main-panel {
+div#page-body div#main-panel, div#main-panel {
     margin-left: 0px;
 }
 
@@ -289,7 +289,7 @@ table#projectstatus tbody tr td {
 table#projectstatus tbody tr td:first-child {
     text-align: right;
 }
-div#main-panel {
+div#page-body div#main-panel, div#main-panel {
     margin-left: 0px;
 }
 

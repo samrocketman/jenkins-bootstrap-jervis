@@ -52,6 +52,17 @@ if ! "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" status; then
 fi
 #wait for jenkins to become available
 "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
+
+#try enabling authentication
+if is_auth_enabled; then
+  export CURL="${CURL} -u admin:$(<${JENKINS_HOME}/secrets/initialAdminPassword)"
+fi
+#try enabling CSRF protection support
+csrf_set_curl
+
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-skip-2.0-wizard.groovy"
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-disable-usage-stats.groovy"
+
 #update and install plugins
 if [ "$1" = "update" ]; then
   echo "Bootstrap Jenkins via script console (may take a while without output)"
@@ -63,6 +74,12 @@ if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-
   "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart
   #wait for jenkins to become available
   "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
+  #try enabling authentication
+  if is_auth_enabled; then
+    export CURL="${CURL} -u admin:$(<${JENKINS_HOME}/secrets/initialAdminPassword)"
+  fi
+  #try enabling CSRF protection support
+  csrf_set_curl
 fi
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
@@ -75,3 +92,7 @@ jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #configure docker slaves
 #curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
 echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"
+if is_auth_enabled &> /dev/null; then
+  echo "User: admin"
+  echo "Password: $(<"${JENKINS_HOME}"/secrets/initialAdminPassword)"
+fi

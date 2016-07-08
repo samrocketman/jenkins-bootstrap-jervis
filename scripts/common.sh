@@ -133,3 +133,54 @@ function create_view() (
     --xml-data "${xml_data}" \
     --script "${SCRIPT_LIBRARY_PATH}/create-view.groovy"
 )
+
+#CSRF protection support
+function is_crumbs_enabled() {
+  use_crumbs="$( $CURL -s ${JENKINS_WEB}/api/json?pretty=true 2> /dev/null | python -c 'import sys,json;exec "try:\n  j=json.load(sys.stdin)\n  print str(j[\"useCrumbs\"]).lower()\nexcept:\n  pass"' )"
+  if [ "${use_crumbs}" = "true" ]; then
+    return 0
+  fi
+  return 1
+}
+
+#CSRF protection support
+function get_crumb() {
+  ${CURL} -s ${JENKINS_WEB}/crumbIssuer/api/json | python -c 'import sys,json;j=json.load(sys.stdin);print j["crumbRequestField"] + "=" + j["crumb"]'
+}
+
+#CSRF protection support
+function csrf_set_curl() {
+  if is_crumbs_enabled; then
+    if [ ! "${CSRF_CRUMB}" = "$(get_crumb)" ]; then
+      if [ -n "${CSRF_CRUMB}" ]; then
+        #remove existing crumb value from curl command
+        CURL="$(echo "${CURL}" | sed "s/ -d ${CSRF_CRUMB}//")"
+      fi
+      export CSRF_CRUMB="$(get_crumb)"
+      export CURL="${CURL} -d ${CSRF_CRUMB}"
+      echo "Using crumbs for CSRF support."
+    elif ! echo "${CURL}" | grep -F "${CSRF_CRUMB}" &> /dev/null; then
+      export CURL="${CURL} -d ${CSRF_CRUMB}"
+      echo "Using crumbs for CSRF support."
+    fi
+  fi
+}
+
+function is_auth_enabled() {
+  no_authentication="$( $CURL -s ${JENKINS_WEB}/api/json?pretty=true 2> /dev/null | python -c 'import sys,json;exec "try:\n  j=json.load(sys.stdin)\n  print str(j[\"useSecurity\"]).lower()\nexcept:\n  pass"' )"
+  #check if authentication is required.;
+  #if the value of no_authentication is anything but false; then assume authentication
+  if [ ! "${no_authentication}" = "false" ]; then
+    echo -n "Authentication required..."
+    if [ -e "${JENKINS_HOME}/secrets/initialAdminPassword" ]; then
+      echo "DONE"
+      return 0
+    else
+      echo "FAILED"
+      echo "Could not set authentication."
+      echo "Missing file: ${JENKINS_HOME}/secrets/initialAdminPassword"
+      exit 1
+    fi
+  fi
+  return 1
+}

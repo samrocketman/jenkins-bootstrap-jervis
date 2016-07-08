@@ -74,12 +74,12 @@ if('getSetupWizard' in j.metaClass.methods*.name.sort().unique()) {
     def w=j.getSetupWizard()
     if(w != null) {
         try {
+          w.completeSetup()
+        }
+        catch(Exception e) {
           //pre Jenkins 2.6
           w.completeSetup(j)
           PluginServletFilter.removeFilter(w.FORCE_SETUP_WIZARD_FILTER)
-        }
-        catch(Exception e) {
-          w.completeSetup()
         }
         j.save()
         println 'Wizard skipped.'
@@ -175,7 +175,6 @@ function jenkins_script_console() {
 function is_crumbs_enabled() {
   use_crumbs="$( $CURL -s ${JENKINS_WEB}/api/json?pretty=true 2> /dev/null | python -c 'import sys,json;exec "try:\n  j=json.load(sys.stdin)\n  print str(j[\"useCrumbs\"]).lower()\nexcept:\n  pass"' )"
   if [ "${use_crumbs}" = "true" ]; then
-    echo "Using crumbs for CSRF support."
     return 0
   fi
   return 1
@@ -184,6 +183,24 @@ function is_crumbs_enabled() {
 #CSRF protection support
 function get_crumb() {
   ${CURL} -s ${JENKINS_WEB}/crumbIssuer/api/json | python -c 'import sys,json;j=json.load(sys.stdin);print j["crumbRequestField"] + "=" + j["crumb"]'
+}
+
+#CSRF protection support
+function csrf_set_curl() {
+  if is_crumbs_enabled; then
+    if [ ! "${CSRF_CRUMB}" = "$(get_crumb)" ]; then
+      if [ -n "${CSRF_CRUMB}" ]; then
+        #remove existing crumb value from curl command
+        CURL="$(echo "${CURL}" | sed "s/ -d ${CSRF_CRUMB}//")"
+      fi
+      export CSRF_CRUMB="$(get_crumb)"
+      export CURL="${CURL} -d ${CSRF_CRUMB}"
+      echo "Using crumbs for CSRF support."
+    elif ! echo "${CURL}" | grep -F "${CSRF_CRUMB}" &> /dev/null; then
+      export CURL="${CURL} -d ${CSRF_CRUMB}"
+      echo "Using crumbs for CSRF support."
+    fi
+  fi
 }
 
 function is_auth_enabled() {
@@ -341,9 +358,7 @@ case "$1" in
     fi
 
     #try enabling CSRF protection support
-    if is_crumbs_enabled; then
-      export CURL="${CURL} -d $(get_crumb)"
-    fi
+    csrf_set_curl
 
     jenkins_script_console script_skip_wizard
     jenkins_script_console script_disable_usage_stats

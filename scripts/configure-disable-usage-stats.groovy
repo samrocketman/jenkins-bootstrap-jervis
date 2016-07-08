@@ -13,23 +13,23 @@
    See the License for the specific language governing permissions and
    limitations under the License.
    */
+
 /*
-   Configures CSRF protection in global security settings.
+   Disable submitting anonymous usage statistics to the Jenkins project.
+   An option like this shouldn't be enabled by default.
  */
 
-import hudson.security.csrf.DefaultCrumbIssuer
-
-if(!Jenkins.instance.isQuietingDown()) {
-    def j = Jenkins.instance
-    if(j.getCrumbIssuer() == null) {
-        j.setCrumbIssuer(new DefaultCrumbIssuer(true))
+def j = Jenkins.instance
+if(!j.isQuietingDown()) {
+    if(j.isUsageStatisticsCollected()){
+        j.setNoUsageStatistics(true)
         j.save()
-        println 'CSRF Protection configuration has changed.  Enabled CSRF Protection.'
+        println 'Disabled submitting usage stats to Jenkins project.'
     }
     else {
-        println 'Nothing changed.  CSRF Protection already configured.'
+        println 'Nothing changed.  Usage stats are not submitted to the Jenkins project.'
     }
 }
 else {
-    println "Shutdown mode enabled.  Configure CSRF protection SKIPPED."
+    println 'Shutdown mode enabled.  Disable usage stats SKIPPED.'
 }

@@ -12,7 +12,7 @@ ext.bootstrapHome = System.getenv('BOOTSTRAP_HOME')?:'.'
 ext.pluginsDest = bootstrapHome
 ext.jenkinsDest = bootstrapHome
 
-task clean(type: Delete, overwrite:true) {
+task cleanJenkins(type: Delete) {
     doFirst {
         //stop jenkins just in case it's running
         def stdout = new StringBuilder()
@@ -25,6 +25,8 @@ task clean(type: Delete, overwrite:true) {
     delete '.gradle'
     delete 'plugins'
 }
+
+clean.dependsOn cleanJenkins
 
 configurations {
     getplugins {
@@ -44,7 +46,7 @@ repositories {
 }
 dependencies {
     //get Jenkins
-    getjenkins 'org.jenkins-ci.main:jenkins-war:1.651.3@war'
+    getjenkins 'org.jenkins-ci.main:jenkins-war:2.7.1@war'
 
     //get plugins
     getplugins 'com.coravy.hudson.plugins.github:github:1.19.2@hpi'
