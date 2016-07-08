@@ -51,6 +51,9 @@ url = urllib2.urlopen(req)
 console = url.read()
 url.close()
 
+if 'WARNING' in console:
+    STATUS = 1
+
 if 'SUCCESS' != response['result']:
     STATUS = 1
 
