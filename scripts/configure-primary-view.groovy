@@ -45,7 +45,7 @@ if((required_plugins-installed_plugins).size() == 0) {
             instance.setPrimaryView(welcome_view)
             hasConfigBeenUpdated = true
         } else {
-            println 'Primary view already set to "Welcome".  Nothing changed.'
+            println 'Nothing changed.  Primary view already set to "Welcome".'
         }
         if(all_view != null) {
             println 'Deleting "All" view.'

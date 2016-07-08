@@ -68,7 +68,7 @@ if((required_plugins-installed_plugins).size() == 0) {
             itemgroup.createProjectFromXML(itemName, new ByteArrayInputStream(xmlData.getBytes()))
             instance.save()
         } else {
-            println "Job \"${itemName}\" already exists.  Nothing changed."
+            println "Nothing changed.  Job \"${itemName}\" already exists."
         }
     }
 } else {

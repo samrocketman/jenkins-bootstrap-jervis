@@ -27,7 +27,7 @@ if(!Jenkins.instance.isQuietingDown()) {
         println 'CSRF Protection configuration has changed.  Enabled CSRF Protection.'
     }
     else {
-        println 'CSRF Protection already configured.  Nothing changed.'
+        println 'Nothing changed.  CSRF Protection already configured.'
     }
 }
 else {

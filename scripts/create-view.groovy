@@ -58,7 +58,7 @@ if((required_plugins-installed_plugins).size() == 0) {
             instance.addView(newView)
             instance.save()
         } else {
-            println "View \"${itemName}\" already exists.  Nothing changed."
+            println "Nothing changed.  View \"${itemName}\" already exists."
         }
     }
 }
