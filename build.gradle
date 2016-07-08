@@ -12,7 +12,7 @@ ext.bootstrapHome = System.getenv('BOOTSTRAP_HOME')?:'.'
 ext.pluginsDest = bootstrapHome
 ext.jenkinsDest = bootstrapHome
 
-task clean(type: Delete, overwrite:true) {
+task cleanJenkins(type: Delete) {
     doFirst {
         //stop jenkins just in case it's running
         def stdout = new StringBuilder()
@@ -25,6 +25,8 @@ task clean(type: Delete, overwrite:true) {
     delete '.gradle'
     delete 'plugins'
 }
+
+clean.dependsOn cleanJenkins
 
 configurations {
     getplugins {
