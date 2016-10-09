@@ -1,0 +1,12 @@
+#!/bin/sh
+if [ ! -e '/etc/sysconfig/@@ARTIFACTNAME@@' ]; then
+  echo "Failed to source '/etc/sysconfig/@@ARTIFACTNAME@@'."
+  exit 1
+fi
+
+source '/etc/sysconfig/@@ARTIFACTNAME@@'
+
+JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
+JENKINS_USER="${JENKINS_USER:-@@USER@@}"
+
+su -s /bin/bash -c "${JENKINS_HOME}/dailycommit.sh" - ${JENKINS_USER}

@@ -5,3 +5,4 @@
 /jenkins.war*
 /my_jenkins_home
 /plugins
+/build

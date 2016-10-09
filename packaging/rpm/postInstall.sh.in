@@ -1,0 +1,76 @@
+#!/bin/sh
+if [ ! -e '/etc/sysconfig/@@ARTIFACTNAME@@' ]; then
+  echo "Failed to source '/etc/sysconfig/@@ARTIFACTNAME@@'."
+  exit 1
+fi
+
+source '/etc/sysconfig/@@ARTIFACTNAME@@'
+
+JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
+JENKINS_USER="${JENKINS_USER:-@@USER@@}"
+RPM_INSTALL_PREFIX="${RPM_INSTALL_PREFIX:-@@PREFIX@@}"
+
+if ! chkconfig | grep -E '\b@@ARTIFACTNAME@@\b' &> /dev/null; then
+  chkconfig --add @@ARTIFACTNAME@@
+fi
+
+
+#overwrite plugins with plugins in the package
+echo "Synchronizing RPM packaged plugins with '${JENKINS_HOME}/plugins/'."
+mkdir -p "${JENKINS_HOME}/plugins"
+rsync -a "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/plugins/" "${JENKINS_HOME}/plugins/"
+
+echo "Overwriting manifest in '${JENKINS_HOME}/plugins/@@MANIFEST@@'."
+cp -f "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/@@MANIFEST@@" "${JENKINS_HOME}/"
+echo '@@COMMIT@@' > "${JENKINS_HOME}/@@PACKAGENAME@@-commit"
+
+echo "Pinning all plugins in '${JENKINS_HOME}/plugins/'."
+echo "See https://wiki.jenkins-ci.org/display/JENKINS/Pinned+Plugins for more info."
+for plugin in "${JENKINS_HOME}"/plugins/*.jpi;do
+  #pin plugin versions
+  #https://wiki.jenkins-ci.org/display/JENKINS/Pinned+Plugins
+  touch "${plugin}.pinned"
+done
+
+#change ownership of just the plugins dir but not children
+chown ${JENKINS_USER}: "${JENKINS_HOME}/plugins"
+
+#fix init script prefix
+if [ ! "${RPM_INSTALL_PREFIX}" = '@@PREFIX@@' ]; then
+  sed -i -r $"s#^(JENKINS_WAR=\")@@PREFIX@@(/[^\"]+\")\$#\1${RPM_INSTALL_PREFIX}\2#" "/etc/init.d/@@ARTIFACTNAME@@"
+fi
+
+if [ -z "$JENKINS_INSTALL_SKIP_CHOWN" ];then
+  chown -R ${JENKINS_USER}: /var/cache/@@ARTIFACTNAME@@
+  chown -R ${JENKINS_USER}: /var/log/@@ARTIFACTNAME@@
+  if [ ! "$(stat -c "%U:%G" "${JENKINS_HOME}")" = '@@USER@@:@@USER@@' ]; then
+    echo "Taking ownership of '${JENKINS_HOME}' for @@USER@@.  Skip this by setting JENKINS_INSTALL_SKIP_CHOWN=true env var."
+    chown -R ${JENKINS_USER}: "${JENKINS_HOME}"
+  fi
+
+fi
+
+if [ ! -e "${JENKINS_HOME}/.gitignore" ]; then
+  echo "Creating '${JENKINS_HOME}/.gitignore'."
+  cp "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/share/gitignore" "${JENKINS_HOME}/.gitignore"
+  chmod 644 "${JENKINS_HOME}/.gitignore"
+  chown ${JENKINS_USER}: "${JENKINS_HOME}/.gitignore"
+fi
+
+echo "Overwriting '${JENKINS_HOME}/dailycommit.sh'."
+cp -f "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/share/dailycommit.sh" "${JENKINS_HOME}/"
+chmod 755 "${JENKINS_HOME}/dailycommit.sh"
+chown ${JENKINS_USER}: "${JENKINS_HOME}/dailycommit.sh"
+
+if ! diff -q "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/share/gitignore" "${JENKINS_HOME}/.gitignore"; then
+  diff -u "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/share/gitignore" "${JENKINS_HOME}/.gitignore"
+  echo "To resolve the changes you can optionally:"
+  echo "    cp -f '${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/share/gitignore' '${JENKINS_HOME}/.gitignore'"
+fi
+
+#create a symlink based on upstream RPM spec (see preUninstall.sh.in for removal)
+if [ ! -d "${RPM_INSTALL_PREFIX}/sbin" ]; then
+  mkdir -p "${RPM_INSTALL_PREFIX}/sbin"
+  chmod 555 "${RPM_INSTALL_PREFIX}/sbin"
+fi
+ln -sf '/etc/init.d/@@ARTIFACTNAME@@' "${RPM_INSTALL_PREFIX}/sbin/rc@@ARTIFACTNAME@@"
