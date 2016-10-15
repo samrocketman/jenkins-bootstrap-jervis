@@ -22,7 +22,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 //perhaps use JENKINS_HOME some day
 //avoiding JENKINS_HOME because I only want to copy if file doesn't exist
 //by default the copy function will overwrite plugins in JENKINS_HOME if the hash is different
-ext.jenkinsHome = System.getenv('JENKINS_HOME')?:'my_jenkins_home'
+ext.jenkinsHome = System.getenv('JENKINS_HOME')?:'../my_jenkins_home'
 ext.bootstrapHome = System.getenv('BOOTSTRAP_HOME')?:'.'
 ext.pluginsDest = bootstrapHome
 ext.jenkinsDest = bootstrapHome
@@ -185,6 +185,7 @@ ospackage {
     url tokens['HOMEPAGE']
     into tokens['PREFIX']
     license tokens['LICENSE']
+
     //only sign if properties exist
     if(project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
         signingKeyId project.getProperty('signing.keyId')
@@ -193,10 +194,10 @@ ospackage {
     }
     addParentDirs = true
 
-    preInstall = file("${buildDir}/packaging-filtered/rpm/preInstall.sh")
-    postInstall = file("${buildDir}/packaging-filtered/rpm/postInstall.sh")
-    preUninstall = file("${buildDir}/packaging-filtered/rpm/preUninstall.sh")
-    postUninstall = file("${buildDir}/packaging-filtered/rpm/postUninstall.sh")
+    preInstall = file("${buildDir}/packaging-filtered/preInstall.sh")
+    postInstall = file("${buildDir}/packaging-filtered/postInstall.sh")
+    preUninstall = file("${buildDir}/packaging-filtered/preUninstall.sh")
+    postUninstall = file("${buildDir}/packaging-filtered/postUninstall.sh")
 
     from(configurations.getjenkins) {
         into "lib/${tokens['ARTIFACTNAME']}"

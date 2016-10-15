@@ -1,0 +1,3 @@
+build.gradle TODO
+* Copyartifact for `scripts` directory should be recursive so that it picks up
+  `init.gradle.d` files.
