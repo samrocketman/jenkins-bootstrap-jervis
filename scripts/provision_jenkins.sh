@@ -51,7 +51,7 @@ JENKINS_START="${JENKINS_START:-java -jar jenkins.war}"
 JENKINS_WEB="${JENKINS_WEB%/}"
 CURL="${CURL:-curl}"
 
-#Get JAVA_HOME for java 1.7 on Mac OS X
+#Get JAVA_HOME for java on Mac OS X
 #will only run if OS X is detected
 if uname -rms | grep Darwin &> /dev/null; then
   JAVA_HOME="$(/usr/libexec/java_home)"
@@ -124,30 +124,19 @@ EOF
 }
 
 function script_install_plugins() {
-  cat <<'EOF'
-def plugins = [
-    "credentials-binding",
-    "git",
-    "github",
-    "github-oauth",
-    "job-dsl",
-    "matrix-auth",
-    "matrix-project",
-    "pipeline-stage-view",
-    "ssh-slaves",
-    "workflow-aggregator"
-    ]
+  cat <<EOF
+def plugins = "$@".split('[, ]') as ArrayList
 
 /*
    Install Jenkins plugins
  */
 def install(Collection c, Boolean dynamicLoad, UpdateSite updateSite) {
     c.each {
-        println "Installing ${it} plugin."
+        println "Installing \${it} plugin."
         UpdateSite.Plugin plugin = updateSite.getPlugin(it)
         Throwable error = plugin.deploy(dynamicLoad).get().getError()
         if(error != null) {
-            println "ERROR installing ${it}, ${error}"
+            println "ERROR installing \${it}, \${error}"
         }
     }
     null
@@ -168,7 +157,7 @@ EOF
 
 function jenkins_script_console() {
   echo "Calling jenkins_script_console $1"
-  ${CURL} --data-urlencode "script=$(eval "$1")" ${JENKINS_WEB}/scriptText
+  ${CURL} --data-urlencode "script=$(eval "$@")" ${JENKINS_WEB}/scriptText
 }
 
 #CSRF protection support
@@ -300,13 +289,6 @@ function update_jenkins_plugins() {
   fi
 }
 
-function install_jenkins_plugins() {
-  #download the jenkins-cli.jar client
-  download_file "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
-  echo 'Install Jenkins Plugins using jenkins-cli.'
-  ${JENKINS_CLI} install-plugin $@
-}
-
 function jenkins_cli() {
   #download the jenkins-cli.jar client
   download_file "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
@@ -316,7 +298,7 @@ function jenkins_cli() {
 
 function force-stop() {
   if [ -e 'jenkins.pid' ]; then
-    kill -9 $(cat jenkins.pid)
+    kill -9 $(cat jenkins.pid) 2> /dev/null
     rm -f jenkins.pid
   fi
 }
@@ -363,7 +345,7 @@ case "$1" in
     jenkins_script_console script_skip_wizard
     jenkins_script_console script_disable_usage_stats
     jenkins_script_console script_upgrade_plugins
-    jenkins_script_console script_install_plugins
+    jenkins_script_console script_install_plugins "credentials-binding,git,github,github-oauth,job-dsl,matrix-auth,matrix-project,pipeline-stage-view,ssh-slaves,workflow-aggregator"
 
     if ! ${skip_restart}; then
       start_or_restart_jenkins
@@ -391,7 +373,13 @@ case "$1" in
     ;;
   install-plugins)
     shift
-    install_jenkins_plugins $@
+    #try enabling authentication
+    if is_auth_enabled; then
+      export CURL="${CURL} -u admin:$(<${JENKINS_HOME}/secrets/initialAdminPassword)"
+    fi
+    #try enabling CSRF protection support
+    csrf_set_curl
+    jenkins_script_console script_install_plugins "$@"
     ;;
   update-plugins)
     update_jenkins_plugins
