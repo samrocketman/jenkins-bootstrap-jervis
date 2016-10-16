@@ -102,6 +102,10 @@ source "${SCRIPT_LIBRARY_PATH}/common.sh"
 jenkins_console --script "path/to/script.groovy"
 ```
 
+### Build an RPM package
+
+    ./gradlew clean buildRpm
+
 [gh-token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
 [jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
 [jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI

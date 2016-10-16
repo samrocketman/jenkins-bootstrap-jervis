@@ -63,25 +63,24 @@ csrf_set_curl
 
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-skip-2.0-wizard.groovy"
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-disable-usage-stats.groovy"
-
 #update and install plugins
 if [ "$1" = "update" ]; then
   echo "Bootstrap Jenkins via script console (may take a while without output)"
   echo "NOTE: you could open a new terminal and tail -f console.log"
   jenkins_console --script "${SCRIPT_LIBRARY_PATH}/bootstrap.groovy"
 fi
-#conditional restart jenkins
-if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-needs-restart.groovy"); then
-  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart
-  #wait for jenkins to become available
-  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
-  #try enabling authentication
-  if is_auth_enabled; then
-    export CURL="${CURL} -u admin:$(<${JENKINS_HOME}/secrets/initialAdminPassword)"
-  fi
-  #try enabling CSRF protection support
-  csrf_set_curl
-fi
+#conditional restart jenkins no longer required since Jenkins 2.0
+#if $(CURL="${CURL} -s" jenkins_console --script "${SCRIPT_LIBRARY_PATH}/console-needs-restart.groovy"); then
+#  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" restart
+#  #wait for jenkins to become available
+#  "${SCRIPT_LIBRARY_PATH}/provision_jenkins.sh" url-ready "${JENKINS_WEB}/jnlpJars/jenkins-cli.jar"
+#  #try enabling authentication
+#  if is_auth_enabled; then
+#    export CURL="${CURL} -u admin:$(<${JENKINS_HOME}/secrets/initialAdminPassword)"
+#  fi
+#  #try enabling CSRF protection support
+#  csrf_set_curl
+#fi
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
 create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
 #generate Welcome view
