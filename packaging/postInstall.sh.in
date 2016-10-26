@@ -3,11 +3,11 @@ RPM_BASED=false
 DEB_BASED=false
 
 #detect using RedHat based package
-if [ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ]; then
+if [ -n "${RPM_PACKAGE_NAME}" ]; then
   RPM_BASED=true
 fi
 
-${RPM_BASED} && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+${RPM_BASED} && [ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
 
 JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
 JENKINS_USER="${JENKINS_USER:-@@USER@@}"
@@ -21,8 +21,10 @@ fi
 mkdir -p "${JENKINS_HOME}/plugins" "${JENKINS_HOME}/init.groovy.d"
 echo "Synchronizing packaged plugins with '${JENKINS_HOME}/plugins/'."
 rsync -a --delete-after "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/plugins/" "${JENKINS_HOME}/plugins/"
+chown -R ${JENKINS_USER}: "${JENKINS_HOME}"/plugins/*.jpi
 echo "Synchronizing packaged hook scripts with '${JENKINS_HOME}/init.groovy.d/'."
 rsync -a --delete-after "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/scripts/init.groovy.d/" "${JENKINS_HOME}/init.groovy.d/"
+chown -R ${JENKINS_USER}: "${JENKINS_HOME}/init.groovy.d/"
 
 echo "Overwriting manifest in '${JENKINS_HOME}/plugins/@@MANIFEST@@'."
 cp -f "${RPM_INSTALL_PREFIX}/lib/@@ARTIFACTNAME@@/@@MANIFEST@@" "${JENKINS_HOME}/"

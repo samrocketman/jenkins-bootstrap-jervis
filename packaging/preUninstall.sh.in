@@ -3,7 +3,7 @@ RPM_BASED=false
 DEB_BASED=false
 
 #detect using RedHat based package
-if [ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ]; then
+if [ -n "${RPM_PACKAGE_NAME}" ]; then
   RPM_BASED=true
 fi
 

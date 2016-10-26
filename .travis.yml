@@ -4,6 +4,7 @@ script:
   - bash -n ./tests/test.sh
   - test -x ./tests/test.sh
   - timeout 1200 ./tests/test.sh
+  - ./gradlew clean packages
 branches:
   only:
     - master
