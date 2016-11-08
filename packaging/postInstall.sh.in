@@ -3,11 +3,29 @@ RPM_BASED=false
 DEB_BASED=false
 
 #detect using RedHat based package
+#if not RPM then it's DEB
 if [ -n "${RPM_PACKAGE_NAME}" ]; then
   RPM_BASED=true
+else
+  DEB_BASED=true
 fi
 
-${RPM_BASED} && [ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  source '/etc/default/@@ARTIFACTNAME@@'
+
+if ${DEB_BASED}; then
+  case "$1" in
+    configure)
+    ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+      exit 0
+    ;;
+    *)
+      echo "postinst called with unknown argument '$1'" >&2
+      exit 1
+    ;;
+  esac
+fi
 
 JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
 JENKINS_USER="${JENKINS_USER:-@@USER@@}"
