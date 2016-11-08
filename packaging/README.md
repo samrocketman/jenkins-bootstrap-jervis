@@ -18,9 +18,21 @@ To inspect the package.
 
 ### Packaging DEB
 
-> WARNING: DEB packaging is unfinished so not recommended for use
+To create a DEB package.
 
     ./gradlew clean buildDeb
+
+To inpsect the package.
+
+    dpkg -I build/distributions/*.deb
+
+Dry run to see what dpkg would do.
+
+    dpkg --dry-run -i build/distributions/*.deb
+
+Extract only the control information files from the package.
+
+    dpkg -e build/distributions/*.deb
 
 ### Build all
 
