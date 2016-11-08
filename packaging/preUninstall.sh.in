@@ -1,18 +1,24 @@
 #!/bin/sh
+set -e
+
 RPM_BASED=false
 DEB_BASED=false
 
 #detect using RedHat based package
+#if not RPM then it's DEB
 if [ -n "${RPM_PACKAGE_NAME}" ]; then
   RPM_BASED=true
+else
+  DEB_BASED=true
 fi
 
-if ${RPM_BASED}; then
-  [ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
-  JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
-  JENKINS_USER="${JENKINS_USER:-@@USER@@}"
-  RPM_INSTALL_PREFIX="${RPM_INSTALL_PREFIX:-@@PREFIX@@}"
+${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  source '/etc/default/@@ARTIFACTNAME@@'
+JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
+JENKINS_USER="${JENKINS_USER:-@@USER@@}"
+RPM_INSTALL_PREFIX="${RPM_INSTALL_PREFIX:-@@PREFIX@@}"
 
+if ${RPM_BASED}; then
   case $1 in
     0)
       # if this is uninstallation as opposed to upgrade, delete the service
@@ -26,6 +32,23 @@ if ${RPM_BASED}; then
       su -s /bin/bash -c "${JENKINS_HOME}/dailycommit.sh" - ${JENKINS_USER}
     ;;
   esac
+else
+  #DEB_BASED == true
+case "$1" in
+  remove)
+      service @@ARTIFACTNAME@@ stop > /dev/null 2>&1
+  ;;
+  upgrade)
+    #this is an upgrade; best to commit before upgrading package
+    su -s /bin/bash -c "${JENKINS_HOME}/dailycommit.sh" - ${JENKINS_USER}
+  ;;
+  failed-upgrade|abort-install|abort-upgrade|disappear)
+  ;;
+  *)
+    echo "postrm called with unknown argument '$1'" >&2
+    exit 1
+  ;;
+esac
 fi
 
 exit 0
