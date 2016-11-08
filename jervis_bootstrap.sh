@@ -9,14 +9,14 @@
 #A script which bootstraps a Jenkins installation for executing Jervis Job DSL scripts
 
 #sane defaults
+export BOOTSTRAP_HOME="${BOOTSTRAP_HOME:-.}"
 export CURL="${CURL:-curl}"
 export JENKINS_HOME="${JENKINS_HOME:-../my_jenkins_home}"
-export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
+export JENKINS_START="${JENKINS_START:-java -Xms4g -Xmx4g -XX:MaxPermSize=512M -jar ${JENKINS_WAR}}"
 export JENKINS_WAR="${JENKINS_WAR:-jenkins.war}"
 export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
-export BOOTSTRAP_HOME="${BOOTSTRAP_HOME:-.}"
 export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-${BOOTSTRAP_HOME}/scripts}"
-export JENKINS_START="${JENKINS_START:-java -Xms4g -Xmx4g -XX:MaxPermSize=512M -jar ${JENKINS_WAR}}"
+export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 
 if [ -e "${SCRIPT_LIBRARY_PATH}/common.sh" ]; then
   source "${SCRIPT_LIBRARY_PATH}/common.sh"
