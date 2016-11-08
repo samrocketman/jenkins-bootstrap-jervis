@@ -20,6 +20,9 @@
 jobs/**
 !jobs/**/
 
+#save next build numbers with config
+!jobs/**/nextBuildNumber
+
 #exclude only config.xml files in repository subdirectories
 !config.xml
 
