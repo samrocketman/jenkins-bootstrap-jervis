@@ -64,6 +64,8 @@ if [ ! "${RPM_INSTALL_PREFIX}" = '@@PREFIX@@' ]; then
   sed -i -r $"s#^(JENKINS_WAR=\")@@PREFIX@@(/[^\"]+\")\$#\1${RPM_INSTALL_PREFIX}\2#" "/etc/init.d/@@ARTIFACTNAME@@"
 fi
 
+mkdir -p /var/cache/@@ARTIFACTNAME@@
+
 if [ -z "$JENKINS_INSTALL_SKIP_CHOWN" ];then
   chown -R ${JENKINS_USER}: /var/cache/@@ARTIFACTNAME@@
   chown -R ${JENKINS_USER}: /var/log/@@ARTIFACTNAME@@
