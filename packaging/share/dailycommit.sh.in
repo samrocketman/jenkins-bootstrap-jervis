@@ -26,7 +26,12 @@ if [ ! -d '.git' ]; then
 fi
 git add .
 git add -u
-git commit -m "daily commit $(date '+%a %m/%d/%Y')"
+if [ -n "$1" ]; then
+  git commit -m "package upgrade commit $1"
+else
+  git commit -m "daily commit $(date '+%a %m/%d/%Y')"
+fi
+
 
 if git remote -v 2> /dev/null | grep origin > /dev/null; then
   git push origin master
