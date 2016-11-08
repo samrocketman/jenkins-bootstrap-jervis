@@ -1,4 +1,4 @@
 #!/bin/sh
 #Add potentially missing user groups
 getent group @@USER@@ &> /dev/null || groupadd -r @@USER@@
-getent passwd @@USER@@ &> /dev/null || useradd -r -g @@USER@@ -s /sbin/nologin -d @@HOME@@ -c "@@SUMMARY@@" @@USER@@
+getent passwd @@USER@@ &> /dev/null || useradd -r -g @@USER@@ -s /sbin/nologin -d "@@HOME@@" -c "@@SUMMARY@@" @@USER@@
