@@ -106,6 +106,11 @@ jenkins_console --script "path/to/script.groovy"
 
     ./gradlew clean buildRpm
 
+### License
+
+* [Apache License 2.0](LICENSE)
+* [3rd party licenses](3rd_party)
+
 [gh-token]: https://help.github.com/articles/creating-an-access-token-for-command-line-use/
 [jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
 [jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI
