@@ -2,11 +2,11 @@
 set -e
 
 #Add potentially missing user groups
-if ! getent group @@USER@@ &> /dev/null; then
+if ! grep -- '@@USER@@' /etc/group > /dev/null; then
   echo '`jenkins` group missing; creating...'
   groupadd -r @@USER@@
 fi
-if ! getent passwd @@USER@@ &> /dev/null; then
+if ! grep -- '@@USER@@' /etc/passwd > /dev/null; then
   echo '`jenkins` user missing; creating...'
   useradd -r -g @@USER@@ -s /sbin/nologin -d "@@HOME@@" -c "@@SUMMARY@@" @@USER@@
 fi
