@@ -1,8 +1,10 @@
 /var/log/@@ARTIFACTNAME@@/@@ARTIFACTNAME@@.log /var/log/@@ARTIFACTNAME@@/access_log {
-    compress
-    dateext
+    weekly
+    rotate 52
     maxage 365
-    rotate 99
+    compress
+    delaycompress
+    dateext
     size=+4096k
     notifempty
     missingok
