@@ -16,6 +16,10 @@ To inspect the package.
 
     rpm -qip --dump --scripts build/distributions/*.rpm | less
 
+List package dependencies.
+
+    rpm -qRp build/distributions/*.rpm
+
 ### Packaging DEB
 
 To create a DEB package.

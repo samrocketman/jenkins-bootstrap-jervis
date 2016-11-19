@@ -189,12 +189,11 @@ ospackage {
     license tokens['LICENSE']
 
     //shared package name dependencies
-    /*requires 'coreutils'
+    requires 'coreutils'
     requires 'grep'
     requires 'logrotate'
     requires 'procps'
     requires 'rsync'
-    */
 
     //only sign if properties exist
     if(project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
@@ -269,13 +268,8 @@ buildRpm {
     //how this package relates to other system packages
     conflicts 'jenkins'
     obsoletes 'hudson'
-    requires 'coreutils'
     requires 'cronie'
     requires 'glibc-common'
-    requires 'grep'
-    requires 'logrotate'
-    requires 'procps'
-    requires 'rsync'
 
     from("${buildDir}/packaging-filtered/rpm/jenkins.init") {
         into '/etc/init.d'
@@ -309,12 +303,9 @@ buildDeb {
     priority 'extra'
     requires 'adduser'
     requires 'daemon'
-    requires 'logrotate'
     requires 'net-tools'
-    requires 'procps'
     requires 'psmisc'
-    requires 'rsync'
-    requires('default-jre-headless', '2:1.7', Flags.GREATER | Flags.EQUAL).or('java7-runtime-headless')
+    requires('default-jre-headless', '2:1.7', Flags.GREATER | Flags.EQUAL).or('java7-runtime-headless').or('openjdk-8-jdk')
     conflicts 'hudson'
     conflicts 'jenkins'
     replaces 'hudson'
