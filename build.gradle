@@ -188,6 +188,14 @@ ospackage {
     into tokens['PREFIX']
     license tokens['LICENSE']
 
+    //shared package name dependencies
+    /*requires 'coreutils'
+    requires 'grep'
+    requires 'logrotate'
+    requires 'procps'
+    requires 'rsync'
+    */
+
     //only sign if properties exist
     if(project.hasProperty('signing.keyId') && project.hasProperty('signing.password') && project.hasProperty('signing.secretKeyRingFile')) {
         signingKeyId project.getProperty('signing.keyId')
@@ -231,14 +239,6 @@ ospackage {
         user tokens['USER']
         permissionGroup tokens['USER']
     }
-    from("${buildDir}/packaging-filtered/rpm/jenkins.init") {
-        into '/etc/init.d'
-        fileMode 0755
-        fileType CONFIG | NOREPLACE
-        rename '.*', tokens['ARTIFACTNAME']
-        user tokens['USER']
-        permissionGroup tokens['USER']
-    }
     from("${buildDir}/${tokens['MANIFEST']}") {
         into "lib/${tokens['ARTIFACTNAME']}"
         user tokens['USER']
@@ -248,6 +248,12 @@ ospackage {
         into "lib/${tokens['ARTIFACTNAME']}/share"
         user tokens['USER']
         permissionGroup tokens['USER']
+    }
+    from("${buildDir}/packaging-filtered/jenkins.logrotate") {
+        into '/etc/logrotate.d'
+        fileMode 0644
+        fileType CONFIG
+        rename '.*', tokens['ARTIFACTNAME']
     }
 }
 
@@ -277,12 +283,6 @@ buildRpm {
         fileType CONFIG
         rename '.*', tokens['ARTIFACTNAME']
     }
-    from("${buildDir}/packaging-filtered/rpm/jenkins.logrotate") {
-        into '/etc/logrotate.d'
-        fileMode 0644
-        fileType CONFIG
-        rename '.*', tokens['ARTIFACTNAME']
-    }
     from("${buildDir}/packaging-filtered/rpm/jenkins.sysconfig") {
         addParentDirs = false
         into '/etc/sysconfig'
@@ -307,11 +307,13 @@ buildDeb {
     maintainer tokens['AUTHOR'].replaceAll(/[^<]+<([^>]+)>/, '$1')
     packageGroup 'devel'
     priority 'extra'
-    requires 'daemon'
     requires 'adduser'
+    requires 'daemon'
+    requires 'logrotate'
+    requires 'net-tools'
     requires 'procps'
     requires 'psmisc'
-    requires 'net-tools'
+    requires 'rsync'
     requires('default-jre-headless', '2:1.7', Flags.GREATER | Flags.EQUAL).or('java7-runtime-headless')
     conflicts 'hudson'
     conflicts 'jenkins'
