@@ -1,2 +1,3 @@
 DEB based packaging
 * Integrate init.d service scripts for debian.
+* update dailycommit.sh for debian

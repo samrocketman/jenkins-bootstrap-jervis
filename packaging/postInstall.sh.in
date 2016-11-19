@@ -65,6 +65,8 @@ if [ ! "${RPM_INSTALL_PREFIX}" = '@@PREFIX@@' ]; then
 fi
 
 mkdir -p /var/cache/@@ARTIFACTNAME@@
+mkdir -p /var/log/@@ARTIFACTNAME@@
+mkdir -p "${JENKINS_HOME}"
 
 if [ -z "$JENKINS_INSTALL_SKIP_CHOWN" ];then
   chown -R ${JENKINS_USER}: /var/cache/@@ARTIFACTNAME@@
