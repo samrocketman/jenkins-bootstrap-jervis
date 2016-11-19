@@ -6,8 +6,8 @@ if [ ! -r '/etc/sysconfig/@@ARTIFACTNAME@@' -a ! -r '/etc/default/@@ARTIFACTNAME
   exit 1
 fi
 
-[ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
-[ -r '/etc/default/@@ARTIFACTNAME@@' ] && source '/etc/default/@@ARTIFACTNAME@@'
+[ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && . '/etc/sysconfig/@@ARTIFACTNAME@@'
+[ -r '/etc/default/@@ARTIFACTNAME@@' ] && . '/etc/default/@@ARTIFACTNAME@@'
 
 JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
 JENKINS_USER="${JENKINS_USER:-@@USER@@}"

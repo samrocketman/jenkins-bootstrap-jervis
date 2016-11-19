@@ -10,8 +10,8 @@ else
   DEB_BASED=true
 fi
 
-${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
-${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  source '/etc/default/@@ARTIFACTNAME@@'
+${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && . '/etc/sysconfig/@@ARTIFACTNAME@@'
+${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  . '/etc/default/@@ARTIFACTNAME@@'
 
 if ${DEB_BASED}; then
   case "$1" in

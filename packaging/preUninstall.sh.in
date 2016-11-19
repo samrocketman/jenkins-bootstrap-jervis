@@ -12,8 +12,8 @@ else
   DEB_BASED=true
 fi
 
-${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
-${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  source '/etc/default/@@ARTIFACTNAME@@'
+${RPM_BASED} && [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && . '/etc/sysconfig/@@ARTIFACTNAME@@'
+${DEB_BASED} && [ -r '/etc/default/@@ARTIFACTNAME@@' ] &&  . '/etc/default/@@ARTIFACTNAME@@'
 JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
 JENKINS_USER="${JENKINS_USER:-@@USER@@}"
 RPM_INSTALL_PREFIX="${RPM_INSTALL_PREFIX:-@@PREFIX@@}"

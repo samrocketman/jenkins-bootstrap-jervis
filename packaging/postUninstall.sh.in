@@ -13,7 +13,7 @@ else
 fi
 
 if ${RPM_BASED}; then
-  [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+  [ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && . '/etc/sysconfig/@@ARTIFACTNAME@@'
   JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
   if [ "$1" -ge 1 ]; then
       #upgrading package
@@ -23,7 +23,7 @@ else
   #DEB_BASED == true
   case "$1" in
     purge)
-      [ -r '/etc/default/@@ARTIFACTNAME@@' ] && source '/etc/default/@@ARTIFACTNAME@@'
+      [ -r '/etc/default/@@ARTIFACTNAME@@' ] && . '/etc/default/@@ARTIFACTNAME@@'
       userdel @@ARTIFACTNAME@@ || true
       groupdel @@ARTIFACTNAME@@ || true
       rm -rf "${JENKINS_HOME}" /var/log/@@ARTIFACTNAME@@ /var/run/@@ARTIFACTNAME@@ /var/cache/@@ARTIFACTNAME@@
