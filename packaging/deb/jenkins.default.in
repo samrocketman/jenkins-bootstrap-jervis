@@ -18,7 +18,7 @@ JENKINS_USER=$NAME
 JENKINS_GROUP=$NAME
 
 # location of the jenkins war file
-JENKINS_WAR=/usr/share/$NAME/$NAME.war
+JENKINS_WAR=/usr/lib/$NAME/$NAME.war
 
 # jenkins home location
 JENKINS_HOME=/var/lib/$NAME
