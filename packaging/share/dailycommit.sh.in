@@ -7,7 +7,8 @@
 
 set -e
 
-[ -e '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+[ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+[ -r '/etc/default/@@ARTIFACTNAME@@' ] && source '/etc/default/@@ARTIFACTNAME@@'
 
 if [ -z "${JENKINS_HOME}" ];then
   echo "JENKINS_HOME not set." 1>&2

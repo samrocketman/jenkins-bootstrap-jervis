@@ -1,10 +1,13 @@
 #!/bin/sh
-if [ ! -e '/etc/sysconfig/@@ARTIFACTNAME@@' ]; then
-  echo "Failed to source '/etc/sysconfig/@@ARTIFACTNAME@@'."
+if [ ! -r '/etc/sysconfig/@@ARTIFACTNAME@@' -a ! -r '/etc/default/@@ARTIFACTNAME@@' ]; then
+  echo "Failed to source Jenkins daemon settings."
+  echo "On RPM based distros: '/etc/sysconfig/@@ARTIFACTNAME@@'"
+  echo "On DEB based distros: '/etc/default/@@ARTIFACTNAME@@'"
   exit 1
 fi
 
-source '/etc/sysconfig/@@ARTIFACTNAME@@'
+[ -r '/etc/sysconfig/@@ARTIFACTNAME@@' ] && source '/etc/sysconfig/@@ARTIFACTNAME@@'
+[ -r '/etc/default/@@ARTIFACTNAME@@' ] && source '/etc/default/@@ARTIFACTNAME@@'
 
 JENKINS_HOME="${JENKINS_HOME:-@@HOME@@}"
 JENKINS_USER="${JENKINS_USER:-@@USER@@}"
