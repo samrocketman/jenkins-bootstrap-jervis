@@ -1,3 +1,4 @@
 DEB based packaging
 * Integrate init.d service scripts for debian.
-* update dailycommit.sh for debian
+* update dailycommit.sh.in for debian
+* fix jenkins.cron.in for debian

@@ -310,6 +310,21 @@ buildDeb {
     conflicts 'jenkins'
     replaces 'hudson'
     replaces 'jenkins'
+    from("${buildDir}/packaging-filtered/deb/jenkins.init") {
+        into '/etc/init.d'
+        fileMode 0755
+        fileType CONFIG
+        rename '.*', tokens['ARTIFACTNAME']
+    }
+    from("${buildDir}/packaging-filtered/deb/jenkins.default") {
+        addParentDirs = false
+        into '/etc/default'
+        fileMode 0600
+        fileType CONFIG | NOREPLACE
+        rename '.*', tokens['ARTIFACTNAME']
+        user tokens['USER']
+        permissionGroup tokens['USER']
+    }
 }
 buildDeb.dependsOn createManifest, filterPackagingScripts
 
