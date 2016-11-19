@@ -286,7 +286,7 @@ buildRpm {
         user tokens['USER']
         permissionGroup tokens['USER']
     }
-    from("${buildDir}/packaging-filtered/rpm/jenkins.cron") {
+    from("${buildDir}/packaging-filtered/jenkins.cron") {
         into '/etc/cron.daily'
         fileMode 0755
         fileType CONFIG
