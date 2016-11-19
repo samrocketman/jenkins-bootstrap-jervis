@@ -254,6 +254,12 @@ ospackage {
         fileType CONFIG
         rename '.*', tokens['ARTIFACTNAME']
     }
+    from("${buildDir}/packaging-filtered/jenkins.cron") {
+        into '/etc/cron.daily'
+        fileMode 0755
+        fileType CONFIG
+        rename '.*', tokens['ARTIFACTNAME']
+    }
 }
 
 buildRpm {
@@ -266,7 +272,7 @@ buildRpm {
     prefix tokens['PREFIX']
 
     //how this package relates to other system packages
-    conflicts 'jenkins'
+    obsoletes 'jenkins'
     obsoletes 'hudson'
     requires 'cronie'
     requires 'glibc-common'
@@ -286,12 +292,6 @@ buildRpm {
         user tokens['USER']
         permissionGroup tokens['USER']
     }
-    from("${buildDir}/packaging-filtered/jenkins.cron") {
-        into '/etc/cron.daily'
-        fileMode 0755
-        fileType CONFIG
-        rename '.*', tokens['ARTIFACTNAME']
-    }
 }
 buildRpm.dependsOn createManifest, filterPackagingScripts
 
@@ -300,6 +300,9 @@ buildDeb {
     packager tokens['AUTHOR'].replaceAll(/[^<]+<([^>]+)>/, '$1')
     maintainer tokens['AUTHOR'].replaceAll(/[^<]+<([^>]+)>/, '$1')
     packageGroup 'devel'
+    user 'root'
+    permissionGroup 'root'
+
     priority 'extra'
     requires 'adduser'
     requires 'daemon'
