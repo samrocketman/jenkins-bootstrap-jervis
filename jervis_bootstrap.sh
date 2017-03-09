@@ -10,10 +10,11 @@
 
 #sane defaults
 export BOOTSTRAP_HOME="${BOOTSTRAP_HOME:-.}"
+export JENKINS_WAR="${JENKINS_WAR:-jenkins.war}"
+
 export CURL="${CURL:-curl}"
 export JENKINS_HOME="${JENKINS_HOME:-../my_jenkins_home}"
 export JENKINS_START="${JENKINS_START:-java -Xms4g -Xmx4g -XX:MaxPermSize=512M -jar ${JENKINS_WAR}}"
-export JENKINS_WAR="${JENKINS_WAR:-jenkins.war}"
 export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
 export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-${BOOTSTRAP_HOME}/scripts}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
@@ -91,6 +92,7 @@ create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #configure docker slaves
 #curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
+#jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
 echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"
 if is_auth_enabled &> /dev/null; then
   echo "User: admin"
