@@ -91,8 +91,7 @@ create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github
 #setting default view to Welcome
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #configure docker slaves
-#curl -d "script=$(<./scripts/configure-docker-cloud.groovy)" http://localhost:8080/scriptText
-#jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
 echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"
 if is_auth_enabled &> /dev/null; then
   echo "User: admin"
