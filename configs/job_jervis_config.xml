@@ -1,17 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?><project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
   <actions/>
   <description/>
   <displayName>Generate Jenkins Jobs from YAML</displayName>
-  <logRotator class="hudson.tasks.LogRotator">
-    <daysToKeep>-1</daysToKeep>
-    <numToKeep>100</numToKeep>
-    <artifactDaysToKeep>-1</artifactDaysToKeep>
-    <artifactNumToKeep>-1</artifactNumToKeep>
-  </logRotator>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.14.0">
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>100</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.26.1">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
+      <displayName/>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
@@ -28,7 +32,7 @@
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.4.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.1.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -55,16 +59,19 @@
   <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./gradlew clean libs</command>
+      <command>./gradlew -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.39">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.58">
       <targets>jobs/**/*.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <ignoreExisting>false</ignoreExisting>
+      <ignoreMissingFiles>false</ignoreMissingFiles>
+      <failOnMissingPlugin>false</failOnMissingPlugin>
+      <unstableOnDeprecation>false</unstableOnDeprecation>
       <removedJobAction>IGNORE</removedJobAction>
       <removedViewAction>IGNORE</removedViewAction>
       <lookupStrategy>SEED_JOB</lookupStrategy>
-      <additionalClasspath>src/main/groovy
+      <additionalClasspath>build/libs/*.jar
 lib/*.jar</additionalClasspath>
     </javaposse.jobdsl.plugin.ExecuteDslScripts>
   </builders>
