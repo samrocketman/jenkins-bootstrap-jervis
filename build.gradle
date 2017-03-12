@@ -83,7 +83,7 @@ configurations {
 repositories {
     maven {
         name 'jenkins'
-        delegate.url('http://repo.jenkins-ci.org/public/')
+        delegate.url('https://repo.jenkins-ci.org/public/')
     }
 }
 dependencies {
