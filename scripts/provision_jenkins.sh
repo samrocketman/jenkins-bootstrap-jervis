@@ -46,7 +46,7 @@ jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war
 JENKINS_HOME="${JENKINS_HOME:-../my_jenkins_home}"
 JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080/}"
 JENKINS_CLI="${JENKINS_CLI:-java -jar ./jenkins-cli.jar -s ${JENKINS_WEB} -noKeyAuth}"
-JENKINS_START="${JENKINS_START:-java -jar jenkins.war}"
+JENKINS_START="${JENKINS_START:-java -Xms4g -Xmx4g -jar jenkins.war}"
 #remove trailing slash
 JENKINS_WEB="${JENKINS_WEB%/}"
 CURL="${CURL:-curl}"
