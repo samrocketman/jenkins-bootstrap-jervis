@@ -47,14 +47,14 @@ JSONArray clouds_docker = [
         credentials_id: "",
         templates: [
             docker_image: "jervis-docker-jvm:latest",
-            instance_cap: "1",
+            instance_cap: "4",
             executors: 1,
             remote_fs: "/home/jenkins",
-            labels: "",
+            labels: "stable docker ubuntu1604 sudo language:groovy env jdk",
             //valid values: exclusive or normal
-            usage: "normal",
+            usage: "exclusive",
             //valid values: pull_latest, pull_always, pull_never
-            image_pull_strategy: "pull_latest",
+            image_pull_strategy: "pull_never",
             remove_volumes: false,
             //advanced settings
             dns: "",
@@ -81,7 +81,7 @@ JSONArray clouds_docker = [
             launcher_port: 22,
             launcher_credentials_id: "jenkins-docker-cloud-credentials",
             launcher_jvm_options: "",
-            launcher_java_path: "",
+            launcher_java_path: "/home/jenkins/java/openjdk8/bin/java",
             launcher_prefix_start_slave_cmd: "",
             launcher_suffix_start_slave_cmd: "",
             launcher_connection_timeout_seconds: 0,

@@ -90,6 +90,8 @@ create_view --view-name "Welcome" --xml-data "./configs/view_welcome_config.xml"
 create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github_organizations_config.xml"
 #setting default view to Welcome
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
+#configure jenkins agent credentials
+jenkins_console --script "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
 #configure docker slaves
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
 echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"
