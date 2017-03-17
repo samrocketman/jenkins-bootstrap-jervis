@@ -28,6 +28,7 @@
 
 //configure cloud stack
 
+import com.github.kostyasha.yad.launcher.DockerComputerJNLPLauncher
 import com.github.kostyasha.yad.DockerCloud
 import com.github.kostyasha.yad.DockerConnector
 import com.github.kostyasha.yad.DockerContainerLifecycle
@@ -50,8 +51,6 @@ import net.sf.json.JSONObject
 
 /*
   TODO: things left to implement
-    - implement jnlp
-    - set jnlp to default launch method
     - implement environment variables (node settings)
     - implement tool locations (node settings)
 
@@ -115,7 +114,7 @@ JSONArray clouds_yadocker = [
                 executors: 1,
                 //LAUNCH METHOD
                 //valid values: launch_ssh or launch_jnlp
-                launch_method: "launch_ssh",
+                launch_method: "launch_jnlp",
                 //settings specific to launch_ssh (you only need one or the other)
                 launch_ssh_credentials_id: "",
                 launch_ssh_port: 22,
@@ -158,6 +157,15 @@ def selectLauncher(String launcherType, JSONObject obj) {
                     obj.optInt('launch_ssh_time_wait_between_retries')
                     )
             return new DockerComputerSSHLauncher(sshConnector)
+        case 'launch_jnlp':
+            DockerComputerJNLPLauncher dockerComputerJNLPLauncher = new DockerComputerJNLPLauncher()
+            dockerComputerJNLPLauncher.setUser(obj.optString('launch_jnlp_linux_user','jenkins'))
+            dockerComputerJNLPLauncher.setLaunchTimeout(obj.optLong('launch_jnlp_lauch_timeout', 120L))
+            dockerComputerJNLPLauncher.setSlaveOpts(obj.optString('launch_jnlp_slave_jar_options'))
+            dockerComputerJNLPLauncher.setJvmOpts(obj.optString('launch_jnlp_slave_jvm_options'))
+            dockerComputerJNLPLauncher.setJenkinsUrl(obj.optString('launch_jnlp_different_jenkins_master_url'))
+            dockerComputerJNLPLauncher.setNoCertificateCheck(obj.optBoolean('launch_jnlp_ignore_certificate_check', false))
+            return dockerComputerJNLPLauncher
         default:
             return null
     }
@@ -253,7 +261,7 @@ def newDockerSlaveTemplate(JSONObject obj) {
     //DockerComputerLauncher
     //select a launch method from the list of available launch methods
     List<String> launch_methods = ['launch_ssh', 'launch_jnlp']
-    String default_launch_method = 'launch_ssh'
+    String default_launch_method = 'launch_jnlp'
     String user_selected_launch_method = obj.optString('launch_method', default_launch_method).toLowerCase()
     String launch_method = (user_selected_launch_method in launch_methods)? user_selected_launch_method : default_launch_method
     DockerComputerLauncher launcher = selectLauncher(launch_method, obj)
