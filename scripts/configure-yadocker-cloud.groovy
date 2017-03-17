@@ -39,6 +39,7 @@ import com.github.kostyasha.yad.commons.DockerRemoveContainer
 import com.github.kostyasha.yad.commons.DockerStopContainer
 import com.github.kostyasha.yad.launcher.DockerComputerLauncher
 import com.github.kostyasha.yad.launcher.DockerComputerSSHLauncher
+import com.github.kostyasha.yad.other.ConnectorType
 import com.github.kostyasha.yad.strategy.DockerOnceRetentionStrategy
 
 import hudson.model.Node
@@ -49,7 +50,6 @@ import net.sf.json.JSONObject
 
 /*
   TODO: things left to implement
-    - connection_type
     - implement jnlp
     - set jnlp to default launch method
     - implement environment variables (node settings)
@@ -171,7 +171,12 @@ def newDockerCloud(JSONObject obj) {
     }
     connector.setApiVersion(obj.optString('docker_api_version'))
     connector.setCredentialsId(obj.optString('host_credentials_id'))
-    //connector.setConnectorType() not used maybe implement later al la connection_type
+    //select connection_type
+    List<String> connection_types = ['NETTY', 'JERSEY']
+    String connection_type_default = 'NETTY'
+    String user_selected_connection_type = obj.optString('connection_type', connection_type_default).toUpperCase()
+    String connection_type = (user_selected_connection_type in connection_types)? user_selected_connection_type : connection_type_default
+    connector.setConnectorType(ConnectorType."${connection_type}")
 
     DockerCloud cloud = new DockerCloud(obj.optString('cloud_name'),
                        bindJSONToList(DockerSlaveTemplate.class, obj.opt('docker_templates')),
