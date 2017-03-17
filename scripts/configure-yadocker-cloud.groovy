@@ -56,7 +56,6 @@ import jenkins.model.Jenkins
 
 /*
   TODO: things left to implement
-    - implement optional lists
 
     Contribute upstream remoteFsRootMapping
 */
@@ -86,23 +85,30 @@ JSONArray clouds_yadocker = [
                 docker_command: "",
                 hostname: "",
                 dns: "",
-                //this can be a string or list of strings
-                volumes: "",
-                environment: "",
+                //volumes can be a string or list of strings
+                volumes: '',
+                //volumes_from can be a string or list of strings
+                volumes_from: '',
+                //environment can be a string or list of strings
+                environment: '',
                 port_bindings: "",
                 bind_all_declared_ports: false,
                 //0 is unlimited
                 memory_limit_in_mb: 0,
+                //0 is unlimited
                 cpu_shares: 0,
                 run_container_privileged: false,
                 allocate_pseudo_tty: false,
                 mac_address: "",
-                extra_hosts: "",
+                //extra_hosts can be a string or list of strings
+                extra_hosts: '',
                 network_mode: "",
-                devices: "",
+                //devices can be a string or list of strings
+                devices: '',
                 cpuset_constraint_cpus: "",
                 cpuset_constraint_mems: "",
-                links: "",
+                //links can be a string or list of strings
+                links: '',
                 //STOP CONTAINER SETTINGS
                 stop_container_timeout: 10,
                 //STOP CONTAINER SETTINGS
@@ -240,19 +246,44 @@ def newDockerSlaveTemplate(JSONObject obj) {
     else {
         createContainer.setVolumesString(obj.optString('volumes'))
     }
-    createContainer.setVolumesFromString(obj.optString('volumes_from'))
+    if(obj.optJSONArray('volumes_from')) {
+        createContainer.setVolumesFrom(obj.optJSONArray('volumes_from') as List<String>)
+    }
+    else {
+        createContainer.setVolumesFromString(obj.optString('volumes_from'))
+    }
     createContainer.setMacAddress(obj.optString('mac_address'))
     if(obj.optInt('cpu_shares')) {
         createContainer.setCpuShares(obj.optInt('cpu_shares'))
     }
     createContainer.setCommand(obj.optString('docker_command'))
-    createContainer.setEnvironmentString(obj.optString('environment'))
-    createContainer.setExtraHostsString(obj.optString('extra_hosts'))
+    if(obj.optJSONArray('environment')) {
+        createContainer.setEnvironment(obj.optJSONArray('environment') as List<String>)
+    }
+    else {
+        createContainer.setEnvironmentString(obj.optString('environment'))
+    }
+    if(obj.optJSONArray('extra_hosts')) {
+        createContainer.setExtraHosts(obj.optJSONArray('extra_hosts') as List<String>)
+    }
+    else {
+        createContainer.setExtraHostsString(obj.optString('extra_hosts'))
+    }
     createContainer.setNetworkMode(obj.optString('network_mode'))
-    createContainer.setDevicesString(obj.optString('devices'))
+    if(obj.optJSONArray('devices')) {
+        createContainer.setDevices(obj.optJSONArray('devices'))
+    }
+    else {
+        createContainer.setDevicesString(obj.optString('devices'))
+    }
     createContainer.setCpusetCpus(obj.optString('cpuset_constraint_cpus'))
     createContainer.setCpusetMems(obj.optString('cpuset_constraint_mems'))
-    createContainer.setLinksString(obj.optString('links'))
+    if(obj.optJSONArray('links')) {
+        createContainer.setLinks(obj.optJSONArray('links'))
+    }
+    else {
+        createContainer.setLinksString(obj.optString('links'))
+    }
 
     //DockerStopContainer
     DockerStopContainer stopContainer = new DockerStopContainer()
