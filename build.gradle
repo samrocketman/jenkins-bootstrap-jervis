@@ -25,6 +25,7 @@ import org.redline_rpm.header.Flags
 //by default the copy function will overwrite plugins in JENKINS_HOME if the hash is different
 ext.jenkinsHome = System.getenv('JENKINS_HOME')?:'../my_jenkins_home'
 ext.bootstrapHome = System.getenv('BOOTSTRAP_HOME')?:'.'
+ext.disable_yadocker = System.getenv('DISABLE_YADOCKER') && System.getenv('DISABLE_YADOCKER') != ''
 ext.pluginsDest = bootstrapHome
 ext.jenkinsDest = bootstrapHome
 //tokens for Jenkins packaging
@@ -90,9 +91,17 @@ dependencies {
     //get Jenkins
     getjenkins "org.jenkins-ci.main:jenkins-war:${version}@war"
 
+    //docker-plugin or yet-another-docker-plugin?
+    if(disable_yadocker) {
+        getplugins 'com.nirima:docker-plugin:0.16.2@hpi'
+    }
+    else {
+        getplugins 'com.github.kostyasha.yet-another-docker:yet-another-docker-plugin:0.1.0-rc31@hpi'
+        getplugins 'org.jenkins-ci.plugins:cloud-stats:0.7@hpi'
+    }
+
     //get plugins
     getplugins 'com.coravy.hudson.plugins.github:github:1.26.1@hpi'
-    getplugins 'com.nirima:docker-plugin:0.16.2@hpi'
     getplugins 'jp.ikedam.jenkins.plugins:groovy-label-assignment:1.2.0@hpi'
     getplugins 'org.jenkins-ci.main:maven-plugin:2.15.1@hpi'
     getplugins 'org.jenkins-ci.plugins.icon-shim:icon-shim:2.0.3@hpi'

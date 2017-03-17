@@ -94,8 +94,13 @@ jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
 #disable agent -> master security
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
-#configure docker slaves
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
+#configure docker clouds (set DISABLE_YADOCKER=1 to configure docker-plugin)
+if [ -n "${DISABLE_YADOCKER}" ]; then
+  jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-docker-cloud.groovy"
+else
+  #jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-yadocker-cloud.groovy"
+  true
+fi
 echo "Jenkins is ready.  Visit ${JENKINS_WEB}/"
 if is_auth_enabled &> /dev/null; then
   echo "User: admin"
