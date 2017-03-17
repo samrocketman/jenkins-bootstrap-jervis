@@ -26,8 +26,6 @@
    Yet Another Docker Plugin 0.1.0-rc31
  */
 
-//configure cloud stack
-
 import com.github.kostyasha.yad.DockerCloud
 import com.github.kostyasha.yad.DockerConnector
 import com.github.kostyasha.yad.DockerContainerLifecycle
@@ -43,22 +41,28 @@ import com.github.kostyasha.yad.launcher.DockerComputerSSHLauncher
 import com.github.kostyasha.yad.other.ConnectorType
 import com.github.kostyasha.yad.strategy.DockerOnceRetentionStrategy
 
-import hudson.EnvVars
 import hudson.model.Node
 import hudson.plugins.sshslaves.SSHConnector
 import hudson.slaves.EnvironmentVariablesNodeProperty
 import hudson.slaves.NodeProperty
 import hudson.slaves.RetentionStrategy
 import hudson.tools.ToolLocationNodeProperty
+import jenkins.model.Jenkins
 import net.sf.json.JSONArray
 import net.sf.json.JSONObject
-import jenkins.model.Jenkins
 
 /*
   TODO: things left to implement
 
     Contribute upstream remoteFsRootMapping
 */
+
+/*
+   Configure the Yet Another Docker Plugin via this clouds_yadocker variable.
+
+   This variable can be removed and referenced for other configurations.  All
+   values are optional with defaults set.
+ */
 
 JSONArray clouds_yadocker = [
     //YET ANOTHER DOCKER CLOUD (this is an item in a list of clouds)
