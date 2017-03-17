@@ -49,12 +49,14 @@ import hudson.plugins.sshslaves.SSHConnector
 import hudson.slaves.EnvironmentVariablesNodeProperty
 import hudson.slaves.NodeProperty
 import hudson.slaves.RetentionStrategy
+import hudson.tools.ToolLocationNodeProperty
 import net.sf.json.JSONArray
 import net.sf.json.JSONObject
+import jenkins.model.Jenkins
 
 /*
   TODO: things left to implement
-    - implement tool locations (node settings)
+    - implement optional lists
 
     Contribute upstream remoteFsRootMapping
 */
@@ -138,9 +140,10 @@ JSONArray clouds_yadocker = [
                 //environment_variables is a HashMap of key/value pairs
                 environment_variables: [:],
                 //tool location key/value pairs from https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/tools/ToolLocationNodeProperty.java
-                //the key is type@name = home where type is typically the class name.
+                //The key is type@name = home where type is typically the class name of the tool and name is the name given in the Global Tools configuration.
                 //For example let's say you have a global tool configuration named OracleJDK8 for JDK installations
                 //tool_locations would be something like ['hudson.model.JDK$DescriptorImpl@OracleJDK8': '/path/to/java_home']
+                //If you're unsure of the tool@name then check config.xml where YADocker configurations are saved.
                 tool_locations: [:],
                 remote_fs_root_mapping: ""
             ]
@@ -148,6 +151,13 @@ JSONArray clouds_yadocker = [
 
     ]
 ] as JSONArray
+
+//detect an existing global tool
+def detectGlobalToolExists(String location) {
+    def (toolType, toolName) = location.split('@')
+    boolean found_installation = Jenkins.instance.getExtensionList(toolType)[0].installations.findAll { it.name == toolName } as boolean
+    return found_installation
+}
 
 //return a launcher
 def selectLauncher(String launcherType, JSONObject obj) {
@@ -297,6 +307,21 @@ def newDockerSlaveTemplate(JSONObject obj) {
         //add environment_variables to nodeProperties
         nodeProperties << (new EnvironmentVariablesNodeProperty(envEntries))
     }
+    if(obj.optJSONObject('tool_locations')) {
+        HashMap<String,String> tool = obj.optJSONObject('tool_locations') as HashMap<String,String>
+        List<ToolLocationNodeProperty.ToolLocation> toolLocations = [] as List<ToolLocationNodeProperty.ToolLocation>
+        (tool.keySet() as String[]).each { location ->
+            //tool location is only valid if it contains a type i.e. @ symbol
+            if(location.contains('@') && detectGlobalToolExists(location)) {
+                toolLocations << (new ToolLocationNodeProperty.ToolLocation(location, tool[location]))
+            }
+            else {
+                //alert the user they configured an invalid tool type or name in tool_locations
+                println "WARNING: Invalid tool: '${location}'.  Format should be 'type@name' where both type and name already exist in global tool configurations."
+            }
+        }
+        nodeProperties << (new ToolLocationNodeProperty(toolLocations))
+    }
     //set NODE PROPERTIES
     if(nodeProperties) {
         dockerSlaveTemplate.setNodeProperties(nodeProperties)
@@ -340,16 +365,16 @@ if(!Jenkins.instance.isQuietingDown()) {
         Jenkins.instance.clouds.removeAll(DockerCloud)
         Jenkins.instance.clouds.addAll(clouds)
         clouds*.name.each { cloudName ->
-            println "Configured docker cloud ${cloudName}"
+            println "Configured Yet Another Docker cloud ${cloudName}"
         }
         Jenkins.instance.save()
     }
     else {
-        println 'Nothing changed.  No docker clouds to configure.'
+        println 'Nothing changed.  No Yet Another docker clouds to configure.'
     }
 }
 else {
-    println 'Shutdown mode enabled.  Configure Docker clouds SKIPPED.'
+    println 'Shutdown mode enabled.  Configure Yet Another Docker clouds SKIPPED.'
 }
 
 null
