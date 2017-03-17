@@ -28,7 +28,6 @@
 
 //configure cloud stack
 
-import com.github.kostyasha.yad.launcher.DockerComputerJNLPLauncher
 import com.github.kostyasha.yad.DockerCloud
 import com.github.kostyasha.yad.DockerConnector
 import com.github.kostyasha.yad.DockerContainerLifecycle
@@ -38,20 +37,23 @@ import com.github.kostyasha.yad.commons.DockerImagePullStrategy
 import com.github.kostyasha.yad.commons.DockerPullImage
 import com.github.kostyasha.yad.commons.DockerRemoveContainer
 import com.github.kostyasha.yad.commons.DockerStopContainer
+import com.github.kostyasha.yad.launcher.DockerComputerJNLPLauncher
 import com.github.kostyasha.yad.launcher.DockerComputerLauncher
 import com.github.kostyasha.yad.launcher.DockerComputerSSHLauncher
 import com.github.kostyasha.yad.other.ConnectorType
 import com.github.kostyasha.yad.strategy.DockerOnceRetentionStrategy
 
+import hudson.EnvVars
 import hudson.model.Node
 import hudson.plugins.sshslaves.SSHConnector
+import hudson.slaves.EnvironmentVariablesNodeProperty
+import hudson.slaves.NodeProperty
 import hudson.slaves.RetentionStrategy
 import net.sf.json.JSONArray
 import net.sf.json.JSONObject
 
 /*
   TODO: things left to implement
-    - implement environment variables (node settings)
     - implement tool locations (node settings)
 
     Contribute upstream remoteFsRootMapping
@@ -133,8 +135,13 @@ JSONArray clouds_yadocker = [
                 launch_jnlp_different_jenkins_master_url: "",
                 launch_jnlp_ignore_certificate_check: false,
                 //NODE PROPERTIES
-                environment_variables: [],
-                tool_locations: [],
+                //environment_variables is a HashMap of key/value pairs
+                environment_variables: [:],
+                //tool location key/value pairs from https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/hudson/tools/ToolLocationNodeProperty.java
+                //the key is type@name = home where type is typically the class name.
+                //For example let's say you have a global tool configuration named OracleJDK8 for JDK installations
+                //tool_locations would be something like ['hudson.model.JDK$DescriptorImpl@OracleJDK8': '/path/to/java_home']
+                tool_locations: [:],
                 remote_fs_root_mapping: ""
             ]
         ]
@@ -279,7 +286,21 @@ def newDockerSlaveTemplate(JSONObject obj) {
     dockerSlaveTemplate.setMaxCapacity(obj.optInt('max_instances', 10))
     //dockerSlaveTemplate.setRemoteFsMapping(obj.optString('remote_fs_root_mapping'))
     dockerSlaveTemplate.remoteFsMapping = obj.optString('remote_fs_root_mapping')
-
+    //define NODE PROPERTIES
+    List<NodeProperty> nodeProperties = [] as List<NodeProperty>
+    if(obj.optJSONObject('environment_variables')) {
+        HashMap<String,String> env = obj.optJSONObject('environment_variables') as HashMap<String,String>
+        List<EnvironmentVariablesNodeProperty.Entry> envEntries = [] as List<EnvironmentVariablesNodeProperty.Entry>
+        (env.keySet() as String[]).each { var ->
+            envEntries << (new EnvironmentVariablesNodeProperty.Entry(var, env[var]))
+        }
+        //add environment_variables to nodeProperties
+        nodeProperties << (new EnvironmentVariablesNodeProperty(envEntries))
+    }
+    //set NODE PROPERTIES
+    if(nodeProperties) {
+        dockerSlaveTemplate.setNodeProperties(nodeProperties)
+    }
     return dockerSlaveTemplate
 }
 
