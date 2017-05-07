@@ -80,10 +80,10 @@ JSONArray clouds_yadocker = [
             [
                 max_instances: 10,
                 //DOCKER CONTAINER LIFECYCLE
-                docker_image_name: "",
+                docker_image_name: "jervis-docker-jvm:latest",
                 //PULL IMAGE SETTINGS
                 //valid values: pull_latest, pull_always, pull_once, pull_never
-                pull_strategy: "pull_latest",
+                pull_strategy: "pull_never",
                 pull_registry_credentials_id: "",
                 //CREATE CONTAINER SETTINGS
                 docker_command: "",
@@ -120,7 +120,7 @@ JSONArray clouds_yadocker = [
                 force_remove_containers: false,
                 //JENKINS SLAVE CONFIG
                 remote_fs_root: "/home/jenkins",
-                labels: "docker",
+                labels: "stable docker ubuntu1604 sudo language:groovy env jdk",
                 //valid values: exclusive or normal
                 usage: "exclusive",
                 availability_strategy: "docker_once_retention_strategy",
