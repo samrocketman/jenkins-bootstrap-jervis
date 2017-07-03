@@ -18,6 +18,7 @@
  */
 
 import hudson.security.csrf.DefaultCrumbIssuer
+import jenkins.model.Jenkins
 
 if(!Jenkins.instance.isQuietingDown()) {
     def j = Jenkins.instance
