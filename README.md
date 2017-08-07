@@ -31,10 +31,11 @@ the Welcome page for next steps.
 
 ### Switch versions of Jenkins
 
-Versions of Jenkins are pinned in the `build.gradle` file.  To provision a new
-version of Jenkins then update the `build.gradle` file and bootstrap again.
+Versions of Jenkins are pinned in the `dependencies.gradle` file.  To provision
+a new version of Jenkins then update the `dependencies.gradle` file and
+bootstrap again.
 
-Plugins are also pinned in the `build.gradle` file.
+Plugins are also pinned in the `dependencies.gradle` file.
 
 ### Jenkins web endpoint
 
