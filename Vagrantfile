@@ -34,6 +34,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
+    yum install -y git
     #Download Java from Oracle
     [ ! -f /tmp/jdk8.rpm ] && curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
     #validate the download from Oracle using official checksum

@@ -17,3 +17,5 @@ jenkins_console --script "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.g
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
+#configure github credentials if applicable
+[ -n "${GITHUB_TOKEN}" ] && jenkins_console --script <(echo "String gh_token='${GITHUB_TOKEN}';") --script ./scripts/credentials-github-token.groovy

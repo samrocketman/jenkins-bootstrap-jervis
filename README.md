@@ -5,6 +5,13 @@ meant to bootstrap Jenkins from scratch and pre-configure it to use Jervis.
 
 # Instructions
 
+### Clone this project
+
+This project uses a submodule.  Therefore, cloning it must include also cloning
+the submodule.
+
+    git clone --recursive https://github.com/samrocketman/jenkins-bootstrap-jervis.git
+
 ### GitHub API key
 
 Log into GitHub and [generate an API token][gh-token] so that Jervis can
@@ -23,44 +30,16 @@ variable.
 Visit `http://localhost:8080/` to see Jenkins running with Jervis.  Simply read
 the Welcome page for next steps.
 
+Alternatively, use Vagrant to provision.
+
+    export GITHUB_TOKEN="abca2bf1000cd67f7d805612b43195ce9c10a123"
+    export VAGRANT_JENKINS=1
+    vagrant up
+    ./jervis_bootstrap.sh
+
 ### Screenshot
 
 ![Screenshot of bootstrapped Jenkins with Jervis][jenkins-jervis-screenshot]
-
-# Advanced usage
-
-### Switch versions of Jenkins
-
-Versions of Jenkins are pinned in the `dependencies.gradle` file.  To provision
-a new version of Jenkins then update the `dependencies.gradle` file and
-bootstrap again.
-
-Plugins are also pinned in the `dependencies.gradle` file.
-
-### Jenkins web endpoint
-
-The Jenkins web endpoint can be customized.  Simply set the `JENKINS_WEB`
-environment variable.  By default it points to `http://localhost:8080`.
-
-```bash
-export JENKINS_WEB="https://jenkins.example.com"
-./jervis_bootstrap.sh
-```
-
-### Customize JENKINS\_HOME
-
-The `JENKINS_HOME` directory can be overriden to be a custom path.  By default,
-`JENKINS_HOME` is set to `my_jenkins_home` based on the current working
-directory.
-
-```bash
-export JENKINS_HOME="/tmp/my_jenkins_home"
-./jervis_bootstrap.sh
-```
-
-### Build an RPM package
-
-    ./gradlew clean buildRpm
 
 ### License
 
