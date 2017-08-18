@@ -7,7 +7,7 @@ export JENKINS_WEB="${JENKINS_WEB:-http://localhost:8080}"
 export jenkins_url="${jenkins_url:-http://mirrors.jenkins-ci.org/war/latest/jenkins.war}"
 
 if [ -d 'jenkins-bootstrap-shared' ]; then
-  export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-${PWD}/jenkins-bootstrap-shared/scripts}"
+  export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-./jenkins-bootstrap-shared/scripts}"
 else
   export SCRIPT_LIBRARY_PATH="${SCRIPT_LIBRARY_PATH:-./scripts}"
 fi
