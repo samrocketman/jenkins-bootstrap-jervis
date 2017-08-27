@@ -10,12 +10,13 @@ create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github
 #setting default view to Welcome
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #configure jenkins agent credentials
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
 #disable agent -> master security
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
 #disable job dsl script security
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
-jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #configure github credentials if applicable
-[ -n "${GITHUB_TOKEN}" ] && jenkins_console --script <(echo "String gh_token='${GITHUB_TOKEN}';") --script ./scripts/credentials-github-token.groovy
+jenkins_console -s ./settings.groovy --script ./scripts/credentials-github-token.groovy
+

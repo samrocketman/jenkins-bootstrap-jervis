@@ -8,4 +8,5 @@
 /jenkins.war*
 /my_jenkins_home
 /plugins
+/settings.groovy
 /ssh_config

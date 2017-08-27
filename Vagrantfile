@@ -34,16 +34,45 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-    yum install -y git
-    #Download Java from Oracle
-    [ ! -f /tmp/jdk8.rpm ] && curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
-    #validate the download from Oracle using official checksum
+    set -e
+
+    # install EPEL repo
+    yum makecache fast
+    yum install -y epel-release
+
+    # install IUS repo
+    [ -r /tmp/ius.asc ] || curl -fLo /tmp/ius.asc https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY
+    echo '688852e2dba88a3836392adfc5a69a1f46863b78bb6ba54774a50fdecee7e38e  /tmp/ius.asc' | sha256sum -c
+    rpm --import /tmp/ius.asc
+    [ -r /tmp/ius.rpm ] || curl -fLo /tmp/ius.rpm https://centos7.iuscommunity.org/ius-release.rpm
+    rpm -K /tmp/ius.rpm
+    rpm -iv /tmp/ius.rpm
+
+    # install Docker repo
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+    # install packages
+    yum makecache
+    yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
+    systemctl enable docker
+    systemctl start docker
+
+    # install Java from Oracle
+    [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
     echo 'cdb016da0c509d7414ee3f0c15b2dae5092d9a77edf7915be4386d5127e8092f  /tmp/jdk8.rpm' | sha256sum -c -
-    #Install Oracle JDK 8
     rpm -i /tmp/jdk8.rpm
-    #install Jenkins
+
+    # build docker image for jenkins slave
+    pushd /usr/local/src
+    git clone https://github.com/samrocketman/docker-jenkins-jervis.git
+    cd docker-jenkins-jervis/jervis-docker-jvm/
+    docker build -t jervis-docker-jvm .
+    popd
+
+    # install jenkins master
     rpm -i /vagrant/build/distributions/*.rpm
     #start the Jenkins daemon
     /etc/init.d/jenkins start
+    chkconfig --add jenkins
   SHELL
 end
