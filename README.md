@@ -19,9 +19,15 @@ authenticate to the GitHub API.
 
 ### Provision Jenkins
 
-To provision Jenkins and create the seed job simply run the following command.
-Don't forget to export your GitHub API token to the `GITHUB_TOKEN` environment
-variable.
+Using Vagrant is the recommended way to provision.  Copy
+[`settings.groovy.EXAMPLE`](settings.groovy.EXAMPLE) to `settings.groovy` and
+fill in the [GitHub personal access token][gh-token].
+
+    export VAGRANT_JENKINS=1
+    vagrant up
+    ./jervis_bootstrap.sh
+
+Alternatively, provision without Vagrant.
 
     #not a real token
     export GITHUB_TOKEN="abca2bf1000cd67f7d805612b43195ce9c10a123"
@@ -30,12 +36,6 @@ variable.
 Visit `http://localhost:8080/` to see Jenkins running with Jervis.  Simply read
 the Welcome page for next steps.
 
-Alternatively, use Vagrant to provision.
-
-    export GITHUB_TOKEN="abca2bf1000cd67f7d805612b43195ce9c10a123"
-    export VAGRANT_JENKINS=1
-    vagrant up
-    ./jervis_bootstrap.sh
 
 ### Screenshot
 
