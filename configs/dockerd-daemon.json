@@ -1,0 +1,6 @@
+{
+    "hosts": [
+        "unix:///var/run/docker.sock",
+        "tcp://localhost:2375"
+    ]
+}

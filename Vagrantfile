@@ -54,6 +54,10 @@ Vagrant.configure("2") do |config|
     # install packages
     yum makecache
     yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
+    yum install -y vim bind-utils net-tools nc
+    cp /vagrant/configs/dockerd-daemon.json /etc/docker/daemon.json
+    chown root. /etc/docker/daemon.json
+    chmod 644 /etc/docker/daemon.json
     systemctl enable docker
     systemctl start docker
 
@@ -63,6 +67,8 @@ Vagrant.configure("2") do |config|
     rpm -i /tmp/jdk8.rpm
 
     # build docker image for jenkins slave
+    mkdir -p /opt/jenkins-cache /opt/gradle-cache
+    chown 1000:1000 /opt/jenkins-cache /opt/gradle-cache
     pushd /usr/local/src
     git clone https://github.com/samrocketman/docker-jenkins-jervis.git
     cd docker-jenkins-jervis/jervis-docker-jvm/

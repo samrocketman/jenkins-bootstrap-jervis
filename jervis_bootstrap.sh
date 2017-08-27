@@ -19,3 +19,8 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #configure github credentials if applicable
 [ -z "${GITHUB_TOKEN}" ] || jenkins_console --script <(echo "String gh_token='${GITHUB_TOKEN}';") --script ./scripts/credentials-github-token.groovy
+if [ -r settings.groovy ]; then
+  jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-jenkins-settings.groovy
+  jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/credentials-multitype.groovy
+  jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-yadocker-cloud.groovy
+fi
