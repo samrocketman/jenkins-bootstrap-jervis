@@ -79,6 +79,10 @@ Vagrant.configure("2") do |config|
 
     # install jenkins master
     rpm -i /vagrant/build/distributions/*.rpm
+    mkdir /opt/generator-cache
+    chown jenkins. /opt/generator-cache
+    ln -s /opt/generator-cache /var/lib/jenkins/.gradle
+    cp /vagrant/scripts/wipe_jenkins.sh /opt/
     #start the Jenkins daemon
     /etc/init.d/jenkins start
     chkconfig --add jenkins
