@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     rpm --import /tmp/ius.asc
     [ -r /tmp/ius.rpm ] || curl -fLo /tmp/ius.rpm https://centos7.iuscommunity.org/ius-release.rpm
     rpm -K /tmp/ius.rpm
-    rpm -iv /tmp/ius.rpm
+    rpm -qa | grep ius-release || yum localinstall -y /tmp/ius.rpm
 
     # install Docker repo
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
