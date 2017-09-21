@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <project>
   <actions/>
-  <description/>
+  <description></description>
   <displayName>Generate Jenkins Jobs from YAML</displayName>
   <keepDependencies>false</keepDependencies>
   <properties>
@@ -13,9 +13,9 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.26.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.28.0">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
-      <displayName/>
+      <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
@@ -27,12 +27,12 @@
         <hudson.model.StringParameterDefinition>
           <name>branch</name>
           <description>Branch to generate projects from.  If left blank then jobs for all branches will be generated.</description>
-          <defaultValue/>
+          <defaultValue></defaultValue>
         </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.1.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.5.1">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -59,17 +59,19 @@
   <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./gradlew -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
+      <command>./gradlew -x check -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.58">
-      <targets>jobs/**/*.groovy</targets>
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.64">
+      <targets>jobs/firstjob_dsl.groovy</targets>
       <usingScriptText>false</usingScriptText>
+      <sandbox>false</sandbox>
       <ignoreExisting>false</ignoreExisting>
       <ignoreMissingFiles>false</ignoreMissingFiles>
       <failOnMissingPlugin>false</failOnMissingPlugin>
       <unstableOnDeprecation>false</unstableOnDeprecation>
       <removedJobAction>IGNORE</removedJobAction>
       <removedViewAction>IGNORE</removedViewAction>
+      <removedConfigFilesAction>IGNORE</removedConfigFilesAction>
       <lookupStrategy>SEED_JOB</lookupStrategy>
       <additionalClasspath>build/libs/*.jar
 lib/*.jar</additionalClasspath>
