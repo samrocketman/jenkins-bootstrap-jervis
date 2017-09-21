@@ -55,8 +55,8 @@ Vagrant.configure("2") do |config|
     yum makecache
     yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
     yum install -y vim bind-utils net-tools nc
-    cp /vagrant/configs/dockerd-daemon.json /etc/docker/daemon.json
     mkdir -p /etc/docker
+    cp /vagrant/configs/dockerd-daemon.json /etc/docker/daemon.json
     chmod 700 /etc/docker
     chown root. /etc/docker/daemon.json
     chmod 644 /etc/docker/daemon.json
