@@ -37,52 +37,71 @@ Vagrant.configure("2") do |config|
     set -e
 
     # install EPEL repo
-    yum makecache fast
-    yum install -y epel-release
+    rpm -qa | grep -- epel-release || (
+      yum makecache fast
+      yum install -y epel-release
+    )
+
 
     # install IUS repo
-    [ -r /tmp/ius.asc ] || curl -fLo /tmp/ius.asc https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY
-    echo '688852e2dba88a3836392adfc5a69a1f46863b78bb6ba54774a50fdecee7e38e  /tmp/ius.asc' | sha256sum -c
-    rpm --import /tmp/ius.asc
-    [ -r /tmp/ius.rpm ] || curl -fLo /tmp/ius.rpm https://centos7.iuscommunity.org/ius-release.rpm
-    rpm -K /tmp/ius.rpm
-    rpm -qa | grep ius-release || yum localinstall -y /tmp/ius.rpm
+    rpm -qa | grep ius-release || (
+      [ -r /tmp/ius.asc ] || curl -fLo /tmp/ius.asc https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY
+      echo '688852e2dba88a3836392adfc5a69a1f46863b78bb6ba54774a50fdecee7e38e  /tmp/ius.asc' | sha256sum -c
+      rpm --import /tmp/ius.asc
+      [ -r /tmp/ius.rpm ] || curl -fLo /tmp/ius.rpm https://centos7.iuscommunity.org/ius-release.rpm
+      rpm -K /tmp/ius.rpm
+      yum localinstall -y /tmp/ius.rpm
+    )
+
 
     # install Docker repo
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+    [ -f /etc/yum.repos.d/docker-ce.repo ] || yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
 
     # install packages
-    yum makecache
-    yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
-    yum install -y vim bind-utils net-tools nc
-    mkdir -p /etc/docker
-    cp /vagrant/configs/dockerd-daemon.json /etc/docker/daemon.json
-    chmod 700 /etc/docker
-    chown root. /etc/docker/daemon.json
-    chmod 644 /etc/docker/daemon.json
-    systemctl enable docker
-    systemctl start docker
+    rpm -qa | grep -- docker-ce || (
+      yum makecache
+      yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
+      yum install -y vim bind-utils net-tools nc
+    )
+    [ -f /etc/docker/daemon.json ] || (
+      mkdir -p /etc/docker
+      cp /vagrant/configs/dockerd-daemon.json /etc/docker/daemon.json
+      chmod 700 /etc/docker
+      chown root. /etc/docker/daemon.json
+      chmod 644 /etc/docker/daemon.json
+      systemctl enable docker
+      systemctl start docker
+    )
+
 
     # install Java from Oracle
-    [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
-    echo 'cdb016da0c509d7414ee3f0c15b2dae5092d9a77edf7915be4386d5127e8092f  /tmp/jdk8.rpm' | sha256sum -c -
-    rpm -i /tmp/jdk8.rpm
+    rpm -qa | grep -- 'jdk1.8' || (
+      [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
+      echo 'cdb016da0c509d7414ee3f0c15b2dae5092d9a77edf7915be4386d5127e8092f  /tmp/jdk8.rpm' | sha256sum -c -
+      yum localinstall -y /tmp/jdk8.rpm
+    )
+
 
     # build docker image for jenkins slave
-    mkdir -p /opt/jenkins-cache /opt/gradle-cache
-    chown 1000:1000 /opt/jenkins-cache /opt/gradle-cache
-    pushd /usr/local/src
-    git clone https://github.com/samrocketman/docker-jenkins-jervis.git
-    cd docker-jenkins-jervis/jervis-docker-jvm/
-    docker build -t jervis-docker-jvm .
-    popd
+    [ -d /opt/jenkins-cache -a -d /opt/gradle-cache -a -d /opt/generator-cache ] || (
+      mkdir -p /opt/jenkins-cache /opt/gradle-cache /opt/generator-cache
+      chown 1000:1000 /opt/jenkins-cache /opt/gradle-cache
+      chown jenkins. /opt/generator-cache
+      ln -s /opt/generator-cache /var/lib/jenkins/.gradle
+      cp -f /vagrant/scripts/wipe_jenkins.sh /opt/
+    )
+    docker images | grep -- jervis-docker-jvm || (
+      cd /usr/local/src
+      git clone https://github.com/samrocketman/docker-jenkins-jervis.git
+      cd docker-jenkins-jervis/jervis-docker-jvm/
+      docker build -t jervis-docker-jvm .
+    )
+
 
     # install jenkins master
-    rpm -i /vagrant/build/distributions/*.rpm
-    mkdir /opt/generator-cache
-    chown jenkins. /opt/generator-cache
-    ln -s /opt/generator-cache /var/lib/jenkins/.gradle
-    cp /vagrant/scripts/wipe_jenkins.sh /opt/
+    yum localinstall -y /vagrant/build/distributions/*.rpm
+    systemctl daemon-reload
     #start the Jenkins daemon
     /etc/init.d/jenkins start
     chkconfig --add jenkins
