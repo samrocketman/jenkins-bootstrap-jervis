@@ -51,6 +51,7 @@ clouds_yadocker = [
                 launch_method: "launch_jnlp",
                 //settings specific to launch_jnlp
                 launch_jnlp_linux_user: "jenkins",
+                launch_jnlp_slave_jar_options: "-workDir /home/jenkins",
                 launch_jnlp_launch_timeout: 120,
                 launch_jnlp_different_jenkins_master_url: "http://172.17.0.1:8080",
                 launch_jnlp_ignore_certificate_check: false,
