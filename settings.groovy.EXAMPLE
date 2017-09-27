@@ -2,11 +2,17 @@
 This is an example settings.groovy file which can be used by the Jervis
 bootstrap.
 
-The only required change is updating the personal access token under the
-`secret` key of `credentials`.
+The only required change is updating GITHUB_USER and GITHUB_TOKEN.
 */
+
+//GitHub username
+String GITHUB_USER = "samrocketman"
+//GitHub personal access token associated with the GitHub username
+//Recommended scopes: repo, read:org, admin:repo_hook, user:email
+String GITHUB_TOKEN = "CHANGEME"
+
 master_settings = [
-    'admin_email': 'admin@example.com',
+    'admin_email': 'email@example.com',
     'jnlp_slave_port': 9000
 ]
 //GitHub credential required for Jervis API communication with api.github.com
@@ -15,7 +21,14 @@ credentials = [
         'credential_type': 'StringCredentialsImpl',
         'credentials_id': 'github-token',
         'description': 'GitHub Personal Access Token used by Jervis for the GitHub API',
-        'secret': 'CHANGEME-personal-access-token'
+        'secret': GITHUB_TOKEN
+    ],
+    [
+        'credential_type': 'UsernamePasswordCredentialsImpl',
+        'credentials_id': 'github-user-and-token',
+        'description': 'GitHub user and personal access token used by multibranch pipeline jobs for the GitHub API',
+        'user': GITHUB_USER,
+        'password': GITHUB_TOKEN
     ]
 ]
 //docker settings for slave agents
@@ -33,17 +46,14 @@ clouds_yadocker = [
                 //valid values: pull_latest, pull_always, pull_once, pull_never
                 pull_strategy: "pull_never",
                 //volumes can be a string or list of strings
-                volumes: [
-                    '/opt/jenkins-cache:/home/jenkins/.jenkins:rw',
-                    '/opt/gradle-cache:/home/jenkins/.gradle:rw'
-                ],
+                //volumes: [ '/opt/jenkins-cache:/home/jenkins/.jenkins:rw', '/opt/gradle-cache:/home/jenkins/.gradle:rw' ],
                 //volumes_from can be a string or list of strings
-                volumes_from: '',
+                //volumes_from: '',
                 //environment can be a string or list of strings
-                environment: '',
+                //environment: '',
                 //JENKINS SLAVE CONFIG
                 remote_fs_root: "/home/jenkins",
-                labels: "stable docker ubuntu1604 sudo language:groovy env jdk",
+                labels: "jervis_generator stable docker ubuntu1604 sudo language:shell language:groovy env jdk",
                 //valid values: exclusive or normal
                 usage: "exclusive",
                 //LAUNCH METHOD
@@ -52,7 +62,7 @@ clouds_yadocker = [
                 //settings specific to launch_jnlp
                 launch_jnlp_linux_user: "jenkins",
                 launch_jnlp_slave_jar_options: "-workDir /home/jenkins",
-                launch_jnlp_launch_timeout: 120,
+                launch_jnlp_lauch_timeout: 120,
                 launch_jnlp_different_jenkins_master_url: "http://172.17.0.1:8080",
                 launch_jnlp_ignore_certificate_check: false,
             ]
