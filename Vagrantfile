@@ -62,7 +62,9 @@ Vagrant.configure("2") do |config|
     rpm -qa | grep -- docker-ce || (
       yum makecache
       yum install -y yum-utils device-mapper-persistent-data lvm2 git2u docker-ce
-      yum install -y vim bind-utils net-tools nc
+      yum install -y vim bind-utils net-tools nc ntpdate
+      systemctl start ntpdate
+      systemctl enable ntpdate
     )
     [ -f /etc/docker/daemon.json ] || (
       mkdir -p /etc/docker
