@@ -10,6 +10,8 @@ String GITHUB_USER = "samrocketman"
 //GitHub personal access token associated with the GitHub username
 //Recommended scopes: repo, read:org, admin:repo_hook, user:email
 String GITHUB_TOKEN = "CHANGEME"
+//Used by webhook callback URLs to increase security
+String SHARED_SECRET = "CHANGEME"
 
 master_settings = [
     'admin_email': 'email@example.com',
@@ -29,6 +31,12 @@ credentials = [
         'description': 'GitHub user and personal access token used by multibranch pipeline jobs for the GitHub API',
         'user': GITHUB_USER,
         'password': GITHUB_TOKEN
+    ],
+    [
+        'credential_type': 'StringCredentialsImpl',
+        'credentials_id': 'webhook-shared-secret',
+        'description': 'Webhook shared secret.  Protects Jenkins from webhook callback payloads not including this secret.',
+        'secret': SHARED_SECRET
     ]
 ]
 //docker settings for slave agents
@@ -80,6 +88,18 @@ pipeline_shared_libraries = [
         'scm': [
             'remote': 'https://github.com/samrocketman/jervis.git',
             'credentialsId': 'github-user-and-token'
+        ]
+    ]
+]
+
+github_plugin = [
+    //overrideHookUrl: 'http://localhost:8080/github-webhook/',
+    hookSharedSecretId: 'webhook-shared-secret',
+    servers: [
+        'Public GitHub.com': [
+            apiUrl: 'https://api.github.com',
+            manageHooks: true,
+            credentialsId: 'github-token',
         ]
     ]
 ]

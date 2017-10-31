@@ -25,5 +25,6 @@ if [ -r settings.groovy ]; then
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-jenkins-settings.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/credentials-multitype.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-pipeline-global-shared-libraries.groovy
+  jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-github-plugin.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-yadocker-cloud.groovy
 fi
