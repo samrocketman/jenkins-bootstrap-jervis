@@ -19,6 +19,10 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
+#configure grapeConfig.xml
+if [ -n "${VAGRANT_JENKINS}" ]; then
+  jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
+fi
 #configure github credentials if applicable
 [ -z "${GITHUB_TOKEN}" ] || jenkins_console --script <(echo "String gh_token='${GITHUB_TOKEN}';") --script ./scripts/credentials-github-token.groovy
 if [ -r settings.groovy ]; then
