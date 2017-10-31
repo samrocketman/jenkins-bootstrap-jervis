@@ -52,7 +52,7 @@ set -x
 #sleep 1
 timeout 600 "${SCRIPT_LIBRARY_PATH}"/jenkins_wait_job.sh "${JENKINS_WEB}/job/_jervis_generator/lastBuild"
 #python ./tests/job_test.py "${JENKINS_WEB}/job/_jervis_generator/lastBuild/api/json?pretty=true"
-test -e "$JENKINS_HOME"/jobs/samrocketman/jobs/jervis-master/config.xml
+test -e "$JENKINS_HOME"/jobs/samrocketman/jobs/jervis/config.xml
 test -e jenkins.pid
 "${SCRIPT_LIBRARY_PATH}"/provision_jenkins.sh stop
 test ! -e jenkins.pid

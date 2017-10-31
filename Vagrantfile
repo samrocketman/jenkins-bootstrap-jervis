@@ -91,7 +91,7 @@ Vagrant.configure("2") do |config|
     [ -d /opt/jenkins-cache -a -d /opt/gradle-cache -a -d /opt/generator-cache ] || (
       mkdir -p /opt/jenkins-cache /opt/gradle-cache /opt/generator-cache
       chown 1000:1000 /opt/jenkins-cache /opt/gradle-cache
-      ln -s /opt/generator-cache /var/lib/jenkins/.gradle
+      mkdir -p /var/lib/jenkins
       cp -f /vagrant/scripts/wipe_jenkins.sh /opt/
     )
     docker images | grep -- jervis-docker-jvm || (
@@ -108,6 +108,9 @@ Vagrant.configure("2") do |config|
     #start the Jenkins daemon
     /etc/init.d/jenkins start
     chkconfig --add jenkins
+
+    #some final steps
     chown jenkins. /opt/generator-cache
+    ln -s /opt/generator-cache /var/lib/jenkins/.gradle
   SHELL
 end
