@@ -78,9 +78,11 @@ Vagrant.configure("2") do |config|
 
 
     # install Java from Oracle
+    JDK_URL='http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.rpm'
+    JDK_SHA256='2c1137859aecc0a6aef8960d11967797466e9b812f8c170a43a2597e97dc8a08'
     rpm -qa | grep -- 'jdk1.8' || (
-      [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm http://download.oracle.com/otn-pub/java/jdk/8u144-b01/090f390dda5b47b9b721c7dfaa008135/jdk-8u144-linux-x64.rpm
-      echo 'cdb016da0c509d7414ee3f0c15b2dae5092d9a77edf7915be4386d5127e8092f  /tmp/jdk8.rpm' | sha256sum -c -
+      [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm "${JDK_URL}"
+      echo "${JDK_SHA256}  /tmp/jdk8.rpm" | sha256sum -c -
       yum localinstall -y /tmp/jdk8.rpm
     )
 
@@ -89,7 +91,6 @@ Vagrant.configure("2") do |config|
     [ -d /opt/jenkins-cache -a -d /opt/gradle-cache -a -d /opt/generator-cache ] || (
       mkdir -p /opt/jenkins-cache /opt/gradle-cache /opt/generator-cache
       chown 1000:1000 /opt/jenkins-cache /opt/gradle-cache
-      chown jenkins. /opt/generator-cache
       ln -s /opt/generator-cache /var/lib/jenkins/.gradle
       cp -f /vagrant/scripts/wipe_jenkins.sh /opt/
     )
@@ -107,5 +108,6 @@ Vagrant.configure("2") do |config|
     #start the Jenkins daemon
     /etc/init.d/jenkins start
     chkconfig --add jenkins
+    chown jenkins. /opt/generator-cache
   SHELL
 end
