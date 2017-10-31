@@ -70,3 +70,16 @@ clouds_yadocker = [
 
     ]
 ]
+
+pipeline_shared_libraries = [
+    'Jervis Global Library': [
+        'defaultVersion': 'master',
+        'implicit': true,
+        'allowVersionOverride': false,
+        'includeInChangesets': true,
+        'scm': [
+            'remote': 'https://github.com/samrocketman/jervis.git',
+            'credentialsId': 'github-user-and-token'
+        ]
+    ]
+]
