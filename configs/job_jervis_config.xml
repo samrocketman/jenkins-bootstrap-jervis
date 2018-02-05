@@ -13,7 +13,7 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.28.0">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.0">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
       <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
@@ -32,7 +32,7 @@
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.5.1">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.7.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -51,7 +51,8 @@
     <submoduleCfg class="list"/>
     <extensions/>
   </scm>
-  <canRoam>true</canRoam>
+  <assignedNode>jervis_generator</assignedNode>
+  <canRoam>false</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
@@ -61,7 +62,7 @@
     <hudson.tasks.Shell>
       <command>./gradlew -x check -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.64">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.67">
       <targets>jobs/firstjob_dsl.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
