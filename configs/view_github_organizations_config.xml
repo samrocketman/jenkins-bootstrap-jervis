@@ -7,16 +7,16 @@
   <jobNames>
     <comparator class="hudson.util.CaseInsensitiveComparator"/>
   </jobNames>
-  <jobFilters/>
+  <jobFilters>
+    <hudson.views.JobTypeFilter plugin="view-job-filters@1.27">
+      <includeExcludeTypeString>includeMatched</includeExcludeTypeString>
+      <jobType>com.cloudbees.hudson.plugins.folder.Folder</jobType>
+    </hudson.views.JobTypeFilter>
+  </jobFilters>
   <columns>
     <hudson.views.StatusColumn/>
-    <hudson.views.WeatherColumn/>
     <hudson.views.JobColumn/>
-    <hudson.views.LastSuccessColumn/>
-    <hudson.views.LastFailureColumn/>
-    <hudson.views.LastDurationColumn/>
-    <hudson.views.BuildButtonColumn/>
+    <jenkins.branch.DescriptionColumn plugin="branch-api@2.0.18"/>
   </columns>
-  <includeRegex>(?!_.*).*</includeRegex>
   <recurse>false</recurse>
 </hudson.model.ListView>
