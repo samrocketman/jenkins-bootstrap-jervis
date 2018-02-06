@@ -104,3 +104,14 @@ github_plugin = [
         ]
     ]
 ]
+
+/*
+//configure the GitHub security realm for authentication
+//web_uri and api_uri can be deleted if not using GitHub Enterprise
+github_realm = [
+    web_uri: '',
+    api_uri: '',
+    client_id: '',
+    client_secret: ''
+]
+*/
