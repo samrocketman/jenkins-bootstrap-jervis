@@ -23,13 +23,13 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy
 if [ -n "${VAGRANT_JENKINS}" -o "${DOCKER_JENKINS}" ]; then
   jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
 fi
+if [ -n "${GITHUB_TOKEN}" ]; then
+  sed -r "s#(String GITHUB_TOKEN = \")[^\"]+(\".*)#\\1${GITHUB_TOKEN}\\2#" settings.groovy.EXAMPLE > settings.groovy
+fi
 if [ -r settings.groovy ]; then
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-jenkins-settings.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/credentials-multitype.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-pipeline-global-shared-libraries.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-github-plugin.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-yadocker-cloud.groovy
-elif [ -n "${GITHUB_TOKEN}" ]; then
-  #configure legacy github credentials if applicable
-  jenkins_console --script <(echo "String gh_token='${GITHUB_TOKEN}';") --script ./scripts/credentials-github-token.groovy
 fi
