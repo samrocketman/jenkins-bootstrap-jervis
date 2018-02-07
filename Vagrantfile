@@ -90,7 +90,7 @@ Vagrant.configure("2") do |config|
     docker images | grep -- jervis-docker-jvm || (
       cd /usr/local/src
       git clone https://github.com/samrocketman/docker-jenkins-jervis.git
-      cd docker-jenkins-jervis/jervis-docker-jvm/
+      cd docker-jenkins-jervis/ubuntu1604/
       docker build -t jervis-docker-jvm .
     )
 
