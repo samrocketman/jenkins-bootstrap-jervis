@@ -77,15 +77,8 @@ Vagrant.configure("2") do |config|
     )
 
 
-    # install Java from Oracle
-    JDK_URL='http://download.oracle.com/otn-pub/java/jdk/8u151-b12/e758a0de34e24606bca991d704f6dcbf/jdk-8u151-linux-x64.rpm'
-    JDK_SHA256='2c1137859aecc0a6aef8960d11967797466e9b812f8c170a43a2597e97dc8a08'
-    rpm -qa | grep -- 'jdk1.8' || (
-      [ -r /tmp/jdk8.rpm ] || curl -H 'Cookie: oraclelicense=accept-securebackup-cookie' -Lo /tmp/jdk8.rpm "${JDK_URL}"
-      echo "${JDK_SHA256}  /tmp/jdk8.rpm" | sha256sum -c -
-      yum localinstall -y /tmp/jdk8.rpm
-    )
-
+    # install Java
+    yum install -y java-1.8.0-openjdk-devel.x86_64
 
     # build docker image for jenkins slave
     [ -d /opt/jenkins-cache -a -d /opt/gradle-cache -a -d /opt/generator-cache ] || (
