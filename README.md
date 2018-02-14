@@ -39,7 +39,9 @@ the Welcome page for next steps.
 
 ### Screenshot
 
-![Screenshot of bootstrapped Jenkins with Jervis][jenkins-jervis-screenshot]
+[Jervis][jervis] built from this Jenkins instance.
+
+![Screenshot of rendered Jervis pipeline][jenkins-jervis-screenshot]
 
 ### License
 
@@ -50,7 +52,7 @@ the Welcome page for next steps.
 [jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
 [jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI
 [jenkins-console]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
-[jenkins-jervis-screenshot]: https://user-images.githubusercontent.com/875669/29012311-72ee817e-7aef-11e7-8823-099f2a45e7ba.png
+[jenkins-jervis-screenshot]: https://user-images.githubusercontent.com/875669/36202110-54d63018-1137-11e8-949a-ac2d7682ace7.png
 [jenkins-source]: https://github.com/jenkinsci/jenkins
 [jervis]: https://github.com/samrocketman/jervis
 [travis-status]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis.svg
