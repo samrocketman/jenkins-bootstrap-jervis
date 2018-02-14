@@ -39,9 +39,15 @@ the Welcome page for next steps.
 
 ### Screenshot
 
-[Jervis][jervis] built from this Jenkins instance.
+[Jervis][jervis] built from [the `master` branch][yml-master] by this Jenkins
+instance.
 
-![Screenshot of rendered Jervis pipeline][jenkins-jervis-screenshot]
+![Screenshot Jervis matrix pipeline][jenkins-jervis-screenshot]
+
+[Jervis][jervis] built from [the `jervis_simple` branch][yml-jervis_simple] by
+this Jenkins instance.
+
+![Screenshot Jervis simple pipeline][jenkins-jervis-screenshot2]
 
 ### License
 
@@ -52,8 +58,11 @@ the Welcome page for next steps.
 [jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
 [jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI
 [jenkins-console]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
+[jenkins-jervis-screenshot2]: https://user-images.githubusercontent.com/875669/36203662-267a2372-113d-11e8-8568-4b79ebf36ff9.png
 [jenkins-jervis-screenshot]: https://user-images.githubusercontent.com/875669/36202110-54d63018-1137-11e8-949a-ac2d7682ace7.png
 [jenkins-source]: https://github.com/jenkinsci/jenkins
 [jervis]: https://github.com/samrocketman/jervis
 [travis-status]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis.svg
 [travis]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis
+[yml-jervis_simple]: https://github.com/samrocketman/jervis/blob/jervis_simple/.travis.yml
+[yml-master]: https://github.com/samrocketman/jervis/blob/master/.travis.yml
