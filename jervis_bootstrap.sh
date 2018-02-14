@@ -19,6 +19,8 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
+#global Jenkinsfile
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile-jervis.groovy"
 #configure grapeConfig.xml
 if [ -n "${VAGRANT_JENKINS}" -o "${DOCKER_JENKINS}" ]; then
   jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
