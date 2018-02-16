@@ -1,6 +1,6 @@
 dependencies {
     //get Jenkins
-    getjenkins 'org.jenkins-ci.main:jenkins-war:2.89.3@war'
+    getjenkins 'org.jenkins-ci.main:jenkins-war:2.89.4@war'
 
     //get plugins
     getplugins 'com.coravy.hudson.plugins.github:github:1.29.0@hpi'
@@ -33,7 +33,7 @@ dependencies {
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-api:2.25@hpi'
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-basic-steps:2.6@hpi'
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-cps-global-lib:2.9@hpi'
-    getplugins 'org.jenkins-ci.plugins.workflow:workflow-cps:2.44@hpi'
+    getplugins 'org.jenkins-ci.plugins.workflow:workflow-cps:2.45@hpi'
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-durable-task-step:2.18@hpi'
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-job:2.17@hpi'
     getplugins 'org.jenkins-ci.plugins.workflow:workflow-multibranch:2.17@hpi'
@@ -47,7 +47,7 @@ dependencies {
     getplugins 'org.jenkins-ci.plugins:blueocean-display-url:2.2.0@hpi'
     getplugins 'org.jenkins-ci.plugins:bouncycastle-api:2.16.2@hpi'
     getplugins 'org.jenkins-ci.plugins:branch-api:2.0.18@hpi'
-    getplugins 'org.jenkins-ci.plugins:cloud-stats:0.16@hpi'
+    getplugins 'org.jenkins-ci.plugins:cloud-stats:0.17@hpi'
     getplugins 'org.jenkins-ci.plugins:cloudbees-bitbucket-branch-source:2.2.9@hpi'
     getplugins 'org.jenkins-ci.plugins:cloudbees-folder:6.3@hpi'
     getplugins 'org.jenkins-ci.plugins:cobertura:1.12@hpi'
@@ -96,7 +96,7 @@ dependencies {
     getplugins 'org.jenkins-ci.plugins:sse-gateway:1.15@hpi'
     getplugins 'org.jenkins-ci.plugins:ssh-credentials:1.13@hpi'
     getplugins 'org.jenkins-ci.plugins:ssh-slaves:1.25.1@hpi'
-    getplugins 'org.jenkins-ci.plugins:structs:1.13@hpi'
+    getplugins 'org.jenkins-ci.plugins:structs:1.14@hpi'
     getplugins 'org.jenkins-ci.plugins:token-macro:2.3@hpi'
     getplugins 'org.jenkins-ci.plugins:variant:1.1@hpi'
     getplugins 'org.jenkins-ci.plugins:view-job-filters:1.27@hpi'
