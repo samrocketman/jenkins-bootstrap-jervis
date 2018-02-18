@@ -27,15 +27,9 @@ fill in the [GitHub personal access token][gh-token].
     vagrant up
     ./jervis_bootstrap.sh
 
-Alternatively, provision without Vagrant.
-
-    #not a real token
-    export GITHUB_TOKEN="abca2bf1000cd67f7d805612b43195ce9c10a123"
-    ./jervis_bootstrap.sh
-
 Visit `http://localhost:8080/` to see Jenkins running with Jervis.  Simply read
-the Welcome page for next steps.
-
+the Welcome page for next steps.  The first example will guide you through
+onboarding the [Jervis project][jervis] for CI.
 
 ### Screenshot
 
