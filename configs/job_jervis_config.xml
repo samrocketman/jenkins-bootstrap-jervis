@@ -24,11 +24,6 @@
           <description>Generate Jenkins jobs for the project.  Format is org/project.</description>
           <defaultValue>samrocketman/jervis</defaultValue>
         </hudson.model.StringParameterDefinition>
-        <hudson.model.StringParameterDefinition>
-          <name>branch</name>
-          <description>Branch to generate projects from.  If left blank then jobs for all branches will be generated.</description>
-          <defaultValue></defaultValue>
-        </hudson.model.StringParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
@@ -62,7 +57,7 @@
     <hudson.tasks.Shell>
       <command>./gradlew -x check -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.67">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.68">
       <targets>jobs/firstjob_dsl.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
