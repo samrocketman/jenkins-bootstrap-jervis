@@ -62,7 +62,7 @@ clouds_yadocker = [
                 //environment: '',
                 //JENKINS SLAVE CONFIG
                 remote_fs_root: "/home/jenkins",
-                labels: "jervis_generator stable docker ubuntu1604 sudo language:shell language:groovy env jdk",
+                labels: "jervis_generator stable docker ubuntu1604 sudo language:shell language:groovy language:java env jdk",
                 //valid values: exclusive or normal
                 usage: "exclusive",
                 //LAUNCH METHOD
