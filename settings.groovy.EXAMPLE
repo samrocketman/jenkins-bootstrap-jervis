@@ -112,6 +112,7 @@ github_realm = [
     web_uri: '',
     api_uri: '',
     client_id: '',
-    client_secret: ''
+    client_secret: '',
+    oauth_scopes: 'read:org,user:email,repo'
 ]
 */
