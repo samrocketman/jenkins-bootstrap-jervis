@@ -48,7 +48,7 @@ JENKINS_USER=admin JENKINS_PASSWORD="$(<"${JENKINS_HOME}"/secrets/initialAdminPa
 set -x
 
 "${SCRIPT_LIBRARY_PATH}"/jenkins-call-url "${JENKINS_WEB}/api/json?pretty=true" | python ./tests/api_test.py
-"${SCRIPT_LIBRARY_PATH}"/jenkins-call-url -m POST "${JENKINS_WEB}/job/_jervis_generator/build?delay=0sec" --data-string json= -d <(echo '{"parameter": [{"name":"project", "value":"samrocketman/jervis"}, {"name":"branch", "value":""}]}')
+"${SCRIPT_LIBRARY_PATH}"/jenkins-call-url -m POST "${JENKINS_WEB}/job/_jervis_generator/build?delay=0sec" --data-string json= -d <(echo '{"parameter": [{"name":"project", "value":"samrocketman/jervis"}]}')
 #sleep 1
 timeout 600 "${SCRIPT_LIBRARY_PATH}"/jenkins_wait_job.sh "${JENKINS_WEB}/job/_jervis_generator/lastBuild"
 #python ./tests/job_test.py "${JENKINS_WEB}/job/_jervis_generator/lastBuild/api/json?pretty=true"
