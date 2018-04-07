@@ -84,7 +84,7 @@ import jenkins.model.Jenkins
 manager.addShortText(manager.envVars[&quot;project&quot;], &apos;#3b3b3b&apos;, &apos;#eee&apos;, &apos;solid 1px&apos;, &apos;#f3f3f3&apos;)
 
 //regiser GitHub webhook in repository
-Jenkins.instance.getItemByFullName(&apos;samrocketman/jervis-example-project&apos;).getSCMSources()[0].afterSave()</script>
+Jenkins.instance.getItemByFullName(manager.envVars[&quot;project&quot;]).getSCMSources()[0].afterSave()</script>
         <sandbox>false</sandbox>
       </script>
       <behavior>2</behavior>
