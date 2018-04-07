@@ -23,6 +23,8 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile-jervis.groovy"
 #restrict master so only _jervis_generator can execute
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-master.groovy"
+#approve _jervis_generator postbuild groovy script
+jenkins_console -s 'scripts/seed-job-script-approval.groovy'
 #configure grapeConfig.xml
 if [ -n "${VAGRANT_JENKINS}" -o "${DOCKER_JENKINS}" ]; then
   jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
