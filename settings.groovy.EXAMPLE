@@ -94,7 +94,7 @@ pipeline_shared_libraries = [
 ]
 
 github_plugin = [
-    //overrideHookUrl: 'http://localhost:8080/github-webhook/',
+    //hookUrl: 'http://localhost:8080/github-webhook/',
     hookSharedSecretId: 'webhook-shared-secret',
     servers: [
         'Public GitHub.com': [
