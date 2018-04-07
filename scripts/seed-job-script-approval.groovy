@@ -32,10 +32,10 @@ String jervis_postbuild = j.getItem('_jervis_generator').publishers.find { k, v 
 script_approval = j.getExtensionList('org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval')[0]
 String hash = script_approval.hash(jervis_postbuild, 'groovy')
 if(hash in script_approval.approvedScriptHashes) {
-	println 'Nothing changed.  _jervis_generator postbuild script already approved.'
+    println 'Nothing changed.  _jervis_generator postbuild script already approved.'
 }
 else {
-	println '_jervis_generator postbuild script has been approved in script security.'
     script_approval.approveScript(hash)
     script_approval.save()
+    println '_jervis_generator postbuild script has been approved in script security.'
 }
