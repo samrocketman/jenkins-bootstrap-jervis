@@ -2,11 +2,14 @@
 source jenkins-bootstrap-shared/jenkins_bootstrap.sh
 
 #create the first job, _jervis_generator.  This will use Job DSL scripts to generate other jobs.
-create_job --job-name "_jervis_generator" --xml-data "./configs/job_jervis_config.xml"
+create_job --job-name '_jervis_generator' --xml-data './configs/job_jervis_config.xml'
+create_job --job-name '__clean_abandoned_branches_multibranch' --xml-data './configs/job_maintenance_clean_abandoned_branches_multibranch_config.xml'
 #generate Welcome view
-create_view --view-name "Welcome" --xml-data "./configs/view_welcome_config.xml"
+create_view --view-name 'Welcome' --xml-data './configs/view_welcome_config.xml'
 #generate GitHub Organizations view
-create_view --view-name "GitHub Organizations" --xml-data "./configs/view_github_organizations_config.xml"
+create_view --view-name 'GitHub Organizations' --xml-data "./configs/view_github_organizations_config.xml"
+#generate Maintenance view
+create_view --view-name 'Maintenance' --xml-data './configs/view_maintenance_config.xml'
 #setting default view to Welcome
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #set markup formatter to HTML
