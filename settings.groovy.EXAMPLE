@@ -16,7 +16,8 @@ String SHARED_SECRET = "CHANGEME"
 master_settings = [
     'admin_email': 'email@example.com',
     'jnlp_slave_port': 9000,
-    'master_labels': 'jervis_generator'
+    'master_labels': 'jervis_generator',
+    'master_executors': 1
 ]
 //GitHub credential required for Jervis API communication with api.github.com
 credentials = [

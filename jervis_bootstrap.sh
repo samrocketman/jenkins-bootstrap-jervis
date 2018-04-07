@@ -21,6 +21,8 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #global Jenkinsfile
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile-jervis.groovy"
+#restrict master so only _jervis_generator can execute
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-master.groovy"
 #configure grapeConfig.xml
 if [ -n "${VAGRANT_JENKINS}" -o "${DOCKER_JENKINS}" ]; then
   jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
