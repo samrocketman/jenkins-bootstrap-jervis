@@ -43,6 +43,30 @@ this Jenkins instance.
 
 ![Screenshot Jervis simple pipeline][jenkins-jervis-screenshot2]
 
+### Webhook relay
+
+If you wish to try out this project with webhook integration then I recommend
+taking advantage of the [webhookrelay service][webhookrelay].
+
+Provision Jenkins in vagrant and then provision a relay automatically.  Pro-tip:
+start the relay in a `screen` session so it's easy to detach.
+
+    vagrant ssh
+    curl -sSL https://storage.googleapis.com/webhookrelay/downloads/relay-linux-amd64 > relay && chmod +x relay && sudo mv relay /usr/local/bin
+    relay forward -b jervis -t internal http://localhost:8080/github-webhook/
+
+Username (token Access Key) and password (token Secret Key) comes from
+[webhookrelay tokens][webhookrelay-tokens].
+
+Update the `settings.groovy` file by setting the `github_plugin` > `hookUrl`
+setting to the value of the webhookrelay "input".
+
+> Example webhookrelay "input" URL:
+> `https://my.webhookrelay.com/v1/webhooks/<uuid>`
+
+Configure Jenkins normally and GitHub repository hooks will now be configured
+with a proper webhook when jobs are generated.
+
 ### License
 
 * [Apache License 2.0](LICENSE)
@@ -58,5 +82,7 @@ this Jenkins instance.
 [jervis]: https://github.com/samrocketman/jervis
 [travis-status]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis.svg
 [travis]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis
+[webhookrelay-tokens]: https://my.webhookrelay.com/tokens
+[webhookrelay]: https://webhookrelay.com/
 [yml-jervis_simple]: https://github.com/samrocketman/jervis/blob/jervis_simple/.travis.yml
 [yml-master]: https://github.com/samrocketman/jervis/blob/master/.travis.yml
