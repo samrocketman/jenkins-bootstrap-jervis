@@ -3,11 +3,55 @@
   <actions/>
   <description>&lt;h3&gt;Clean up multibranch jobs&lt;/h3&gt;&#xd;
 &#xd;
-This job is intended to delete abandoned branches and optionally closed pull requests from jobs in which a user has access.</description>
+This job is intended to delete abandoned branches and optionally delete closed pull requests from jobs in which a user has access.</description>
   <displayName>Clean Multibranch Pipeline jobs by deleting branches and optionally pull requests</displayName>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.6"/>
+    <hudson.security.AuthorizationMatrixProperty>
+      <inheritanceStrategy class="org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy"/>
+      <permission>hudson.model.Item.Build:authenticated</permission>
+      <permission>hudson.model.Item.Discover:anonymous</permission>
+      <permission>hudson.model.Item.Read:authenticated</permission>
+      <permission>hudson.model.Item.ViewStatus:anonymous</permission>
+    </hudson.security.AuthorizationMatrixProperty>
+    <jenkins.model.BuildDiscarderProperty>
+      <strategy class="hudson.tasks.LogRotator">
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>100</numToKeep>
+        <artifactDaysToKeep>-1</artifactDaysToKeep>
+        <artifactNumToKeep>-1</artifactNumToKeep>
+      </strategy>
+    </jenkins.model.BuildDiscarderProperty>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.6">
+      <config>
+        <upstreamCauseRestriction>
+          <jobRestriction class="com.synopsys.arc.jenkinsci.plugins.jobrestrictions.restrictions.logic.NotJobRestriction">
+            <restriction class="com.synopsys.arc.jenkinsci.plugins.jobrestrictions.restrictions.logic.AnyJobRestriction"/>
+          </jobRestriction>
+          <skipCheckForMissingInfo>false</skipCheckForMissingInfo>
+        </upstreamCauseRestriction>
+      </config>
+    </com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.BooleanParameterDefinition>
+          <name>dry_run</name>
+          <description>&lt;span style=&quot;font-size: 14px&quot;&gt;pretend to delete but don&apos;t actually delete, useful to see what would be deleted without modifying Jenkins&lt;/span&gt;</description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>job_full_name</name>
+          <description>&lt;span style=&quot;font-size: 14px&quot;&gt;The full path to the project in which to clean up branches.&lt;/span&gt;</description>
+          <defaultValue></defaultValue>
+          <trim>true</trim>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>include_pull_requests</name>
+          <description>&lt;span style=&quot;font-size: 14px&quot;&gt;In addition to branches, also clean up pull requests.&lt;/span&gt;</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
   </properties>
   <scm class="hudson.scm.NullSCM"/>
   <assignedNode>master</assignedNode>
@@ -17,7 +61,194 @@ This job is intended to delete abandoned branches and optionally closed pull req
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers/>
   <concurrentBuild>false</concurrentBuild>
-  <builders/>
+  <builders>
+    <hudson.plugins.groovy.SystemGroovy plugin="groovy@2.0">
+      <source class="hudson.plugins.groovy.StringSystemScriptSource">
+        <script plugin="script-security@1.43">
+          <script>/*
+    Copyright (c) 2015-2018 Sam Gleske - https://github.com/samrocketman/jenkins-script-console-scripts
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of
+    this software and associated documentation files (the &quot;Software&quot;), to deal in
+    the Software without restriction, including without limitation the rights to
+    use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software is furnished to do so,
+    subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+    COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+    IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+/*
+   Delete all abanded branhes and closed pull requests for multibranch pipeline jobs.
+
+   Features:
+     - Safest options defined by default to prevent accidental modification.
+     - Dry run to see what would be deleted without modifying Jenkins.
+     - Clean up all jobs in Jenkins or a specific job.
+     - Optionally include deleting pull request jobs.
+     - Can be a run from a Groovy job or from the Script console.
+     - If run from a Groovy job, permissions are checked against the user
+       building the job giving flexibility to expose this script in a self
+       service manner.
+
+
+   FreeStyle job named &quot;_jervis_generator&quot;.
+ */
+
+import hudson.model.Cause.UserIdCause
+import hudson.model.Item
+import hudson.model.Job
+import hudson.model.ParametersAction
+import hudson.model.User
+import hudson.security.AccessDeniedException2
+import jenkins.model.Jenkins
+import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead
+import org.jenkinsci.plugins.workflow.multibranch.BranchJobProperty
+import org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject
+
+
+/*
+   User configurable options.  If using a Groovy Job to execute this script,
+   then don&apos;t bother customizing these values.  Instead, add the following
+   parameters to the job.
+
+   - cleanup_all_jobs (boolean parameter)
+   - job_full_name (string parameter)
+   - include_pull_requests (boolean parameter)
+   - dry_run (boolean parameter)
+ */
+
+
+//will delete disabled branches over all multibranch pipeline jobs in Jenkins
+boolean cleanupAllJobs = false
+//ignored if cleaning up all jobs
+String jobFullName = &apos;samrocketman/jervis-example-project&apos;
+//removes disabled (closed) pull requests as well
+boolean includePullRequests = false
+//pretend to delete but don&apos;t actually delete, useful to see what would be deleted without modifying Jenkins
+boolean dryRun = true
+
+
+/*
+   Helper Functions
+ */
+
+
+boolean hasDeletePermission(Item item) {
+    item.hasPermission(Item.DELETE)
+}
+
+
+void message(String message) {
+    if(isGroovyJob) {
+        out?.println message
+    } else {
+        println message
+    }
+}
+
+
+boolean isPullRequest(Job job) {
+	BranchJobProperty prop
+	if(job) {
+		prop = job.getProperty(BranchJobProperty)
+	}
+	//check if the job is a pull request
+	job &amp;&amp; (prop?.branch?.head in PullRequestSCMHead)
+}
+
+
+void deleteDisabledJobs(WorkflowMultiBranchProject project, boolean includePullRequests = false, boolean dryRun = true) {
+	project.items.findAll { Job j -&gt;
+		j.disabled &amp;&amp; (includePullRequests || !isPullRequest(j))
+	}.each { Job j -&gt;
+		message &quot;${(dryRun)? &apos;DRYRUN: &apos; : &apos;&apos;}Deleted ${project.fullName} ${isPullRequest(j)? &apos;pull request&apos; : &apos;branch&apos;} ${j.name} job.&quot;
+		if(!dryRun) {
+			j.delete()
+		}
+	}
+}
+
+
+def getJobParameter(String parameter, def defaultValue) {
+    if(!isGroovyJob) {
+        return defaultValue
+    }
+    def parameterValue = build?.actions.find {
+        it in ParametersAction
+    }?.parameters.find {
+        it.name == parameter
+    }?.value
+    if((defaultValue in String) &amp;&amp; (parameterValue in Boolean)) {
+        &apos;false&apos; != parameterValue
+    }
+    else {
+        parameterValue.asType(defaultValue.getClass())
+    }
+}
+
+
+/*
+   Main execution
+ */
+
+
+//bindings
+isGroovyJob = !(false in [&apos;build&apos;, &apos;launcher&apos;, &apos;listener&apos;, &apos;out&apos;].collect { binding.hasVariable(it) })
+
+if(isGroovyJob) {
+    //authenticate as the user calling the build so appropriate permissions apply
+    Jenkins.get().ACL.impersonate(User.get(build.getCause(UserIdCause.class).getUserId()).impersonate())
+
+    //get parameters from the groovy job
+    cleanupAllJobs = getJobParameter(&apos;cleanup_all_jobs&apos;, cleanupAllJobs)
+    jobFullName = getJobParameter(&apos;job_full_name&apos;, jobFullName)
+    includePullRequests = getJobParameter(&apos;include_pull_requests&apos;, includePullRequests)
+    dryRun = getJobParameter(&apos;dry_run&apos;, dryRun)
+}
+
+if(dryRun) {
+	message &apos;NOTE: DRYRUN mode does not make any modifications to Jenkins.&apos;
+}
+
+if(cleanupAllJobs) {
+	message &quot;NOTE: iterating across all multibranch pipelines in Jenkins to clean up branches${(includePullRequests)? &apos; and pull requests&apos; : &apos;&apos;}.&quot;
+	Jenkins.get().getAllItems(WorkflowMultiBranchProject.class).findAll { WorkflowMultiBranchProject project -&gt;
+        hasDeletePermission(project)
+    }.each { WorkflowMultiBranchProject project -&gt;
+		deleteDisabledJobs(project, includePullRequests, dryRun)
+	}
+}
+else {
+	message &quot;NOTE: attempting to clean up specific job ${jobFullName} to clean up branches${(includePullRequests)? &apos; and pull requests&apos; : &apos;&apos;}.&quot;
+	if(jobFullName) {
+		def project = Jenkins.get().getItemByFullName(jobFullName)
+		if(!project || !(project in WorkflowMultiBranchProject)) {
+			throw new RuntimeException(&apos;ERROR: Job is not a multibranch pipeline project.  This script only works on multibranch pipelines.&apos;)
+		}
+        if(!hasDeletePermission(project)) {
+            throw new AccessDeniedException2(Jenkins.get().authentication, Item.DELETE)
+        }
+		deleteDisabledJobs(project, includePullRequests, dryRun)
+	}
+	else {
+		throw new RuntimeException(&apos;ERROR: Job full name not specified.  There is nothing to clean up so this is an error.&apos;)
+	}
+}
+
+null</script>
+          <sandbox>false</sandbox>
+        </script>
+      </source>
+    </hudson.plugins.groovy.SystemGroovy>
+  </builders>
   <publishers/>
   <buildWrappers/>
 </project>
