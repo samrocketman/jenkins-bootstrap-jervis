@@ -15,27 +15,52 @@
    */
 /*
    Automatically approve the post-build groovy script defined in the
-   _jervis_generator seed job.  This is the same thing as an admin approving
-   the script so it will be run.
+   maintenance and seed jobs which are created by admins.
+
+   This is the same thing as an admin approving the script so it will be run.
  */
 
+import hudson.model.FreeStyleProject
+import hudson.model.Item
+import hudson.plugins.groovy.SystemGroovy
 import jenkins.model.Jenkins
 import org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildDescriptor
 
-def j = Jenkins.instance
-String jervis_postbuild = j.getItem('_jervis_generator').publishers.find { k, v ->
-      k in GroovyPostbuildDescriptor
-}.getValue().script.script
+script_approval = Jenkins.get().getExtensionList('org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval')[0]
 
+approvalsNotUpdated = true
 
-//approve script in script approval
-script_approval = j.getExtensionList('org.jenkinsci.plugins.scriptsecurity.scripts.ScriptApproval')[0]
-String hash = script_approval.hash(jervis_postbuild, 'groovy')
-if(hash in script_approval.approvedScriptHashes) {
-    println 'Nothing changed.  _jervis_generator postbuild script already approved.'
+void approveGroovyScript(String fullName, String script, String type = '') {
+    String hash = script_approval.hash(script, 'groovy')
+    if(!(hash in script_approval.approvedScriptHashes)) {
+        println "${fullName} ${(type)? type + ' ' : ''}groovy script approved."
+        script_approval.approveScript(hash)
+        approvalsNotUpdated = false
+    }
 }
-else {
-    script_approval.approveScript(hash)
-    script_approval.save()
-    println '_jervis_generator postbuild script has been approved in script security.'
+
+//find admin maintenance and seed jobs
+Jenkins.get().items.findAll { Item i ->
+    (i in FreeStyleProject) && i.fullName.startsWith('_')
+}.each { FreeStyleProject j ->
+    //approve groovy script builders (system groovy script build step)
+    j.builders.findAll {
+        (it in SystemGroovy) && it.source && it.source.script && it.source.script.script
+    }*.source.script.script.each {
+        approveGroovyScript(j.fullName, it, 'build step system')
+    }
+    //approve groovy script publishers (groovy postbuild step)
+    j.publishers.findAll { k, v ->
+        (k in GroovyPostbuildDescriptor) && v && v.script && v.script.script
+    }.collect { k, v ->
+        v.script.script
+    }.each {
+        approveGroovyScript(j.fullName, it, 'postbuild')
+    }
 }
+
+if(approvalsNotUpdated) {
+    println 'Nothing changed.  Admin groovy scripts already approved.'
+}
+
+null
