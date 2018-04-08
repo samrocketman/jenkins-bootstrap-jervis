@@ -45,13 +45,13 @@ Jenkins.get().items.findAll { Item i ->
 }.each { FreeStyleProject j ->
     //approve groovy script builders (system groovy script build step)
     j.builders.findAll {
-        (it in SystemGroovy) && it.source && it.source.script && it.source.script.script
+        (it in SystemGroovy) && it.source?.script?.script
     }*.source.script.script.each {
         approveGroovyScript(j.fullName, it, 'build step system')
     }
     //approve groovy script publishers (groovy postbuild step)
     j.publishers.findAll { k, v ->
-        (k in GroovyPostbuildDescriptor) && v && v.script && v.script.script
+        (k in GroovyPostbuildDescriptor) && v?.script?.script
     }.collect { k, v ->
         v.script.script
     }.each {
