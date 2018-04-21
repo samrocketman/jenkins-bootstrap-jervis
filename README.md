@@ -76,8 +76,8 @@ with a proper webhook when jobs are generated.
 [jenkins-auth]: https://wiki.jenkins-ci.org/display/JENKINS/Github+OAuth+Plugin#GithubOAuthPlugin-CallingJenkinsAPIusingGitHubPersonalAccessTokens
 [jenkins-cli]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+CLI
 [jenkins-console]: https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+Script+Console
-[jenkins-jervis-screenshot2]: https://user-images.githubusercontent.com/875669/36203662-267a2372-113d-11e8-8568-4b79ebf36ff9.png
-[jenkins-jervis-screenshot]: https://user-images.githubusercontent.com/875669/36202110-54d63018-1137-11e8-949a-ac2d7682ace7.png
+[jenkins-jervis-screenshot2]: https://user-images.githubusercontent.com/875669/39089420-a1dcfb9e-457b-11e8-8365-0a3d39f99e5c.png
+[jenkins-jervis-screenshot]: https://user-images.githubusercontent.com/875669/39089410-600abb52-457b-11e8-9598-4c0f808ed7b4.png
 [jenkins-source]: https://github.com/jenkinsci/jenkins
 [jervis]: https://github.com/samrocketman/jervis
 [travis-status]: https://travis-ci.org/samrocketman/jenkins-bootstrap-jervis.svg
