@@ -23,7 +23,7 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #global Jenkinsfile
-jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile-jervis.groovy"
+jenkins_console -s ./configs/global-jenkinsfile.groovy -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile.groovy"
 #restrict master so only _jervis_generator can execute
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-master.groovy"
 #approve admin groovy scripts

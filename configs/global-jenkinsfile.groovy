@@ -1,0 +1,3 @@
+jenkinsfile_script = '''
+buildViaJervis()
+'''
