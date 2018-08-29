@@ -27,7 +27,7 @@ jenkins_console -s ./configs/global-jenkinsfile.groovy -s "${SCRIPT_LIBRARY_PATH
 #restrict master so only _jervis_generator can execute
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-master.groovy"
 #approve admin groovy scripts
-jenkins_console -s './scripts/admin-script-approval.groovy'
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/admin-script-approval.groovy"
 #configure grapeConfig.xml
 if [ -n "${VAGRANT_JENKINS}" -o "${DOCKER_JENKINS}" ]; then
   jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-grape-ivy-xml.groovy"
