@@ -5,13 +5,6 @@
   <displayName>Generate Jenkins Jobs from YAML</displayName>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <hudson.security.AuthorizationMatrixProperty>
-      <inheritanceStrategy class="org.jenkinsci.plugins.matrixauth.inheritance.InheritParentStrategy"/>
-      <permission>hudson.model.Item.Build:authenticated</permission>
-      <permission>hudson.model.Item.Discover:anonymous</permission>
-      <permission>hudson.model.Item.Read:authenticated</permission>
-      <permission>hudson.model.Item.ViewStatus:anonymous</permission>
-    </hudson.security.AuthorizationMatrixProperty>
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
         <daysToKeep>-1</daysToKeep>
@@ -20,11 +13,11 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.0">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.29.3">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
       <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
-    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.6"/>
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8"/>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <hudson.model.StringParameterDefinition>
@@ -36,11 +29,11 @@
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.8.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/samrocketman/jervis.git</url>
+        <url>https://github.com/samrocketman/jervis</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -66,7 +59,7 @@
     <hudson.tasks.Shell>
       <command>./gradlew -x check -x test -x cobertura -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.68">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.70">
       <targets>jobs/firstjob_dsl.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
@@ -83,8 +76,8 @@ lib/*.jar</additionalClasspath>
     </javaposse.jobdsl.plugin.ExecuteDslScripts>
   </builders>
   <publishers>
-    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.4">
-      <script plugin="script-security@1.43">
+    <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.4.3">
+      <script plugin="script-security@1.49">
         <script>import com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger
 import jenkins.model.Jenkins
 

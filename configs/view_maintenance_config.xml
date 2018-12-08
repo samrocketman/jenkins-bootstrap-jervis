@@ -13,7 +13,7 @@
     <hudson.views.JobColumn/>
     <hudson.views.LastDurationColumn/>
     <hudson.views.BuildButtonColumn/>
-    <hudson.plugins.favorite.column.FavoriteColumn plugin="favorite@2.3.1"/>
+    <hudson.plugins.favorite.column.FavoriteColumn plugin="favorite@2.3.2"/>
   </columns>
   <includeRegex>^__.*</includeRegex>
   <recurse>false</recurse>

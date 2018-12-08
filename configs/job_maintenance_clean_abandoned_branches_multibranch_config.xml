@@ -22,7 +22,7 @@ This job is intended to delete abandoned branches and optionally delete closed p
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.6">
+    <com.synopsys.arc.jenkinsci.plugins.jobrestrictions.jobs.JobRestrictionProperty plugin="job-restrictions@0.8">
       <config>
         <upstreamCauseRestriction>
           <jobRestriction class="com.synopsys.arc.jenkinsci.plugins.jobrestrictions.restrictions.logic.NotJobRestriction">
@@ -64,7 +64,7 @@ This job is intended to delete abandoned branches and optionally delete closed p
   <builders>
     <hudson.plugins.groovy.SystemGroovy plugin="groovy@2.0">
       <source class="hudson.plugins.groovy.StringSystemScriptSource">
-        <script plugin="script-security@1.43">
+        <script plugin="script-security@1.49">
           <script>/*
     Copyright (c) 2015-2018 Sam Gleske - https://github.com/samrocketman/jenkins-script-console-scripts
 
