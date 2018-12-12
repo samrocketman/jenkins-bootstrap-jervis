@@ -72,6 +72,10 @@ Vagrant.configure("2") do |config|
       chmod 700 /etc/docker
       chown root. /etc/docker/daemon.json
       chmod 644 /etc/docker/daemon.json
+      # because docker needs to stop adding shit options to their systemd
+      # service file which breaks their own daemon
+      sed -i 's#\(ExecStart=.*dockerd\).*#\1#' /usr/lib/systemd/system/docker.service
+      systemctl daemon-reload
       systemctl enable docker
       systemctl start docker
     )
