@@ -1,5 +1,5 @@
 <?xml version="1.1" encoding="UTF-8"?>
-<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.10">
+<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.11">
   <name>Welcome</name>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>
@@ -23,7 +23,6 @@
   <rightPortlets/>
   <topPortlets>
     <org.korosoft.jenkins.plugin.rtp.StaticTextPortlet plugin="rich-text-publisher-plugin@1.4">
-      <id>dashboard_portlet_4858</id>
       <name>Bootstrapped Jenkins for Jervis</name>
       <text>&lt;style&gt;
 /* hide distracting elements in the UI */
@@ -40,12 +39,12 @@ div.dashboard div:last-child {
     display: none;
 }
 /* uses a CSS selector to hide portlet buttons */
-div[id^=title-dashboard_portlet] * {
+div[id^=title-portlet-topPortlets] * {
   display: none !important;
 }
 
 /* cleaner and clear borders and no drop shadows */
-table[id^=dashboard_portlet] {
+table[id^=portlet-topPortlets] {
     border-width: 0px;
 }
 * {
@@ -53,6 +52,10 @@ table[id^=dashboard_portlet] {
 }
 div.pane-frame {
     border: 3px solid #f0f0f0;
+}
+tr#job__jervis_generator &gt; td:nth-child(1) {
+    font-size: 120%;
+    width: 55%;
 }
 
 /* change positioning of the generate job text for prominence */
@@ -70,10 +73,10 @@ div#page-body div#main-panel, div#main-panel {
 
 /* responsive welcome message */
 @media screen and (min-width: 824px) {
-    div[id^=title-dashboard_portlet] {
+    div[id^=title-portlet-topPortlets] {
         width: 768px !important;
     }
-    table[id^=dashboard_portlet] {
+    table[id^=portlet-topPortlets] {
         width: 768px !important;
     }
 }
@@ -84,7 +87,7 @@ div#page-body div#main-panel, div#main-panel {
 }
 
 /* cleaner welcome page */
-div[id^=title-dashboard_portlet] {
+div[id^=title-portlet-topPortlets] {
     -moz-border-bottom-colors: none !important;
     -moz-border-left-colors: none !important;
     -moz-border-right-colors: none !important;
@@ -100,29 +103,29 @@ div[id^=title-dashboard_portlet] {
     line-height: 55px !important;
     padding: 10px 10px 10px !important;
 }
-table[id^=dashboard_portlet] {
+table[id^=portlet-topPortlets] {
     background-color: #fff !important;
     border: 1px solid #ddd !important;
     border-bottom-left-radius: 3px !important;
     border-bottom-right-radius: 3px !important;
 }
-table[id^=dashboard_portlet] tbody tr td {
+table[id^=portlet-topPortlets] tbody tr td {
     padding: 30px !important;
     word-wrap: break-word !important;
     font-family: &quot;Helvetica Neue&quot;,Helvetica,&quot;Segoe UI&quot;,Arial,freesans,sans-serif !important;
 }
-table[id^=dashboard_portlet] tbody tr td p, table[id^=dashboard_portlet] tbody tr td li {
+table[id^=portlet-topPortlets] tbody tr td p, table[id^=portlet-topPortlets] tbody tr td li {
     font-size: 16px !important;
     line-height: 1.6 !important;
 }
-table[id^=dashboard_portlet] tbody tr td a {
+table[id^=portlet-topPortlets] tbody tr td a {
     color: #4078c0;
     text-decoration: none;
 }
-table[id^=dashboard_portlet] tbody tr td a:hover, table[id^=dashboard_portlet] tbody tr td a:active {
+table[id^=portlet-topPortlets] tbody tr td a:hover, table[id^=portlet-topPortlets] tbody tr td a:active {
     text-decoration: underline;
 }
-table[id^=dashboard_portlet] tbody tr td tt, table[id^=dashboard_portlet] tbody tr td code, table[id^=dashboard_portlet] tbody tr td pre {
+table[id^=portlet-topPortlets] tbody tr td tt, table[id^=portlet-topPortlets] tbody tr td code, table[id^=portlet-topPortlets] tbody tr td pre {
     font-family: Consolas,&quot;Liberation Mono&quot;,Courier,monospace;
     font-size: 14px;
 }
@@ -228,7 +231,8 @@ pre code:before, pre code:after, pre tt:before, pre tt:after {
 
 &lt;h3&gt;Documentation&lt;/h3&gt;
 
-&lt;p&gt;Visit the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;Jervis wiki&lt;/a&gt; for comprehensive documentation on how to configure and manage Jenkins as a service.&lt;/p&gt;</text>
+&lt;p&gt;Visit the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;Jervis wiki&lt;/a&gt; for comprehensive documentation on how to configure and manage Jenkins as a service.&lt;/p&gt;
+</text>
       <richText>&lt;style&gt;
 /* hide distracting elements in the UI */
 div#side-panel, div#right-top-nav, div#description {
@@ -244,12 +248,12 @@ div.dashboard div:last-child {
     display: none;
 }
 /* uses a CSS selector to hide portlet buttons */
-div[id^=title-dashboard_portlet] * {
+div[id^=title-portlet-topPortlets] * {
   display: none !important;
 }
 
 /* cleaner and clear borders and no drop shadows */
-table[id^=dashboard_portlet] {
+table[id^=portlet-topPortlets] {
     border-width: 0px;
 }
 * {
@@ -257,6 +261,10 @@ table[id^=dashboard_portlet] {
 }
 div.pane-frame {
     border: 3px solid #f0f0f0;
+}
+tr#job__jervis_generator &gt; td:nth-child(1) {
+    font-size: 120%;
+    width: 55%;
 }
 
 /* change positioning of the generate job text for prominence */
@@ -274,10 +282,10 @@ div#page-body div#main-panel, div#main-panel {
 
 /* responsive welcome message */
 @media screen and (min-width: 824px) {
-    div[id^=title-dashboard_portlet] {
+    div[id^=title-portlet-topPortlets] {
         width: 768px !important;
     }
-    table[id^=dashboard_portlet] {
+    table[id^=portlet-topPortlets] {
         width: 768px !important;
     }
 }
@@ -288,7 +296,7 @@ div#page-body div#main-panel, div#main-panel {
 }
 
 /* cleaner welcome page */
-div[id^=title-dashboard_portlet] {
+div[id^=title-portlet-topPortlets] {
     -moz-border-bottom-colors: none !important;
     -moz-border-left-colors: none !important;
     -moz-border-right-colors: none !important;
@@ -304,29 +312,29 @@ div[id^=title-dashboard_portlet] {
     line-height: 55px !important;
     padding: 10px 10px 10px !important;
 }
-table[id^=dashboard_portlet] {
+table[id^=portlet-topPortlets] {
     background-color: #fff !important;
     border: 1px solid #ddd !important;
     border-bottom-left-radius: 3px !important;
     border-bottom-right-radius: 3px !important;
 }
-table[id^=dashboard_portlet] tbody tr td {
+table[id^=portlet-topPortlets] tbody tr td {
     padding: 30px !important;
     word-wrap: break-word !important;
     font-family: &quot;Helvetica Neue&quot;,Helvetica,&quot;Segoe UI&quot;,Arial,freesans,sans-serif !important;
 }
-table[id^=dashboard_portlet] tbody tr td p, table[id^=dashboard_portlet] tbody tr td li {
+table[id^=portlet-topPortlets] tbody tr td p, table[id^=portlet-topPortlets] tbody tr td li {
     font-size: 16px !important;
     line-height: 1.6 !important;
 }
-table[id^=dashboard_portlet] tbody tr td a {
+table[id^=portlet-topPortlets] tbody tr td a {
     color: #4078c0;
     text-decoration: none;
 }
-table[id^=dashboard_portlet] tbody tr td a:hover, table[id^=dashboard_portlet] tbody tr td a:active {
+table[id^=portlet-topPortlets] tbody tr td a:hover, table[id^=portlet-topPortlets] tbody tr td a:active {
     text-decoration: underline;
 }
-table[id^=dashboard_portlet] tbody tr td tt, table[id^=dashboard_portlet] tbody tr td code, table[id^=dashboard_portlet] tbody tr td pre {
+table[id^=portlet-topPortlets] tbody tr td tt, table[id^=portlet-topPortlets] tbody tr td code, table[id^=portlet-topPortlets] tbody tr td pre {
     font-family: Consolas,&quot;Liberation Mono&quot;,Courier,monospace;
     font-size: 14px;
 }
@@ -432,7 +440,8 @@ pre code:before, pre code:after, pre tt:before, pre tt:after {
 
 &lt;h3&gt;Documentation&lt;/h3&gt;
 
-&lt;p&gt;Visit the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;Jervis wiki&lt;/a&gt; for comprehensive documentation on how to configure and manage Jenkins as a service.&lt;/p&gt;</richText>
+&lt;p&gt;Visit the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki&quot;&gt;Jervis wiki&lt;/a&gt; for comprehensive documentation on how to configure and manage Jenkins as a service.&lt;/p&gt;
+</richText>
       <parserName>HTML</parserName>
     </org.korosoft.jenkins.plugin.rtp.StaticTextPortlet>
   </topPortlets>
