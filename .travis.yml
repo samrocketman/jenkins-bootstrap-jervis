@@ -1,4 +1,6 @@
 language: java
+dist: xenial
+jdk: openjdk8
 install: git submodule update --init
 script:
   - bash -n ./tests/test.sh
