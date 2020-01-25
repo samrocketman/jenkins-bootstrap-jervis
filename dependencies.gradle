@@ -30,6 +30,7 @@ dependencies {
     getplugins 'io.jenkins.blueocean:blueocean:1.19.0@hpi'
     getplugins 'io.jenkins.blueocean:jenkins-design-language:1.19.0@hpi'
     getplugins 'io.jenkins.plugins:code-coverage-api:1.1.0@hpi'
+    getplugins 'io.jenkins.plugins:scm-filter-jervis:0.2@hpi'
     getplugins 'org.6wind.jenkins:lockable-resources:2.5@hpi'
     getplugins 'org.jenkins-ci.main:maven-plugin:3.4@hpi'
     getplugins 'org.jenkins-ci.plugins.icon-shim:icon-shim:2.0.3@hpi'
