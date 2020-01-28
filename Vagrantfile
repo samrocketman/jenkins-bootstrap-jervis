@@ -45,8 +45,8 @@ Vagrant.configure("2") do |config|
 
     # install IUS repo
     rpm -qa | grep ius-release || (
-      [ -r /tmp/ius.asc ] || curl -fLo /tmp/ius.asc https://dl.iuscommunity.org/pub/ius/IUS-COMMUNITY-GPG-KEY
-      echo '688852e2dba88a3836392adfc5a69a1f46863b78bb6ba54774a50fdecee7e38e  /tmp/ius.asc' | sha256sum -c
+      [ -r /tmp/ius.asc ] || curl -fLo /tmp/ius.asc https://repo.ius.io/RPM-GPG-KEY-IUS-7
+      echo '99fd7b84543828f9489e000e1d29e948e51d2fd1dc2503232030e67e960fcbb2  /tmp/ius.asc' | sha256sum -c
       rpm --import /tmp/ius.asc
       [ -r /tmp/ius.rpm ] || curl -fLo /tmp/ius.rpm https://centos7.iuscommunity.org/ius-release.rpm
       rpm -K /tmp/ius.rpm
@@ -74,7 +74,8 @@ Vagrant.configure("2") do |config|
       chmod 644 /etc/docker/daemon.json
       # because docker needs to stop adding shit options to their systemd
       # service file which breaks their own daemon
-      sed -i 's#\(ExecStart=.*dockerd\).*#\1#' /usr/lib/systemd/system/docker.service
+      cp /usr/lib/systemd/system/docker.service /etc/systemd/system/docker.service
+      sed -i -r 's#^(ExecStart=.*) -H fd:// (.*)$#\\1 \\2#' /etc/systemd/system/docker.service
       systemctl daemon-reload
       systemctl enable docker
       systemctl start docker
@@ -93,7 +94,7 @@ Vagrant.configure("2") do |config|
     )
     docker images | grep -- jervis-docker-jvm || (
       cd /usr/local/src
-      git clone https://github.com/samrocketman/docker-jenkins-jervis.git
+      [ -d docker-jenkins-jervis ] || git clone https://github.com/samrocketman/docker-jenkins-jervis.git
       cd docker-jenkins-jervis/ubuntu1604/
       docker build -t jervis-docker-jvm .
     )

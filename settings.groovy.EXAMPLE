@@ -47,6 +47,7 @@ clouds_yadocker = [
     [
         cloud_name: "docker-local",
         docker_url: "tcp://localhost:2375",
+        max_containers: 2,
         docker_templates: [
             //DOCKER TEMPLATE (this is an item in a list of templates)
             [
