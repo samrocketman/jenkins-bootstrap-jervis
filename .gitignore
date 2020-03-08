@@ -10,3 +10,5 @@
 /plugins
 /settings.groovy
 /ssh_config
+/settings.groovy*
+!/*.EXAMPLE
