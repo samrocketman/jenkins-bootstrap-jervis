@@ -9,4 +9,4 @@ script:
   - ./gradlew clean packages
 branches:
   only:
-    - master
+    - main

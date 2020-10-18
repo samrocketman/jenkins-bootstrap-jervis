@@ -33,7 +33,7 @@ onboarding the [Jervis project][jervis] for CI.
 
 ### Screenshot
 
-[Jervis][jervis] built from [the `master` branch][yml-master] by this Jenkins
+[Jervis][jervis] built from [the `main` branch][yml-main] by this Jenkins
 instance.
 
 ![Screenshot Jervis matrix pipeline][jenkins-jervis-screenshot]
@@ -85,4 +85,4 @@ with a proper webhook when jobs are generated.
 [webhookrelay-tokens]: https://my.webhookrelay.com/tokens
 [webhookrelay]: https://webhookrelay.com/
 [yml-jervis_simple]: https://github.com/samrocketman/jervis/blob/jervis_simple/.travis.yml
-[yml-master]: https://github.com/samrocketman/jervis/blob/master/.travis.yml
+[yml-main]: https://github.com/samrocketman/jervis/blob/main/.travis.yml
