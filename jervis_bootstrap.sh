@@ -16,7 +16,7 @@ jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-markup-formatter.groovy"
 #configure jenkins agent credentials
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
-#disable agent -> master security
+#disable agent -> built-in controller security
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/security-disable-agent-master.groovy"
 #disable job dsl script security
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
@@ -24,8 +24,8 @@ jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #global Jenkinsfile
 jenkins_console -s ./configs/global-jenkinsfile.groovy -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile.groovy"
-#restrict master so only _jervis_generator can execute
-jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-master.groovy"
+#restrict built-in controller so only _jervis_generator can execute
+jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-controller.groovy"
 #approve admin groovy scripts
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/admin-script-approval.groovy"
 #configure grapeConfig.xml

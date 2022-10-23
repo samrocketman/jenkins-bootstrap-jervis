@@ -1,5 +1,5 @@
 <?xml version="1.1" encoding="UTF-8"?>
-<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.11">
+<hudson.plugins.view.dashboard.Dashboard plugin="dashboard-view@2.447.vda_124dd35f11">
   <name>Welcome</name>
   <filterExecutors>false</filterExecutors>
   <filterQueue>false</filterQueue>
@@ -32,15 +32,22 @@ div#side-panel, div#right-top-nav, div#description {
 table#projectstatus tbody tr.header {
     display: none;
 }
-table#projectstatus tbody tr td:last-child {
+.jenkins-table__cell--tight {
+    text-align: left !important;
+}
+.jenkins-table__cell__button-wrapper {
+    align-items: left !important;
+    justify-content: left !important;
+}
+#projectstatus &gt; thead:nth-child(1) {
     display: none;
 }
-div.dashboard div:last-child {
-    display: none;
+.jenkins-icon-size {
+    display: none !important;
 }
 /* uses a CSS selector to hide portlet buttons */
 div[id^=title-portlet-topPortlets] * {
-  display: none !important;
+    display: none !important;
 }
 
 /* cleaner and clear borders and no drop shadows */
@@ -224,8 +231,12 @@ pre code:before, pre code:after, pre tt:before, pre tt:after {
 &lt;p&gt;Creating a project in Jenkins is simple.  Follow these three steps:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Add a &lt;tt&gt;.jervis.yml&lt;/tt&gt; file to your GitHub repository following the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/User-Guide&quot;&gt;User Guide&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Execute the &lt;tt&gt;Generate Jenkins Jobs from YAML&lt;/tt&gt; onboarding job by clicking &lt;img alt=&quot;Schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt; icon.&lt;/li&gt;
+    &lt;li&gt;Add a &lt;tt&gt;.jervis.yml&lt;/tt&gt; file to your GitHub repository following the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/User-Guide&quot;&gt;User Guide&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;
+        Execute the &lt;tt&gt;Generate Jenkins Jobs from YAML&lt;/tt&gt; onboarding job by clicking
+        &lt;svg class=&quot;&quot; aria-hidden=&quot;true&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; style=&quot;color: #1ea64b&quot; viewBox=&quot;0 0 512 512&quot;&gt;&lt;title&gt;&lt;/title&gt;&lt;path d=&quot;M112,111V401c0,17.44,17,28.52,31,20.16l247.9-148.37c12.12-7.25,12.12-26.33,0-33.58L143,90.84C129,82.48,112,93.56,112,111Z&quot; style=&quot;fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+        icon.
+    &lt;/li&gt;
   &lt;li&gt;If creating your job succeeds, then visit the &lt;a href=&quot;/view/GitHub%20Organizations/&quot;&gt;GitHub Organizations View&lt;/a&gt; in the tabs above.
 &lt;/ol&gt;
 
@@ -241,15 +252,22 @@ div#side-panel, div#right-top-nav, div#description {
 table#projectstatus tbody tr.header {
     display: none;
 }
-table#projectstatus tbody tr td:last-child {
+.jenkins-table__cell--tight {
+    text-align: left !important;
+}
+.jenkins-table__cell__button-wrapper {
+    align-items: left !important;
+    justify-content: left !important;
+}
+#projectstatus &gt; thead:nth-child(1) {
     display: none;
 }
-div.dashboard div:last-child {
-    display: none;
+.jenkins-icon-size {
+    display: none !important;
 }
 /* uses a CSS selector to hide portlet buttons */
 div[id^=title-portlet-topPortlets] * {
-  display: none !important;
+    display: none !important;
 }
 
 /* cleaner and clear borders and no drop shadows */
@@ -433,8 +451,12 @@ pre code:before, pre code:after, pre tt:before, pre tt:after {
 &lt;p&gt;Creating a project in Jenkins is simple.  Follow these three steps:&lt;/p&gt;
 
 &lt;ol&gt;
-  &lt;li&gt;Add a &lt;tt&gt;.jervis.yml&lt;/tt&gt; file to your GitHub repository following the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/User-Guide&quot;&gt;User Guide&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Execute the &lt;tt&gt;Generate Jenkins Jobs from YAML&lt;/tt&gt; onboarding job by clicking &lt;img alt=&quot;Schedule a build with parameters&quot; src=&quot;/images/16x16/clock.png&quot; /&gt; icon.&lt;/li&gt;
+    &lt;li&gt;Add a &lt;tt&gt;.jervis.yml&lt;/tt&gt; file to your GitHub repository following the &lt;a href=&quot;https://github.com/samrocketman/jervis/wiki/User-Guide&quot;&gt;User Guide&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;
+        Execute the &lt;tt&gt;Generate Jenkins Jobs from YAML&lt;/tt&gt; onboarding job by clicking
+        &lt;svg class=&quot;&quot; aria-hidden=&quot;true&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; style=&quot;color: #1ea64b&quot; viewBox=&quot;0 0 512 512&quot;&gt;&lt;title&gt;&lt;/title&gt;&lt;path d=&quot;M112,111V401c0,17.44,17,28.52,31,20.16l247.9-148.37c12.12-7.25,12.12-26.33,0-33.58L143,90.84C129,82.48,112,93.56,112,111Z&quot; style=&quot;fill:none;stroke:currentColor;stroke-miterlimit:10;stroke-width:32px&quot;&gt;&lt;/path&gt;&lt;/svg&gt;
+        icon.
+    &lt;/li&gt;
   &lt;li&gt;If creating your job succeeds, then visit the &lt;a href=&quot;/view/GitHub%20Organizations/&quot;&gt;GitHub Organizations View&lt;/a&gt; in the tabs above.
 &lt;/ol&gt;
 
