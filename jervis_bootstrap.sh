@@ -16,8 +16,6 @@ jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-markup-formatter.groovy"
 #configure jenkins agent credentials
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
-#disable agent -> built-in controller security
-jenkins_console -s "${SCRIPT_LIBRARY_PATH}/security-disable-agent-controller.groovy"
 #disable job dsl script security
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
