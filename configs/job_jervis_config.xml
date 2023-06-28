@@ -5,7 +5,6 @@
   <displayName>Generate Jenkins Jobs from YAML</displayName>
   <keepDependencies>false</keepDependencies>
   <properties>
-    <hudson.plugins.jira.JiraProjectProperty plugin="jira@3.7.1"/>
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
         <daysToKeep>-1</daysToKeep>
@@ -14,7 +13,7 @@
         <artifactNumToKeep>-1</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
-    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.34.3.1">
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.37.1">
       <projectUrl>https://github.com/samrocketman/jervis/</projectUrl>
       <displayName></displayName>
     </com.coravy.hudson.plugins.github.GithubProjectProperty>
@@ -30,7 +29,7 @@
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@4.11.5">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@5.1.0">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -58,10 +57,10 @@
   <concurrentBuild>true</concurrentBuild>
   <builders>
     <hudson.tasks.Shell>
-      <command>./gradlew -x check -x test -x jacocoTestReport -x groovydoc -x javadocJar -x sourcesJar clean libs Jar</command>
+      <command>./gradlew -x check -x test -x jacocoTestReport -x groovydoc -x javadocJar clean libs Jar</command>
       <configuredLocalRules/>
     </hudson.tasks.Shell>
-    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.81">
+    <javaposse.jobdsl.plugin.ExecuteDslScripts plugin="job-dsl@1.84">
       <targets>jobs/firstjob_dsl.groovy</targets>
       <usingScriptText>false</usingScriptText>
       <sandbox>false</sandbox>
@@ -80,7 +79,7 @@ lib/*.jar</additionalClasspath>
   </builders>
   <publishers>
     <org.jvnet.hudson.plugins.groovypostbuild.GroovyPostbuildRecorder plugin="groovy-postbuild@2.5">
-      <script plugin="script-security@1189.vb_a_b_7c8fd5fde">
+      <script plugin="script-security@1251.vfe552ed55f8d">
         <script>import com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger
 import hudson.model.Result
 import jenkins.model.Jenkins
