@@ -2,10 +2,12 @@ ansicolor
 blueocean
 bouncycastle-api
 cloudbees-folder
-configuration-as-code
+cobertura
 config-file-provider
+configuration-as-code
 credentials
 dashboard-view
+docker-workflow
 embeddable-build-status
 git
 github
@@ -21,6 +23,7 @@ job-restrictions
 lockable-resources
 mask-passwords
 matrix-auth
+pipeline-github
 pipeline-multibranch-defaults
 plain-credentials
 rich-text-publisher-plugin

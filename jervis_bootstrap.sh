@@ -10,18 +10,21 @@ create_view --view-name 'Welcome' --xml-data './configs/view_welcome_config.xml'
 create_view --view-name 'GitHub Organizations' --xml-data "./configs/view_github_organizations_config.xml"
 #generate Maintenance view
 create_view --view-name 'Maintenance' --xml-data './configs/view_maintenance_config.xml'
+
 #setting default view to Welcome
 jenkins_console --script "${SCRIPT_LIBRARY_PATH}/configure-primary-view.groovy"
 #set markup formatter to HTML
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-markup-formatter.groovy"
 #configure jenkins agent credentials
-jenkins_console -s "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
+#jenkins_console -s "${SCRIPT_LIBRARY_PATH}/credentials-jenkins-agent.groovy"
 #disable job dsl script security
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-dsl-security.groovy"
 #only enable JNLP4 agent protocol
-jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
+#jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-jnlp-agent-protocols.groovy"
 #global Jenkinsfile
 jenkins_console -s ./configs/global-jenkinsfile.groovy -s "${SCRIPT_LIBRARY_PATH}/configure-global-jenkinsfile.groovy"
+# configure approved methods in script security
+jenkins_console -s ./configs/script-security-settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-script-security.groovy
 #restrict built-in controller so only _jervis_generator can execute
 jenkins_console -s "${SCRIPT_LIBRARY_PATH}/configure-job-restrictions-controller.groovy"
 #approve admin groovy scripts
@@ -38,6 +41,6 @@ if [ -r settings.groovy ]; then
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/credentials-multitype.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-pipeline-global-shared-libraries.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-github-plugin.groovy
-  jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-yadocker-cloud.groovy
+  #jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-yadocker-cloud.groovy
   jenkins_console -s ./settings.groovy -s "${SCRIPT_LIBRARY_PATH}"/configure-github-oauth.groovy
 fi

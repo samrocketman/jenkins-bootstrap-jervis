@@ -1,0 +1,2 @@
+#uncomment for future jervis testing
+#io.jenkins.plugins:scm-filter-jervis:2.1-SNAPSHOT-999999-SNAPSHOT@hpi
