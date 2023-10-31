@@ -87,3 +87,16 @@ github_realm = [
     oauth_scopes: 'read:org,user:email,repo'
 ]
 */
+/*
+//configure matrix authorization
+authz_strategy_config = [
+    strategy: "GlobalMatrixAuthorizationStrategy",
+    user_permissions: [
+        'anonymous': ['Job Discover', 'Job ViewStatus'],
+        'authenticated': ['View Read'],
+        'group:jenkinsci': ['Overall Read', 'Job Read'],
+        'samrocketman': ['Overall Administer'],
+        'admin': ['Overall Administer']
+    ]
+]
+*/
