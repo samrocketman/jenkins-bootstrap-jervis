@@ -66,7 +66,7 @@ This job is intended to delete abandoned branches and optionally delete closed p
       <source class="hudson.plugins.groovy.StringSystemScriptSource">
         <script plugin="script-security@1.49">
           <script>/*
-    Copyright (c) 2015-2018 Sam Gleske - https://github.com/samrocketman/jenkins-script-console-scripts
+    Copyright (c) 2015-2026 Sam Gleske - https://github.com/samrocketman/jenkins-script-console-scripts
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of
     this software and associated documentation files (the &quot;Software&quot;), to deal in
